@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAPPCCFitxaControlHistoric" table="qua_appcc_fitxaControl_historic" schema="public">
+  		<comment>Qualitat - APPCC - FitxaControl - Historic</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="fch_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="mesuresPrevencio" type="java.lang.String">
+			<column name="fch_mesuresPrevencio" not-null="false"><comment>Mesures de Prevencio</comment></column>
+		</property>
+		<many-to-one
+			name="responsablePrevencio"
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="fch_respPrevencio"
+			not-null="false"/>
+		<property name="vigilancia" type="java.lang.String">
+			<column name="fch_vigilancia" not-null="false"><comment>Vigilancia</comment></column>
+		</property>
+		<many-to-one
+			name="responsableVigilancia"
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="fch_respVigilancia"
+			not-null="false"/>
+		<property name="registre" type="java.lang.String">
+			<column name="fch_registre" not-null="false"><comment>Registre de la Qualitat</comment></column>
+		</property>
+		<property name="limits" type="java.lang.String">
+			<column name="fch_limits" not-null="false"><comment>Limits Critics</comment></column>
+		</property>
+		<property name="freqVigilancia" type="java.lang.String">
+			<column name="fch_freqVigilancia" not-null="false"><comment>Frequencia Vigilancia</comment></column>
+		</property>
+		<property name="mesuresCorreccio" type="java.lang.String">
+			<column name="fch_mesuresCorreccio" not-null="false"><comment>Mesures de Correccio</comment></column>
+		</property>
+		<many-to-one
+			name="responsableCorreccio"
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="fch_respCorreccio"
+			not-null="false"/>
+		<many-to-one
+			name="fitxa"
+			class="es.caib.gestoli.logic.model.QualitatAPPCCFitxaControl"
+			column="fch_fitxa"
+			not-null="true"/>
+		<property name="dataModificacio" type="java.util.Date">
+			<column name="fch_dataModificacio" not-null="true"><comment>Data de Modificacio</comment></column>
+		</property>
+	</class>
+</hibernate-mapping>

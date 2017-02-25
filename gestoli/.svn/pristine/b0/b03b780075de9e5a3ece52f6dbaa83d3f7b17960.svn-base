@@ -1,0 +1,4 @@
+<resource-ref>
+	<res-ref-name>mail/Mail</res-ref-name>
+	<jndi-name>java:/es.caib.gestoli.Mail</jndi-name>
+</resource-ref>

@@ -1,0 +1,29 @@
+#promocionMicroweb {
+	padding: 0 20px 30px 20px;
+	background: url(../../../img/web/general/microweb/a.jpg) 0 20px
+		no-repeat;
+	min-height: 280px;
+	height: auto !important;
+	height: 280px;
+	font-size: 15px;
+}
+
+#promocionMicroweb .archivo {
+	padding-left: 68px;
+	background: url(../../../img/web/general/microweb/imgArchivo.gif) top left
+		no-repeat;
+	clear: left;
+	float: left;
+	height: 41px;
+	padding-top: 16px;
+	margin-bottom: 50px;
+}
+
+#promocionMicroweb .cajaDatos {
+	float: left;
+	margin-right: 10px;
+}
+
+#promocionMicroweb .datosArchivo {
+	font-size: 11px;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+ <class name="es.caib.gestoli.logic.model.EntradaLot" schema="public" table="oli_entrada_lot">
+  <meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+  <comment>Entrades de lots</comment>
+  <id name="id" type="java.lang.Long">
+   <column name="elo_codi"/>
+   <generator class="identity"/>
+  </id>
+  <many-to-one class="es.caib.gestoli.logic.model.Zona" fetch="select" name="zona">
+   <column name="elo_codzon" not-null="true">
+    <comment>Codi de zona</comment>
+   </column>
+  </many-to-one>
+  <many-to-one class="es.caib.gestoli.logic.model.Traza" fetch="select" name="traza">
+   <column name="elo_codtra" not-null="true">
+    <comment>Codi de traza</comment>
+   </column>
+  </many-to-one>
+  <many-to-one class="es.caib.gestoli.logic.model.Lot" fetch="select" name="lot">
+   <column name="elo_codlot" not-null="true">
+    <comment>Codi de lot</comment>
+   </column>
+  </many-to-one>
+  <property generated="never" lazy="false" name="data" type="timestamp">
+   <column length="29" name="elo_data" not-null="true">
+    <comment>Data</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="acidesa" type="java.lang.Double">
+   <column name="elo_acides" not-null="true" precision="17" scale="17">
+    <comment>Acidesa</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="dipositProcedencia" type="java.lang.String">
+   <column length="64" name="elo_dippro">
+    <comment>Diposit de procedencia: nomes estara informat amb el
+					texte "ENTRADA" quan sigui una entrada per canvi de zona, no per
+					elaboracio de lot (en aquest cas,
+					sera el diposit del lot)</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="numerosContraetiquetes" type="java.lang.String">
+   <column length="128" name="elo_numcon">
+    <comment>Numeros de contraetiquetes</comment>
+   </column>
+  </property>
+  <property generated="never" insert="false" lazy="false" name="valid" type="java.lang.Boolean">
+   <column name="elo_valid" not-null="true">
+    <comment>Proces valid</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="observacions" type="java.lang.String">
+   <column name="elo_observ">
+    <comment>Observacions</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="esDevolucio" type="java.lang.Boolean">
+   <column name="elo_esdevo" not-null="false">
+    <comment>Devolucio</comment>
+   </column>
+  </property>
+  <property  generated="never" lazy="false" name="botelles" type="java.lang.Integer">
+  	<column name="elo_botell">
+  		<comment>Numero de botelles</comment>
+  	</column>
+  </property>
+ </class>
+</hibernate-mapping>

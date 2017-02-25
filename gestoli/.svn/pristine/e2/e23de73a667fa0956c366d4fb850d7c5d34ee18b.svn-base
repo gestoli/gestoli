@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.HistoricEstabliment" table="oli_histestabliment" schema="public">
+		<meta attribute="class-description" inherit="false">
+			Javadoc de les clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)
+		</meta>
+		<meta attribute="class-code" inherit="false">
+			/** * Devuelve una fecha formateada */
+			public String getDataFormat() { SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.getData()); }
+		</meta>
+		<comment>Històric Establiment</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="hes_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="establiment" class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="hes_codest" not-null="true"><comment>Codi del establiment</comment></column>
+		</many-to-one>
+		<many-to-one name="campanya" class="es.caib.gestoli.logic.model.Campanya" fetch="select">
+			<column name="hes_codcam" not-null="true"><comment>Codi de campanya</comment></column>
+		</many-to-one>
+        <many-to-one name="tipusEstabliment" class="es.caib.gestoli.logic.model.TipusEstabliment" fetch="select">
+			<column name="hes_codtipest" not-null="true"><comment>Codi de tipus de establiment</comment></column>
+		</many-to-one>
+		<many-to-one name="solicitant" class="es.caib.gestoli.logic.model.Solicitant" fetch="select">
+			<column name="hes_codsol" not-null="true"><comment>Codi de solicitant de alta</comment></column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="hes_codori"><comment>Codi de establiment original</comment></column>
+		</property>
+		<property name="codiRB" type="java.lang.String">
+			<column name="hes_codirb" length="128"><comment>Codi RB de tafona</comment></column>
+		</property>
+		<property name="codiRC" type="java.lang.String">
+			<column name="hes_codirc" length="128"><comment>Codi RC de envassadora</comment></column>
+		</property>
+		<property name="codiRT" type="java.lang.String">
+			<column name="hes_codirt" length="128"><comment>Codi RT de productor oliva</comment></column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="hes_actiu" not-null="true"><comment>Actiu</comment></column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="hes_nom" length="128" not-null="true"><comment>Nom</comment></column>
+		</property>
+		<property name="cif" type="java.lang.String">
+			<column name="hes_cif" length="16" not-null="true"><comment>CIF</comment></column>
+		</property>
+		<property name="nomResponsable" type="java.lang.String">
+			<column name="hes_nomres"  not-null="true"><comment>Nom responsable</comment></column>
+		</property>
+		<property name="cifResponsable" type="java.lang.String">
+			<column name="hes_cifres" length="16" not-null="true"><comment>CIF responsable</comment></column>
+		</property>
+		<property name="direccio" type="java.lang.String">
+			<column name="hes_direcc" length="256"><comment>Direccio</comment></column>
+		</property>
+		<many-to-one name="poblacio" class="es.caib.gestoli.logic.model.Municipi" fetch="select">
+			<column name="hes_poblac" not-null="true"><comment>Poblacio</comment></column>
+		</many-to-one>
+		<property name="codiPostal" type="java.lang.String">
+			<column name="hes_cp" length="16"><comment>Codi postal</comment></column>
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="hes_email" length="128" not-null="true"><comment>Email</comment></column>
+		</property>
+		<property name="telefon" type="java.lang.String">
+			<column name="hes_telefo" length="16"><comment>Telefon</comment></column>
+		</property>
+		<property name="fax" type="java.lang.String">
+			<column name="hes_fax" length="16"><comment>Fax</comment></column>
+		</property>
+		<property name="numeroTreballadors" type="java.lang.Integer">
+			<column name="hes_numtre"><comment>Numero de treballadors</comment></column>
+		</property>
+		<property name="superficie" type="java.lang.Double">
+			<column name="hes_superf" precision="17" scale="17"><comment>Superficie</comment></column>
+		</property>
+		<property name="unitatMesura" type="java.lang.String">
+			<column name="hes_unimes" length="1" not-null="true"><comment>Unitat de mesura (Kilos o Litros)</comment></column>
+		</property>
+		<property name="temperaturaMaximaPasta" type="java.lang.Integer">
+			<column name="hes_tempas"><comment>Temperatura maxima pasta (envasadora)</comment></column>
+		</property>
+		<property name="capacitatProduccio" type="java.lang.Double">
+			<column name="hes_cappro" precision="17" scale="17"><comment>Capacitat de produccio (tafona Kg oli/h i envasadora L/h)</comment></column>
+		</property>
+		<property name="envassamentManual" type="java.lang.Boolean">
+			<column name="hes_envman"><comment>Envassament manual (envasadora)</comment></column>
+		</property>
+		<property name="etiquetatManual" type="java.lang.Boolean">
+			<column name="hes_etiman"><comment>Etiquetat manual (envasadora)</comment></column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="hes_observ"><comment>Observacions</comment></column>
+		</property>
+		<property name="dataAlta" type="date">
+			<column name="hes_datalta" length="13"><comment>Data de alta</comment></column>
+		</property>
+		<property name="dataBaixa" type="date">
+			<column name="hes_datbaixa" length="13"><comment>Data de baixa</comment></column>
+		</property>
+		<set name="marcas" inverse="true">
+			<key>
+				<column name="hem_codest" not-null="true"><comment>Codi de establiment</comment></column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Marca"/>
+		</set>
+		<set name="zonas" inverse="true">
+			<key>
+				<column name="hez_codest" not-null="true"><comment>Codi de establiment</comment></column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.HistoricZona" />
+		</set>
+		<set name="diposits" inverse="true">
+			<key>
+				<column name="hed_codest" not-null="true"><comment>Codi de establiment</comment></column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.HistoricDiposit" />
+		</set>
+		<!--
+		<set name="informacions" inverse="true" table="oli_hesinf">
+			<key>
+				<column name="hei_codest" not-null="true"><comment>Codi de establiment</comment></column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Informacio">
+				<column name="hei_codinf" not-null="true"><comment>Codi de informacio</comment></column>
+			</many-to-many>
+		</set>
+		<set name="usuaris" inverse="false" table="oli_hesusu">
+			<key>
+				<column name="heu_codest" not-null="true"><comment>Codi de establiment</comment></column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Usuari">
+				<column name="heu_codusu" not-null="true"><comment>Codi de usuari</comment></column>
+			</many-to-many>
+		</set>
+		-->
+		<property name="esAltaBaixa" type="java.lang.Boolean">
+			<column name="hes_altbai">
+				<comment>És una alta o baixa</comment>
+			</column>
+		</property>
+		<property name="olivaTaula" type="java.lang.Boolean">
+			<column name="hes_olitau" not-null="false"><comment>Oliva de taula</comment></column>
+		</property>
+	</class>
+</hibernate-mapping>

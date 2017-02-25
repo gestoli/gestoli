@@ -1,0 +1,7 @@
+
+Es necessita afegir la seqüència i que l'id s'actualitzi segons aquesta:
+
+CREATE sequence "public"."oli_partida_oli_par_codi_seq" START WITH 1 increment BY 1 no maxvalue no minvalue cache 20 no cycle;
+
+ALTER TABLE gestoli.public.oli_partida_oli ALTER COLUMN par_codi
+    SET DEFAULT nextval('oli_partida_oli_par_codi_seq') ;

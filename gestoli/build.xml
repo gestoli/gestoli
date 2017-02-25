@@ -1,0 +1,163 @@
+<project name="gestoli" default="prepare" basedir=".">
+
+   <!-- properties -->
+
+   <import file="properties.common.xml" />
+   <import file="build.common.xml" />
+
+   <!--  macrodefs -->
+
+
+    <!-- crida a tots els common dels subbuild -->
+    <macrodef name="common.logic">
+        <sequential>
+            <subant target="common" inheritall="false" >
+                <filelist dir="components" >
+                    <file name="logic/build.xml"/>
+                </filelist>
+                <property name="component" value="${component.logic}" />
+            </subant> 
+        </sequential>
+    </macrodef>
+
+    <macrodef name="common.front">
+        <sequential>
+            <subant target="common" inheritall="false" >
+                <filelist dir="components" >
+                    <file name="front/build.xml"/>
+                </filelist>
+                <property name="component" value="${component.front}" />
+                <property name="component.logic" value="${component.logic}" />
+            </subant>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="common">
+        <sequential>
+            <common.logic />
+            <common.front />
+        </sequential>
+    </macrodef>
+
+   <!-- testeo multiples jars y wars -->
+   <macrodef name="vers">
+      <sequential>
+         <common.logic/>
+         <common.front/>
+         <customize origen="etc" desti="${output}/components/META-INF"/>
+      </sequential>
+   </macrodef>
+
+
+   <target name="deploy">
+       <copy file="${product}/${application.name}.ear" todir="${deploy.dir}"/>
+   </target>
+
+   <target name="deploy.remote">
+      <!--copy file="${product}/${application.name}.ear" todir="${deploy.remote.dir}/.."/>
+      <copy file="${deploy.remote.dir}/../${application.name}.ear" todir="${deploy.remote.dir}"/-->
+      <copy file="${product}/${application.name}.ear" todir="${deploy.remote.dir}"/>
+   </target>
+
+   <target name="deploy.remote.acciobit">
+      <copy file="${product}/${application.name}.ear" todir="${deploy.remote.acciobit.dir}"/>
+   </target>
+
+   <target name="undeploy">
+       <echo>${deploy.dir}/${application.name}.ear</echo>
+       <delete file="${deploy.dir}/${application.name}.ear" />
+   </target>
+
+   <target name="undeploy.remote">
+      <echo>${deploy.remote.dir}\${application.name}.ear</echo>
+       <delete file="${deploy.remote.dir}/${application.name}.ear" />
+   </target>
+
+
+   <!-- tasques -->
+
+   <target name="prepare">
+       <mkdir dir="${product}" />
+       <mkdir dir="${output}/components" />
+       <mkdir dir="${doc}" />
+       <subant target="prepare" inheritall="false" >
+           <filelist dir="components" >
+               <file name="logic/build.xml"/>
+               <file name="front/build.xml"/>
+           </filelist>
+       </subant>
+   </target>
+
+   <target name="clean">
+       <delete dir="${output}"/>
+   </target>
+
+   <target name="generate" depends="prepare">
+      <subant target="generate" inheritall="false" >
+         <filelist dir="components" >
+            <file name="logic/build.xml"/>
+            <file name="front/build.xml"/>
+         </filelist>
+      </subant>
+   </target>
+
+   <target name="compile" depends="prepare">
+      <antcall target="generate"/>
+      <subant target="compile" inheritall="false" >
+         <filelist dir="components" >
+            <file name="logic/build.xml"/>
+            <file name="front/build.xml"/>
+         </filelist>
+      </subant>
+   </target>
+
+   <target name="make"  depends="prepare">
+      <sequential>
+         <var file="${project.dir}/deploy.properties"/>
+	     <vers />
+      </sequential>
+      <def.ear.uptodate />
+      <customize origen="etc" desti="${modules}/META-INF"/>
+      <assemble.ear modules="${modules}" />
+   </target>
+
+   <target name="javadoc">
+      <javadoc access="public"
+         author="true"
+         encoding="UTF-8" 
+         classpath="output/modules/gestoli.jar;
+	lib/RXTXcomm.jar;
+	lib/spring/spring.jar;
+	lib/spring/spring-webmvc.jar;
+	lib/specs/servlet-2.4.jar;
+	lib/specs/ejb-2_1-api.jar;
+	lib/log4j-1.2.12.jar;
+	lib/jasperreports-3.5.3.jar;
+	lib/iText-2.1.5.jar;
+	lib/jfreechart-1.0.12.jar;
+	lib/jboss.jar;
+	lib/hibernate/hibernate3.jar;
+	lib/hibernate/jboss-hibernate.jar;
+	lib/hibernate/hibernate-tools.jar;
+	lib/mail.jar;
+	lib/activation.jar;
+    lib/jaxb-api-2.1.jar;
+    lib/tools.jar;
+	components/test/lib/junit.jar; 
+	components/test/lib/DaErrorGenerarJavadoc_selenium-java-client-driver.jar" 
+         destdir="docs/javadoc" 
+         doctitle="Gest-OLI" 
+         nodeprecated="false" 
+         nodeprecatedlist="false" 
+         noindex="false" 
+         nonavbar="false"
+         notree="false"
+         packagenames="es.caib.gestoli.*"
+         source="1.4"
+         sourcepath="components/logic/src;components/front/src;components/test/src;"
+         splitindex="true"
+         use="true"
+         version="true"/>
+   </target>
+
+</project>

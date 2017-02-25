@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.PartidaOli" table="oli_partida_oli"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author sion Andreu (sandreu@limit.es)</meta>
+		<comment>Partida de oli</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="par_codi" />
+            <generator class="identity" />
+        </id>
+        <property name="nom" type="java.lang.String">
+            <column name="par_nom" length="255" not-null="true">
+                <comment>Nom</comment>
+            </column>
+        </property>
+        <property name="dataCreacio" type="java.util.Date">
+            <column name="par_datcre" not-null="true">
+                <comment>Data de creacio</comment>
+            </column>
+        </property>
+        <property name="esActiu" type="java.lang.Boolean">
+            <column name="par_actiu" not-null="true">
+                <comment>Actiu</comment>
+            </column>
+        </property>
+        <property name="olivicultorEsPropietari" type="java.lang.Boolean">
+            <column name="par_olipro" not-null="false">
+                <comment>Olivicultor es el propietari</comment>
+            </column>
+        </property>
+        <property name="esVisualitza" type="java.lang.Boolean">
+            <column name="par_esvisu" not-null="false">
+                <comment>Es visualitza la partida</comment>
+            </column>
+        </property>
+        <property name="esEcologic" type="java.lang.Boolean">
+            <column name="par_eco" not-null="false">
+                <comment>Es partida oli ecologic</comment>
+            </column>
+        </property>
+        <many-to-one name="establiment" class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="par_codest" not-null="true">
+				<comment>Codi de establiment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="categoriaOli" class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+			<column name="par_codcao" not-null="true">
+				<comment>Codi de categoria de oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="categoriaOliOriginal" class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+			<column name="par_codcoo" not-null="true">
+				<comment>Codi de categoria de oli original</comment>
+			</column>
+		</many-to-one>
+		<set name="elaboracions" inverse="true">
+			<key>
+				<column name="ela_codpar" not-null="true">
+					<comment>Codi de partida de oli</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Elaboracio" />
+		</set>
+		<set name="diposits" inverse="true">
+			<key>
+				<column name="dip_codpar" not-null="true">
+					<comment>Codi de partida de oli</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Diposit" />
+		</set>
+    </class>
+</hibernate-mapping>

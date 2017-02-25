@@ -1,0 +1,126 @@
+package es.caib.gestoli.logic.model;
+
+import java.io.Serializable;
+
+/**
+ * Model de l'objecte d'Etiquetes dels lots.
+ * 
+ * @author Miquel Angel Amengual <miquelaa@limit.es>
+ */
+public class EtiquetesLot implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
+	private Lot lot;
+	private String etiquetaLletra;
+	private Integer etiquetaInici;
+	private Integer etiquetaFi;
+	private Double capacitat;
+	private Boolean olivaTaula;
+	private Boolean utilitzat;
+	private Boolean retirat;
+	private EtiquetesLot rangOriginal;
+	private Establiment establiment;
+	
+	
+	
+	public EtiquetesLot() {
+		super();
+	}
+	public EtiquetesLot(String etiquetaLletra, Integer etiquetaInici,
+			Integer etiquetaFi, Double capacitat, 
+			Boolean utilitzat, Boolean retirat, Boolean olivaTaula,
+			Establiment establiment) {
+		super();
+		this.etiquetaLletra = etiquetaLletra;
+		this.etiquetaInici = etiquetaInici;
+		this.etiquetaFi = etiquetaFi;
+		this.utilitzat = utilitzat;
+		this.retirat = retirat;
+		this.olivaTaula = olivaTaula;
+		this.establiment = establiment;
+		this.capacitat = capacitat;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Lot getLot() {
+		return lot;
+	}
+	public void setLot(Lot lot) {
+		this.lot = lot;
+	}
+	public Establiment getEstabliment() {
+		return establiment;
+	}
+	public void setEstabliment(Establiment establiment) {
+		this.establiment = establiment;
+	}
+	public String getEtiquetaLletra() {
+		return etiquetaLletra;
+	}
+	public void setEtiquetaLletra(String etiquetaLletra) {
+		this.etiquetaLletra = etiquetaLletra;
+	}
+	public Integer getEtiquetaInici() {
+		return etiquetaInici;
+	}
+	public void setEtiquetaInici(Integer etiquetaInici) {
+		this.etiquetaInici = etiquetaInici;
+	}
+	public Integer getEtiquetaFi() {
+		return etiquetaFi;
+	}
+	public void setEtiquetaFi(Integer etiquetaFi) {
+		this.etiquetaFi = etiquetaFi;
+	}
+	public Double getCapacitat() {
+		return capacitat;
+	}
+	public void setCapacitat(Double capacitat) {
+		this.capacitat = capacitat;
+	}
+	public Boolean getUtilitzat() {
+		return utilitzat;
+	}
+	public void setUtilitzat(Boolean utilitzat) {
+		this.utilitzat = utilitzat;
+	}
+	
+	public Boolean getRetirat() {
+		return retirat;
+	}
+	public void setRetirat(Boolean retirat) {
+		this.retirat = retirat;
+	}
+	
+	public Boolean getOlivaTaula() {
+		return olivaTaula;
+	}
+	public void setOlivaTaula(Boolean olivaTaula) {
+		this.olivaTaula = olivaTaula;
+	}
+	public EtiquetesLot getRangOriginal() {
+		return rangOriginal;
+	}
+	public void setRangOriginal(EtiquetesLot rangOriginal) {
+		this.rangOriginal = rangOriginal;
+	}
+	
+	public String getEtiquetaInicial() {
+		return getEtiquetaLletra() + " " + getEtiquetaInici() + " " + getCapacitat();
+	}
+	
+	public String getEtiquetaFinal() {
+		return getEtiquetaLletra() + " " + getEtiquetaFi() + " " + getCapacitat();
+	}
+	
+	public String toString(){
+		return getEtiquetaLletra() + " " + getEtiquetaInici() + " " + getCapacitat() +
+			" - " + getEtiquetaLletra() + " " + getEtiquetaFi() + " " + getCapacitat();
+	}
+}

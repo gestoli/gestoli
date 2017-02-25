@@ -1,0 +1,273 @@
+/**
+ * 
+ */
+package es.caib.gestoli.logic.model;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import es.caib.gestoli.logic.util.Constants;
+
+/**
+ * Classe que modelitza una Partida d'Oli
+ * 
+ * @author siona
+ * 
+ */
+public class PartidaOli {
+
+	private static final long serialVersionUID = 1L;
+
+	/** Identificador de la partida */
+	private Long id;
+	/** Nom de la partida */
+	private String nom;
+	/** Data de creació de la partida */
+	private Date dataCreacio;
+	/** Identifica si la partida és activa */
+	private Boolean esActiu;
+	/** Establiment pel que s'ha definit la partida */
+	private Establiment establiment;
+	
+	/** Indica si el propietari de l'oli és l'olivicultor, o la tafona */
+	private Boolean olivicultorEsPropietari;
+	/** Indica si la partida es visualitzarà en les accions */
+	private Boolean esVisualitza;
+	/** Indica si la partida es ecològica */
+	private Boolean esEcologic;
+	
+	/** Categoria a la que pertany la partida */
+	private CategoriaOli categoriaOli;
+	private CategoriaOli categoriaOliOriginal;
+
+	private Set<Elaboracio> elaboracions = new HashSet<Elaboracio>(0);
+	
+	private Set diposits = new HashSet(0);
+	
+	/**
+	 * 
+	 * @return l'identificador de la partida d'oli
+	 */
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	// @Column(name = "par_id", updatable = false, nullable = false)
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param identificador
+	 *            de la partida d'oli
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return el nom de la partida d'oli
+	 */
+	// @Column(name = "par_nom", length = 255, nullable = false)
+	public String getNom() {
+		return nom;
+	}
+
+	/**
+	 * @param nom
+	 *            per a la partida d'oli
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	/**
+	 * @return la data de ceració de la partida
+	 */
+	// @Column(name = "par_datcre", nullable = false)
+	public Date getDataCreacio() {
+		return dataCreacio;
+	}
+
+	/**
+	 * @param dataCreacio
+	 *            data en que es crea la partida
+	 */
+	public void setDataCreacio(Date dataCreacio) {
+		this.dataCreacio = dataCreacio;
+	}
+
+	/**
+	 * @return <code>true</code> si la partida d'oli és activa.
+	 *         <code>false</code> en cas contrari.
+	 */
+	// @Column(name = "par_actiu", nullable = false)
+	public Boolean getEsActiu() {
+		return esActiu;
+	}
+
+	/**
+	 * @param esActiu
+	 *            <code>true</code> per a activar la partida d'oli.
+	 *            <code>false</code> per a desactivar-la.
+	 */
+	public void setEsActiu(Boolean esActiu) {
+		this.esActiu = esActiu;
+	}
+
+
+	/**
+	 * @return establiment al qual està associada la partida d'oli
+	 */
+	// @ManyToOne(optional = false)
+	// @JoinColumn(name = "par_codest")
+	public Establiment getEstabliment() {
+		return establiment;
+	}
+
+	/**
+	 * @param establiment
+	 *            establiment al qual es vol associar la partida d'oli
+	 */
+	public void setEstabliment(Establiment establiment) {
+		this.establiment = establiment;
+	}
+
+	/**
+	 * @return la categoria a la que està associada la partida
+	 */
+	// @ManyToOne(optional = false)
+	// @JoinColumn(name = "par_codcao")
+	public CategoriaOli getCategoriaOli() {
+		return categoriaOli;
+	}
+
+	/**
+	 * @param la
+	 *            categoria a la que s'ha d'associar la partida
+	 */
+	public void setCategoriaOli(CategoriaOli categoriaOli) {
+		this.categoriaOli = categoriaOli;
+	}
+
+	public CategoriaOli getCategoriaOliOriginal() {
+		return categoriaOliOriginal;
+	}
+
+	public void setCategoriaOliOriginal(CategoriaOli categoriaOliOriginal) {
+		this.categoriaOliOriginal = categoriaOliOriginal;
+	}
+
+	/**
+	 * @return the elaboracions
+	 */
+	public Set<Elaboracio> getElaboracions() {
+		return elaboracions;
+	}
+
+	/**
+	 * @param elaboracions the elaboracions to set
+	 */
+	public void setElaboracions(Set<Elaboracio> elaboracions) {
+		this.elaboracions = elaboracions;
+	}
+	
+	public boolean getEsQualificada(){
+		boolean qualificada = true;
+		if (this.categoriaOli != null && this.categoriaOli.getId().equals(Constants.CATEGORIA_NO_DO)){
+			qualificada = false;
+		}
+		return qualificada;
+	}
+	
+	public boolean getEsDO(){
+		boolean esdo = false;
+		if (this.categoriaOli != null && this.categoriaOli.getId().equals(Constants.CATEGORIA_DO)){
+			esdo = true;
+		}
+		return esdo;
+	}
+
+	
+	public Set getDiposits() {
+		return diposits;
+	}
+
+	public void setDiposits(Set diposits) {
+		this.diposits = diposits;
+	}
+	
+	public Diposit getDiposit(){
+		if(diposits.size() > 0){
+			return (Diposit)diposits.iterator().next();
+		}
+		
+		return null;
+	}
+
+	public Boolean getOlivicultorEsPropietari() {
+		return olivicultorEsPropietari;
+	}
+
+	public void setOlivicultorEsPropietari(Boolean olivicultorEsPropietari) {
+		this.olivicultorEsPropietari = olivicultorEsPropietari;
+	}
+
+	public Boolean getEsVisualitza() {
+		return esVisualitza;
+	}
+
+	public void setEsVisualitza(Boolean esVisualitza) {
+		this.esVisualitza = esVisualitza;
+	}
+	
+	public Boolean getEsEcologic() {
+		return esEcologic;
+	}
+
+	public void setEsEcologic(Boolean esEcologic) {
+		this.esEcologic = esEcologic;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((establiment == null) ? 0 : establiment.hashCode());
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PartidaOli other = (PartidaOli) obj;
+		if (establiment == null) {
+			if (other.establiment != null)
+				return false;
+		} else if (!establiment.equals(other.establiment))
+			return false;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		return true;
+	}
+
+}

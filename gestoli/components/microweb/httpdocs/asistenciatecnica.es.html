@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+
+<link rel="Shortcut Icon" href="gesticon.ico" />
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+<link rel="stylesheet" type="text/css" href="css/general.css"
+	media="screen" />
+<link rel="stylesheet" type="text/css" href="css/menu.css"
+	media="screen" />
+
+<script type="text/javascript" src="js/menu.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/sombras.js"></script>
+<script type="text/javascript" src="js/funciones.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="css/microweb/asistencia.css" media="screen" />
+
+<title>Gest-OLI - Introduccin</title>
+</head>
+
+<body>
+
+<!-- Estructura principal -->
+<div id="layoutPrincipal"><!-- Layout Pgina -->
+<div id="layoutPagina"><!-- Menu superior -->
+<div id="menuSuperior"><!-- Barra de menu principal -->
+<div class="menuBar"><a class="menuButton"
+	href="http://gestoli.cat/gestoli/web/informacionsutils.ca.html">Inicio</a> <a class="menuButton"
+	href="quees.es.html">Qué es Gest-OLI</a> <a class="menuButton"
+	href="procesoadhesion.es.html">Proceso de adhesión</a> <a
+	class="menuButton" href="asistenciatecnica.es.html"
+	onclick="return buttonClick(event, 'informacionMenu');"
+	onmouseover="buttonMouseover(event, 'informacionMenu');">Información
+del proyecto</a> <a class="menuButton" href="asistenciatecnica.es.html">Asistencia
+técnica</a> <a class="menuButton" id="botonMenuIdioma_es"
+	href="asistenciatecnica.es.html"
+	onclick="return buttonClick(event, 'idiomaMenu');"
+	onmouseover="buttonMouseover(event, 'idiomaMenu');">Castellano</a></div>
+
+<!-- Información -->
+<div id="informacionMenu" class="menu">
+<div class="contenidoDesplegable" id="layInformacion">
+<div class="supDer"></div>
+<div class="infDer"></div>
+<div class="infIzq"></div>
+<div class="bordeIzq"></div>
+<div class="bordeDer"></div>
+<div class="rellenoSup"></div>
+<div class="rellenoInf"></div>
+<a class="menuItem" href="introduccion.es.html">Introducción</a> <a
+	class="menuItem" href="objetivosproyecto.es.html">Objetivos del
+proyecto</a> <a class="menuItem" href="publicoobjetivo.es.html">Público
+objetivo</a>
+<div class="separadorMenuItems"></div>
+<a class="menuItem" href="promocion.es.html">Promoción</a>
+<div class="separadorMenuItems"></div>
+<a class="menuItem" href="avisolegal.es.html">Aviso legal</a></div>
+</div>
+
+<!-- idioma -->
+<div id="idiomaMenu" class="menu">
+<div class="contenidoDesplegable" id="layIdioma">
+<div class="supDer"></div>
+<div class="infDer"></div>
+<div class="infIzq"></div>
+<div class="bordeIzq"></div>
+<div class="bordeDer"></div>
+<div class="rellenoSup"></div>
+<div class="rellenoInf"></div>
+<a class="menuItem" href="asistenciatecnica.es.html">Castellano</a> <a
+	class="menuItem" href="asistenciatecnica.ca.html">Català</a></div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready( function() {
+		setTamanosDivs('layInformacion');
+		setTamanosDivs('layIdioma');
+	}
+	);
+</script> <!-- Ejemplo submenu (Por si algn da se agrega un submenu)
+<div id="ejemploMenu" class="menu" onmouseover="menuMouseover(event)">
+	<a class="menuItem" href="blank.html">File Menu Item 1</a>
+	<a class="menuItem" href="" onclick="return false;" onmouseover="menuItemMouseover(event, 'fileMenu2');"><span class="menuItemText">File Menu Item 2</span><span class="menuItemArrow">&#9654;</span></a>
+	<a class="menuItem" href="blank.html">File Menu Item 3</a>
+	<a class="menuItem" href="blank.html">File Menu Item 4</a>
+	<a class="menuItem" href="blank.html">File Menu Item 5</a>
+	<div class="menuItemSep"></div>
+	<a class="menuItem" href="blank.html">File Menu Item 6</a>
+</div>
+--></div>
+
+<!-- Cabecera -->
+<div id="cabeceraGeneral" class="microweb">
+<h1><a href="introduccion.es.html"> <span>Gest-OLI</span> </a></h1>
+</div>
+
+
+<!-- Línea de path -->
+<div id="pathCabecera" class="microweb"></div>
+
+<!-- Contenido Principal -->
+<div class="fondoHorizontal">
+<div class="fondoIzquierda">
+<div class="fondoDerecha">
+<div class="fondoVertical">
+<div id="contenidoPrincipal" class="microweb">
+
+<div id="asistenciaMicroweb">
+<div class="asistenciaTecnica">
+
+<h2 class="microweb">Asistencia Técnica</h2>
+
+<p class="faseImplantacion">Si como usuario necesita ayuda para
+utilizar la aplicaci&oacute;n, se da asistencia t&eacute;cnica en varios niveles a las
+empresas que implanten el sistema.</p>
+<div class="datosEmpresa">
+<p class="primerNivel">Los datos de contacto de <strong
+	class="microweb">primer nivel</strong> (referentes a la utilizaci&oacute;n de la aplicaci&oacute;n) son:</p>
+<p class="empresa">Limit Tecnologies, S.A.</p>
+<p class="empresa">Persona: Rafel Capó</p>
+<p class="empresa">Tel&eacute;fono: 971 84 45 53</p>
+<p class="empresa">E-mail: <script type="text/javascript">escribeMail('gestoli','limit.es')</script></p>
+<p class="empresa">Horario: de lunes a viernes de 8:00h a 19:00h (de octubre a diciembre). Resto del a&ntilde;o, de 9:00h a 13:00h. </p>
+</div>
+
+<div class="datosEmpresa">
+<p class="primerNivel">Si se da el caso de que se detectase alg&uacute;n
+problema de mal funcionamiento de la aplicaci&oacute;n, el <strong
+	class="microweb">segundo nivel</strong> de la asistencia t&eacute;cnica
+resolvera el problema:</p>
+<p class="empresa">Limit Tecnologies, S.A.</p>
+<p class="empresa">Persona: Sion Andreu</p>
+<p class="empresa">Tel&eacute;fono: 971 84 45 53</p>
+<p class="empresa">E-mail: <script type="text/javascript">escribeMail('sandreu','limit.es')</script></p>
+<p class="empresa">Horario: de lunes a viernes de 8:00h a 19:00h (de octubre a diciembre). Resto del a&ntilde;o, de 9:00h a 13:00h. </p>
+</div>
+
+<div class="datosEmpresa">
+<p class="primerNivel">Para cualquier duda sobre la aplicaci&oacute;, el proyecto, o informaciones varias:</p>
+<p class="empresa">Fundaci&oacute; iBit</p>
+<p class="empresa">Persona: Joan Pern&iacute;a</p>
+<p class="empresa">Tel&eacute;fono: 971 17 72 82</p>
+<p class="empresa">E-mail: <script type="text/javascript">escribeMail('jpernia','ibit.org')</script></p>
+<p class="empresa">Horario: de lunes a viernes de 8:00h a 15:00h. </p>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fondoBottom"></div>
+
+</div>
+
+<!-- Pie de pgina -->
+<div id="pieGeneral">
+
+<div class="enlacesPie">
+
+<div><a href="http://www.planavanza.es/"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/avanza.gif" width="143" height="53" alt="" /> </a> <a
+	href="http://www.mityc.es/es-ES/Paginas/index.aspx"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/minindustria.gif" width="126" height="53" alt="" /> </a>
+
+<a href="http://europa.eu/index_es.htm"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/ue.gif" width="79" height="53" alt="" /> </a> <a
+	href="http://www.caib.es/govern/organigrama/area.es.jsp?coduo=12"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/govern.gif" width="117" height="53" alt="" /> </a> <a
+	href="http://www.illesbalearsqualitat.cat/ibqfront/producte?idPR=337&amp;lang=es"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/gestOli.gif" width="49" height="53" alt="" /> </a> <a
+	href="http://www.ibit.org/"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/ibit.gif" width="96" height="53" alt="" /> </a></div>
+
+</div>
+</div>
+
+</div>
+
+</body>
+</html>
+

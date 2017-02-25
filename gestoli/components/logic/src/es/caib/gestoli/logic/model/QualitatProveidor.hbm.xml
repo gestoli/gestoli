@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatProveidor" table="qua_proveidor" schema="public">
+  		<comment>Qualitat - Proveidors</comment>
+		<id name="codi" type="java.lang.Long">
+			<column name="pro_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="pro_nom" not-null="true"><comment>Nom</comment></column>
+		</property>
+		<property name="direccio" type="java.lang.String">
+			<column name="pro_direccio" not-null="false"><comment>Direccio</comment></column>
+		</property>
+		<property name="telefon" type="java.lang.String">
+			<column name="pro_telefon" not-null="false"><comment>Telefon</comment></column>
+		</property>
+		<property name="personaContacte" type="java.lang.String">
+			<column name="pro_pers_cont" not-null="false"><comment>Persona de contacte</comment></column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="pro_obs" not-null="false"><comment>Observacions</comment></column>
+		</property>
+		<set name="subministres" inverse="true">
+			<key>
+				<column name="sum_codpro" not-null="false">
+					<comment>Suministres</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatSubministre" />
+		</set>
+		<set name="RGSAs" inverse="true">
+			<key>
+				<column name="prr_codpro" not-null="false">
+					<comment>RGSAs</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatProveidorRGSA" />
+		</set>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="pro_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

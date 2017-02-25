@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.PartidaOliva" schema="public"
+		table="oli_partida_oliva">
+		<meta attribute="class-description" inherit="false">Javadoc de les clases
+			Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="extra-import" inherit="false">java.text.DecimalFormat</meta>
+		<meta attribute="extra-import" inherit="false">java.util.Iterator</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Partides de olives</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pao_codi" />
+			<generator class="native" />
+		</id>
+		<many-to-one class="es.caib.gestoli.logic.model.Zona"
+			fetch="select" name="zona">
+			<column name="pao_codzon" not-null="true">
+				<comment>Codi de zona</comment>
+			</column>
+		</many-to-one>
+		<many-to-one class="es.caib.gestoli.logic.model.Traza"
+			fetch="select" name="traza">
+			<column name="pao_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<many-to-one class="es.caib.gestoli.logic.model.Olivicultor"
+			fetch="select" name="olivicultor">
+			<column name="pao_codoli" not-null="true">
+				<comment>Codi de olivicultor</comment>
+			</column>
+		</many-to-one>
+		<many-to-one class="es.caib.gestoli.logic.model.Elaboracio"
+			fetch="select" name="elaboracio">
+			<column name="pao_codela">
+				<comment>Codi de la elaboració, si la partida se ha elaborat</comment>
+			</column>
+		</many-to-one>
+		<property generated="never" lazy="false" name="data" type="date">
+			<column length="13" name="pao_data" not-null="true">
+				<comment>Data</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="hora"
+			type="java.lang.String">
+			<column length="5" name="pao_hora" not-null="true">
+				<comment>Hora (format hh:mm)</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="numeroEntrada"
+			type="java.lang.Integer">
+			<column name="pao_nument" not-null="true">
+				<comment>Numero de entrada diaria</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sana"
+			type="java.lang.Boolean">
+			<column name="pao_sana" not-null="true">
+				<comment>Oliva sana</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="esEcologic"
+			type="java.lang.Boolean">
+			<column name="pao_eco" not-null="true">
+				<comment>Ecologica</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="envasPetit"
+			type="java.lang.Boolean">
+			<column name="pao_envk20" not-null="false">
+				<comment>Envas menor 20 kg</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="envasRigid"
+			type="java.lang.Boolean">
+			<column name="pao_envrig" not-null="false">
+				<comment>Envas rigid</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="envasVentilat"
+			type="java.lang.Boolean">
+			<column name="pao_envven" not-null="false">
+				<comment>Envas ventilat</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="olivaTaula"
+			type="java.lang.Boolean">
+			<column name="pao_taula" not-null="false">
+				<comment>Envas ventilat</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tipusOlivaTaula"
+			type="java.lang.Integer">
+			<column name="pao_tipot" not-null="false">
+				<comment>Tipus oliva de taula</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="estat"
+			type="java.lang.Integer">
+			<column name="pao_estat" not-null="true">
+				<comment>Estat de la Oliva</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="posicioX"
+			type="java.lang.Integer">
+			<column name="pao_posx" not-null="true">
+				<comment>Posicio X</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="posicioY"
+			type="java.lang.Integer">
+			<column name="pao_posy" not-null="true">
+				<comment>Posicio Y</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="observacions"
+			type="java.lang.String">
+			<column name="pao_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property generated="never" insert="false" lazy="false" name="valid"
+			type="java.lang.Boolean">
+			<column name="pao_valid" not-null="true">
+				<comment>Proces valid</comment>
+			</column>
+		</property>
+		<set inverse="true" name="descomposicioPartidesOlives" sort="unsorted">
+			<key>
+				<column name="dpo_codpao" not-null="true">
+					<comment>Codi de partida de oliva</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.DescomposicioPartidaOliva" />
+		</set>
+<!-- 		<set lazy="true" name="elaboracionsOlivaTaula" sort="unsorted" -->
+<!-- 			table="oli_partida_elaboracio"> -->
+<!-- 			<key column="pel_codpar" /> -->
+<!-- 			<composite-element class="es.caib.gestoli.logic.model.PartidaElaboracio"> -->
+<!-- 				<parent name="partida" /> -->
+<!-- 				<many-to-one class="es.caib.gestoli.logic.model.ElaboracioOliva" -->
+<!-- 					column="pel_codela" name="elaboracio" not-null="true" /> -->
+<!-- 				<property column="pel_quant" generated="never" lazy="false" -->
+<!-- 					name="quantitat" not-null="true" /> -->
+<!-- 				<property column="pel_quacri" generated="never" lazy="false" -->
+<!-- 					name="quantitatCriba" not-null="true" /> -->
+<!-- 			</composite-element> -->
+<!-- 		</set> -->
+		<set inverse="true" name="partidaElaboracions" sort="unsorted">
+			<key>
+				<column name="pel_codpao" not-null="true">
+					<comment>Codi de partida de oliva</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.PartidaElaboracio" />
+		</set>
+		<many-to-one class="es.caib.gestoli.logic.model.ElaboracioOliva"
+			fetch="select" name="elaboracioOlivaTaula">
+			<column name="pao_codeot">
+				<comment>Codi de la elaboració, si la partida se ha elaborat</comment>
+			</column>
+		</many-to-one>
+		<property generated="never" lazy="false" name="quantitat"
+			type="java.lang.Double">
+			<column name="pao_quantitat" not-null="false">
+				<comment>Kg oliva restants</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAPPCCEtapa" table="qua_appcc_etapa" schema="public">
+  		<comment>Qualitat - APPCC - Etapa</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="aet_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="aet_nom" length="50" not-null="true"><comment>Nom</comment></column>
+		</property>
+		<property name="order" type="java.lang.Integer">
+			<column name="aet_order" length="50" not-null="true"><comment>Ordre</comment></column>
+		</property>
+		<set name="perills" inverse="true">
+			<key>
+				<column name="ape_etapa" not-null="false">
+					<comment>Codi de l'etapa</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatAPPCCEtapaPerill" />
+		</set>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="aet_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

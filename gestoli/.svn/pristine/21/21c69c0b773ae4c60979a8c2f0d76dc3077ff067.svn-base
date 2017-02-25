@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="graficBarras" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="titulo1" class="java.lang.String"/>
+	<parameter name="titulo2" class="java.lang.String"/>
+	<parameter name="titulo3" class="java.lang.String"/>
+	<parameter name="ejeX1" class="java.lang.String"/>
+	<parameter name="ejeX2" class="java.lang.String"/>
+	<parameter name="ejeX3" class="java.lang.String"/>
+	<parameter name="ejeY1" class="java.lang.String"/>
+	<parameter name="ejeY2" class="java.lang.String"/>
+	<parameter name="ejeY3" class="java.lang.String"/>
+	<field name="series1" class="java.lang.String"/>
+	<field name="series2" class="java.lang.String"/>
+	<field name="series3" class="java.lang.String"/>
+	<field name="cat1" class="java.lang.String"/>
+	<field name="cat2" class="java.lang.String"/>
+	<field name="cat3" class="java.lang.String"/>
+	<field name="valor1" class="java.lang.Double"/>
+	<field name="valor2" class="java.lang.Double"/>
+	<field name="valor3" class="java.lang.Double"/>
+	<field name="etiq1" class="java.lang.String"/>
+	<field name="etiq2" class="java.lang.String"/>
+	<field name="etiq3" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="802" splitType="Stretch">
+			<barChart>
+				<chart isShowLegend="false" evaluationTime="Report" renderType="image">
+					<reportElement mode="Opaque" x="35" y="50" width="485" height="197">
+						<printWhenExpression><![CDATA[!$P{titulo1}.equals( "" )]]></printWhenExpression>
+					</reportElement>
+					<chartTitle>
+						<font size="14" isBold="true"/>
+						<titleExpression><![CDATA[$P{titulo1}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{series1}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{cat1}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{valor1}]]></valueExpression>
+						<labelExpression><![CDATA[$F{etiq1}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="false">
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF">
+						<font size="3"/>
+					</itemLabel>
+					<categoryAxisLabelExpression><![CDATA[$P{ejeX1}]]></categoryAxisLabelExpression>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisLabelExpression><![CDATA[$P{ejeY1}]]></valueAxisLabelExpression>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart isShowLegend="false" evaluationTime="Report" renderType="image">
+					<reportElement mode="Opaque" x="35" y="300" width="485" height="197">
+						<printWhenExpression><![CDATA[!$P{titulo2}.equals( "" )]]></printWhenExpression>
+					</reportElement>
+					<chartTitle>
+						<font size="14" isBold="true"/>
+						<titleExpression><![CDATA[$P{titulo2}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{series2}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{cat2}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{valor2}]]></valueExpression>
+						<labelExpression><![CDATA[$F{etiq2}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="false">
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisLabelExpression><![CDATA[$P{ejeX2}]]></categoryAxisLabelExpression>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisLabelExpression><![CDATA[$P{ejeY2}]]></valueAxisLabelExpression>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart isShowLegend="false" evaluationTime="Report" renderType="image">
+					<reportElement mode="Opaque" x="35" y="550" width="485" height="197">
+						<printWhenExpression><![CDATA[!$P{titulo3}.equals( "" )]]></printWhenExpression>
+					</reportElement>
+					<chartTitle>
+						<font size="14" isBold="true"/>
+						<titleExpression><![CDATA[$P{titulo3}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{series3}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{cat3}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{valor3}]]></valueExpression>
+						<labelExpression><![CDATA[$F{etiq3}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="false">
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisLabelExpression><![CDATA[$P{ejeX3}]]></categoryAxisLabelExpression>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisLabelExpression><![CDATA[$P{ejeY3}]]></valueAxisLabelExpression>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</title>
+</jasperReport>

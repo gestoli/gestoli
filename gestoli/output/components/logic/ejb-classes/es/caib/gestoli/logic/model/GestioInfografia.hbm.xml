@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.GestioInfografia" table="oli_gestio_infografia" schema="public">
+  		<comment>Gestio Infografies</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="gin_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="dataAlta" type="java.util.Date">
+			<column name="gin_dataAlta" not-null="true"><comment>Data alta</comment></column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="gin_nom" not-null="false"><comment>Nom CAT</comment></column>
+		</property>
+		<property name="descripcio" type="java.lang.String">
+			<column name="gin_descripcio" length="5000" not-null="false"><comment>Descripcio CAT</comment></column>
+		</property>
+		<property name="nomEs" type="java.lang.String">
+			<column name="gin_nomEs" not-null="false"><comment>Nom ESP</comment></column>
+		</property>
+		<property name="descripcioEs" type="java.lang.String">
+			<column name="gin_descripcioEs" length="5000" not-null="false"><comment>Descripcio ESP</comment></column>
+		</property>
+		<property name="arxiu" type="java.lang.Long">
+			<column name="gin_arxiu" not-null="false"><comment>Arxiu amb la Infografia</comment></column>
+		</property>
+		<property name="imatge" type="java.lang.Long">
+			<column name="gin_imatge" not-null="false"><comment>Arxiu amb la portada de la Infografia</comment></column>		</property>
+	</class>
+</hibernate-mapping>

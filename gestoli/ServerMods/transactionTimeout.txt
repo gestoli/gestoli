@@ -1,0 +1,12 @@
+Modificar el TransactionTimeout al server/default/conf/jboss-service.xml:
+
+ <!--
+      | The fast in-memory transaction manager.
+    -->
+   <mbean code="org.jboss.tm.TransactionManagerService"
+      name="jboss:service=TransactionManager"
+      xmbean-dd="resource:xmdesc/TransactionManagerService-xmbean.xml">
+      <attribute name="TransactionTimeout">1200</attribute>
+
+      <depends optional-attribute-name="XidFactory">jboss:service=XidFactory</depends>
+   </mbean>

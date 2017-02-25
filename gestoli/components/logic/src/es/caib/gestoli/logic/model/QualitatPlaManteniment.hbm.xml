@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatPlaManteniment" table="qua_pla_manteniment" schema="public">
+  		<comment>Qualitat - Pla Manteniment</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pma_id" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one 
+			name="equip" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioEquip"
+			column="pma_equip" 
+			not-null="true"/>
+		<property name="accions" type="java.lang.String">
+			<column name="pma_accions" length="5000" not-null="true"><comment>Accions a realitzar</comment></column>
+		</property>
+		<property name="frecuencia" type="java.lang.String">
+			<column name="pma_frecuencia" not-null="false"><comment>Frecuencia manteniment (dia->diario, sem->semanal, qui->quincenal, men->mensual, tri->trimestral, seme->semestral, anu->anual, bia->bianual, tria->trianual )</comment></column>
+		</property>
+		<property name="isResponsableIntern" type="java.lang.Boolean">
+			<column name="pma_isResponsableIntern" not-null="false"><comment> True -> responsableIntern // False -> responsableExtern</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableIntern" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pma_responsableIntern" 
+			not-null="false"/>
+		<property name="responsableExtern" type="java.lang.String">
+			<column name="pma_responsableExtern" length="15" not-null="false"><comment>Responsable extern</comment></column>
+		</property>
+		<property name="verificacioFrecuencia" type="java.lang.String">
+			<column name="pma_verifFrec" not-null="false"><comment>Frecuencia (dia (diario), sem (semanal), men (mensual), tri (Trimestral) )</comment></column>
+		</property>
+		<many-to-one 
+			name="verificacioResponsable" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pma_verifResp" 
+			not-null="false"/>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="pma_actiu" not-null="false"><comment>Equip Actiu</comment></column>
+		</property>
+	</class>
+</hibernate-mapping>

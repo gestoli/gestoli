@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatControl" table="qua_control" schema="public">
+  		<comment>Qualitat - Control</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="ctl_id" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one 
+			name="departament" 
+			class="es.caib.gestoli.logic.model.QualitatDepartament"
+			column="ctl_departament" 
+			not-null="true"/>
+		<property name="objectiu" type="java.lang.String">
+			<column name="ctl_objectiu" not-null="false"><comment>Objectiu</comment></column>
+		</property>
+		<property name="dataVerificacio" type="java.util.Date">
+			<column name="ctl_dataVerificacio" not-null="false"><comment>Data verificació</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableVerificacio" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="ctl_responsableVerificacio" 
+			not-null="false"/>
+		<property name="satisfactori" type="java.lang.Boolean">
+			<column name="ctl_satisfactori" not-null="false"><comment>Satisfactori</comment></column>
+		</property>
+		<set name="noConformitats" inverse="true">
+			<key>
+				<column name="noc_codctl" not-null="false">
+					<comment>Codi de control de la no conformitat</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatNoConformitat" />
+		</set>
+	</class>
+</hibernate-mapping>

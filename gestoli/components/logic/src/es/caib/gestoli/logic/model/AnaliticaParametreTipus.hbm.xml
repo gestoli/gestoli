@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.AnaliticaParametreTipus" table="oli_analitica_param_tipus" schema="public">
+		<meta attribute="class-description" inherit="false"></meta>
+		<meta attribute="class-code" inherit="false"></meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Analitiques Parametres Tipus</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="anapt_codi" />
+			<generator class="native"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="anapt_nom" length="128" not-null="true">
+				<comment>Nom tipus parametre</comment>
+			</column>
+		</property>
+		<property name="nomCast" type="java.lang.String">
+			<column name="anapt_nomCast" length="128" not-null="true">
+				<comment>Nom en castella tipus parametre</comment>
+			</column>
+		</property>
+		<property name="ordre" type="java.lang.Integer">
+			<column name="anapt_ordre" not-null="true">
+				<comment>Ordre de visualitzacio</comment>
+			</column>
+		</property>
+		<property name="tipus" type="java.lang.Integer">
+			<column name="anapt_tipus" not-null="true">
+				<comment>Tipus de parametre</comment>
+			</column>
+		</property>
+		<property name="tipusControl" type="java.lang.Integer">
+			<column name="anapt_tipusContr" not-null="true">
+				<comment>Tipus de control</comment>
+			</column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+            <column name="anapt_actiu" not-null="true">
+                <comment>Actiu</comment>
+            </column>
+        </property>
+		<set name="analiticaParametre" inverse="true">
+			<key>
+				<column name="anap_codpt" not-null="true">
+					<comment>Codi de parametre tipus</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.AnaliticaParametre" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAiguaPuntSortida" table="qua_aiguapuntsor" schema="public">
+  		<comment>Qualitat - Aigua - Punts sortida</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="aps_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="ubicacio" type="java.lang.String">
+			<column name="aps_ubicacio" length="50" not-null="true"></column>
+		</property>
+		<many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="aps_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

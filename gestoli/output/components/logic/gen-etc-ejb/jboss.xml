@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jboss PUBLIC "-//JBoss//DTD JBOSS 3.2//EN" "http://www.jboss.org/j2ee/dtd/jboss_3_2.dtd">
+
+<jboss>
+
+   <security-domain>java:/jaas/seycon2</security-domain>
+
+   <enterprise-beans>
+
+     <!--
+       To add beans that you have deployment descriptor info for, add
+       a file to your XDoclet merge directory called jboss-beans.xml that contains
+       the <session></session>, <entity></entity> and <message-driven></message-driven>
+       markup for those beans.
+     -->
+
+      <session>
+         <ejb-name>OliSistraEjb</ejb-name>
+         <jndi-name>OliSistraEjb</jndi-name>
+         <local-jndi-name>OliSistraEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliFrontOfficeEjb</ejb-name>
+         <jndi-name>OliFrontOfficeEjb</jndi-name>
+         <local-jndi-name>OliFrontOfficeEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliProcessosEjb</ejb-name>
+         <jndi-name>OliProcessosEjb</jndi-name>
+         <local-jndi-name>OliProcessosEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliInitDBEjb</ejb-name>
+         <jndi-name>OliInitDBEjb</jndi-name>
+         <local-jndi-name>OliInitDBEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliInfraestructuraEjb</ejb-name>
+         <jndi-name>OliInfraestructuraEjb</jndi-name>
+         <local-jndi-name>OliInfraestructuraEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliQualitatEjb</ejb-name>
+         <jndi-name>OliQualitatEjb</jndi-name>
+         <local-jndi-name>OliQualitatEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliConsultaEjb</ejb-name>
+         <jndi-name>OliConsultaEjb</jndi-name>
+         <local-jndi-name>OliConsultaEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliArxiuEjb</ejb-name>
+         <jndi-name>OliArxiuEjb</jndi-name>
+         <local-jndi-name>OliArxiuEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliInformacioEjb</ejb-name>
+         <jndi-name>OliInformacioEjb</jndi-name>
+         <local-jndi-name>OliInformacioEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+      <session>
+         <ejb-name>OliUsuariEjb</ejb-name>
+         <jndi-name>OliUsuariEjb</jndi-name>
+         <local-jndi-name>OliUsuariEjbLocal</local-jndi-name>
+
+        <method-attributes>
+        </method-attributes>
+      </session>
+
+    <!--
+      write a merge file jboss-webservices.ent for webservice-description 
+    -->
+
+   </enterprise-beans>
+
+   <resource-managers>
+   </resource-managers>
+
+  <!--
+    | for container settings, you can merge in jboss-container.xml
+    | this can contain <invoker-proxy-bindings/> and <container-configurations/>
+  -->
+
+</jboss>

@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+
+<link rel="Shortcut Icon" href="gesticon.ico" />
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+<link rel="stylesheet" type="text/css" href="css/general.css"
+	media="screen" />
+<link rel="stylesheet" type="text/css" href="css/menu.css"
+	media="screen" />
+
+<script type="text/javascript" src="js/menu.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/sombras.js"></script>
+<script type="text/javascript" src="js/funciones.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="css/microweb/publicoObjetivo.css" media="screen" />
+
+<title>Gest-OLI - Público Objetivo</title>
+</head>
+
+<body>
+
+<!-- Estructura principal -->
+<div id="layoutPrincipal"><!-- Layout Página -->
+<div id="layoutPagina"><!-- Menu superior -->
+<div id="menuSuperior"><!-- Barra de menu principal -->
+<div class="menuBar"><a class="menuButton"
+	href="http://gestoli.cat/gestoli/web/informacionsutils.ca.html">Inicio</a> <a class="menuButton"
+	href="quees.es.html">Qué es Gest-OLI</a> <a class="menuButton"
+	href="procesoadhesion.es.html">Proceso de adhesión</a> <a
+	class="menuButton" href="publicoobjetivo.es.html"
+	onclick="return buttonClick(event, 'informacionMenu');"
+	onmouseover="buttonMouseover(event, 'informacionMenu');">Información
+del proyecto</a> <a class="menuButton" href="asistenciatecnica.es.html">Asistencia
+técnica</a> <a class="menuButton" id="botonMenuIdioma_es"
+	href="publicoobjetivo.es.html"
+	onclick="return buttonClick(event, 'idiomaMenu');"
+	onmouseover="buttonMouseover(event, 'idiomaMenu');">Castellano</a></div>
+
+<!-- Información -->
+<div id="informacionMenu" class="menu">
+<div class="contenidoDesplegable" id="layInformacion">
+<div class="supDer"></div>
+<div class="infDer"></div>
+<div class="infIzq"></div>
+<div class="bordeIzq"></div>
+<div class="bordeDer"></div>
+<div class="rellenoSup"></div>
+<div class="rellenoInf"></div>
+<a class="menuItem" href="introduccion.es.html">Introducción</a> <a
+	class="menuItem" href="objetivosproyecto.es.html">Objetivos del
+proyecto</a> <a class="menuItem" href="publicoobjetivo.es.html">Publico
+objetivo</a>
+<div class="separadorMenuItems"></div>
+<a class="menuItem" href="promocion.es.html">Promoción</a>
+<div class="separadorMenuItems"></div>
+<a class="menuItem" href="avisolegal.es.html">Aviso legal</a></div>
+</div>
+
+<!-- idioma -->
+<div id="idiomaMenu" class="menu">
+<div class="contenidoDesplegable" id="layIdioma">
+<div class="supDer"></div>
+<div class="infDer"></div>
+<div class="infIzq"></div>
+<div class="bordeIzq"></div>
+<div class="bordeDer"></div>
+<div class="rellenoSup"></div>
+<div class="rellenoInf"></div>
+<a class="menuItem" href="publicoobjetivo.es.html">Castellano</a> <a
+	class="menuItem" href="publicoobjetivo.ca.html">Català</a></div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready( function() {
+		setTamanosDivs('layInformacion');
+		setTamanosDivs('layIdioma');
+	}
+	);
+</script> <!-- Ejemplo submenu (Por si algún día se agrega un submenu)
+<div id="ejemploMenu" class="menu" onmouseover="menuMouseover(event)">
+	<a class="menuItem" href="blank.html">File Menu Item 1</a>
+	<a class="menuItem" href="" onclick="return false;" onmouseover="menuItemMouseover(event, 'fileMenu2');"><span class="menuItemText">File Menu Item 2</span><span class="menuItemArrow">&#9654;</span></a>
+	<a class="menuItem" href="blank.html">File Menu Item 3</a>
+	<a class="menuItem" href="blank.html">File Menu Item 4</a>
+	<a class="menuItem" href="blank.html">File Menu Item 5</a>
+	<div class="menuItemSep"></div>
+	<a class="menuItem" href="blank.html">File Menu Item 6</a>
+</div>
+--></div>
+
+<!-- Cabecera -->
+<div id="cabeceraGeneral" class="microweb">
+<h1><a href="introduccion.es.html"> <span>Gest-OLI</span> </a></h1>
+</div>
+
+
+<!-- Línea de path -->
+<div id="pathCabecera" class="microweb"></div>
+
+<!-- Contenido Principal -->
+<div class="fondoHorizontal">
+<div class="fondoIzquierda">
+<div class="fondoDerecha">
+<div class="fondoVertical">
+<div id="contenidoPrincipal" class="microweb">
+
+<div id="publicoMicroweb">
+<div class="contenidoPublico">
+
+<h2 class="microweb">Información del proyecto</h2>
+
+<h3 class="microweb">Público objetivo</h3>
+
+<div class="separadorH"></div>
+
+<h5>Este proyecto se dirige fundamentalmente a dos colectivos de
+PYMES:</h5>
+
+<h4>Empresas productoras de oliva</h4>
+<p>Mediante el uso de la aplicación y la incorporación del módulo
+para dar soporte a los productores de oliva y al sistema de tarjeta RFID
+se pretende mejorar la competitividad y productividad de estas PYMES
+agilizando sus procesos de producción. Además, al ser una aplicación
+basada en un entorno web, se pretende favorecer la informatización e
+introducción al uso de las Nuevas Tecnologías e Internet de estas
+empresas.</p>
+
+<h4>Empresas productoras y envasadoras de aceite</h4>
+<p>Mediante el uso de la aplicación estas empresas van a poder
+mejorar su competitividad y productividad, mejorando la gestión de su
+práctica diaria de la producción del aceite, su trazabilidad y sus
+tramitaciones con los organismos de control pertinentes. Adicionalmente,
+cabe destacar que la utilización del sistema de tarjeta RFID permitirá
+establecer una relación más fluida entre las empresas productoras de
+oliva y aceite, mejorando sus procesos de compra-venta, integrando, así,
+estos dos colectivos.</p>
+
+<div class="segundoRecuadro">
+
+<h5>Además de los colectivos de PYMES, existen otros colectivos a
+los que también va destinado el proyecto y que pueden verse beneficiados
+por sus resultados:</h5>
+
+<h4>Organismos de control</h4>
+<p>Tanto el consejo regulador de la denominación de origen del
+aceite como la administración pública, tendrán acceso inmediato a los
+datos de producción, agilizando los diferentes trámites de <strong
+	class="microweb">control de calidad</strong> y permitiendo una rápida
+respuesta en caso de alerta sanitaria.</p>
+
+<h4>Consumidores</h4>
+<p>El hecho de que todos los <strong class="microweb">datos</strong>
+de los procesos de producción estén <strong class="microweb">centralizados</strong>,
+permitirá la realización de acciones de promoción específicas de los
+productos. Así, por ejemplo, se podrán realizar un sitio web donde
+ofrecer información sobre aceite a los consumidores o enviar información
+específica del proceso de producción mediante mensajes SMS a teléfonos
+móviles.</p>
+</div>
+
+<div class="enlaceAnterior">
+<div><span></span>anterior:</div>
+<div><a href="objetivosproyecto.es.html">objetivos del
+proyecto</a></div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fondoBottom"></div>
+
+</div>
+
+<!-- Pie de página -->
+<div id="pieGeneral">
+
+<div class="enlacesPie">
+
+<div><a href="http://www.planavanza.es/"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/avanza.gif" width="143" height="53" alt="" /> </a> <a
+	href="http://www.mityc.es/es-ES/Paginas/index.aspx"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/minindustria.gif" width="126" height="53" alt="" /> </a>
+
+<a href="http://europa.eu/index_es.htm"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/ue.gif" width="79" height="53" alt="" /> </a> <a
+	href="http://www.caib.es/govern/organigrama/area.es.jsp?coduo=12"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/govern.gif" width="117" height="53" alt="" /> </a> <a
+	href="http://www.illesbalearsqualitat.cat/ibqfront/producte?idPR=337&amp;lang=es"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/gestOli.gif" width="49" height="53" alt="" /> </a> <a
+	href="http://www.ibit.org/"
+	onclick="window.open(this.href); return false;"> <img
+	src="img/banners/ibit.gif" width="96" height="53" alt="" /> </a></div>
+
+</div>
+</div>
+
+</div>
+
+</body>
+</html>
+

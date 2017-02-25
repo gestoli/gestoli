@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAiguaControlAnalitic" table="qua_aigua_ctrlanalitic" schema="public">
+  		<comment>Qualitat - Pla Aigua - Control analitic</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="aca_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="frequencia" type="java.lang.String">
+			<column name="aca_frequencia" not-null="false"><comment>Frecuencia manteniment (dia->diario, sem->semanal, qui->quincenal, men->mensual, tri->trimestral, seme->semestral, anu->anual, bia->bianual, tria->trianual )</comment></column>
+		</property>
+		<many-to-one 
+			name="responsable" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="aca_responsable" 
+			not-null="false"/>
+		<many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="aca_codest" 
+			not-null="true"
+			unique="true" /> 
+	</class>
+</hibernate-mapping>

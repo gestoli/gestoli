@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- Datasource configurado en tomcat -->
+	<bean id="gestoliDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/GestOliDS" />
+	</bean>
+
+	<!-- Hibernate session factory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="gestoliDataSource" />
+		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory"><ref bean="sessionFactory" /></property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory"><ref bean="sessionFactory" /></property>
+	</bean>
+
+
+	<!--
+		===================== IMPORTACIO DE PROPIETATS =====================
+	-->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/app.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="oliInitDBEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliInitDBEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliInitDBEjb</value>
+		</property>
+	</bean>
+	<bean id="oliInfraestructuraEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliInfraestructuraEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb</value>
+		</property>
+	</bean>
+	<bean id="oliSistraEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliSistraEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliSistraEjb</value>
+		</property>
+	</bean>
+	<bean id="oliQualitatEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliQualitatEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliQualitatEjb</value>
+		</property>
+	</bean>
+	<bean id="oliUsuariEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliUsuariEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliUsuariEjb</value>
+		</property>
+	</bean>
+	<bean id="oliArxiuEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliArxiuEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliArxiuEjb</value>
+		</property>
+	</bean>
+	<bean id="oliConsultaEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliConsultaEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliConsultaEjb</value>
+		</property>
+	</bean>
+	<bean id="oliProcessosEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliProcessosEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliProcessosEjb</value>
+		</property>
+	</bean>
+	<bean id="oliInformacioEjb"
+		class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliInformacioEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliInformacioEjb</value>
+		</property>
+	</bean>
+	<bean id="oliFrontOfficeEjb" class="org.springframework.ejb.access.LocalStatelessSessionProxyFactoryBean" lazy-init="true">
+		<property name="jndiName">
+			<value>OliFrontOfficeEjbLocal</value>
+		</property>
+		<property name="businessInterface">
+			<value>es.caib.gestoli.logic.interfaces.OliFrontOfficeEjb</value>
+		</property>
+	</bean>
+
+	<!-- DWR Services -->
+	<bean id="contenidorService" class="es.caib.gestoli.front.dwr.ContenidorService">
+		<property name="seleccioSessionKey"><value>${seleccio.session.key}</value></property>
+		<property name="seleccioSessionKeyOrigen"><value>${seleccio.session.key.origen}</value></property>
+		<property name="seleccioSessionKeyDesti"><value>${seleccio.session.key.desti}</value></property>
+		<property name="oliInfraestructuraEjb"><ref bean="oliInfraestructuraEjb" /></property>
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate" /></property>
+	</bean>
+
+	<bean id="processosService" class="es.caib.gestoli.front.dwr.ProcessosService">
+		<property name="oliInfraestructuraEjb"><ref bean="oliInfraestructuraEjb" /></property>
+		<property name="oliProcessosEjb"><ref bean="oliProcessosEjb" /></property>
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate" /></property>
+		<property name="acidesaVergeExtra"><value>${ACIDESA_VERGE_EXTRA}</value></property>
+		<property name="acidesaVerge"><value>${ACIDESA_VERGE}</value></property>
+	</bean>
+	
+	<bean id="varietatOlivaService" class="es.caib.gestoli.front.dwr.VarietatOlivaService">
+		<property name="oliInfraestructuraEjb"><ref bean="oliInfraestructuraEjb" /></property>
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate" /></property>
+	</bean>
+	
+	<bean id="qualitatService" class="es.caib.gestoli.front.dwr.QualitatService">
+		<property name="oliQualitatEjb"><ref bean="oliQualitatEjb" /></property>
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate" /></property>
+	</bean>
+			
+	<bean id="frontOfficeService" class="es.caib.gestoli.front.dwr.FrontOfficeService">
+		<property name="oliFrontOfficeEjb"><ref bean="oliFrontOfficeEjb" /></property>
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate" /></property>
+	</bean>
+	
+	<!-- Web Service Services -->
+	<bean id="sistraServei" class="es.caib.gestoli.front.sistra.ws.SistraServei">
+		<property name="oliSistraEjb"><ref bean="oliSistraEjb" /></property>
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate" /></property>
+	</bean>
+
+	<!--  		
+		<aop:scoped-proxy/>
+		<dwr:remote javascript="SistraServei"/>
+	</bean>
+	<aop:config>
+		<aop:pointcut id="sistraServeiOperation" expression="execution(* es.caib.gesvit.model.servei.SistraServei.*(..))"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="sistraServeiOperation"/>
+	</aop:config>
+	
+	-->
+	
+	<bean id="serviceProxy" class="es.caib.gestoli.logic.ejb.ServiceProxy" factory-method="getInstance"/>
+
+	<import resource="applicationContextWs.xml" />
+	
+</beans>

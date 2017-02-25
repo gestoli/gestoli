@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-dic-2009 16:00:09 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.SortidaBota" table="oli_sortida_bota"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Jaume Morey Riera (jaumem@limit.es)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf =
+			new
+			SimpleDateFormat("dd/MM/yyyy"); String fechaFormateada = ""; if (this.data != null) {
+			fechaFormateada = sdf.format(this.data); } return fechaFormateada; }</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Sortides de botes</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="sbo_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="establiment"
+			class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="sbo_codest" not-null="true">
+				<comment>Codi de establiment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="botaBySboCodbor" class="es.caib.gestoli.logic.model.Bota"
+			fetch="select">
+			<column name="sbo_codbor" not-null="true">
+				<comment>Codi de bota origen</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza"
+			fetch="select">
+			<column name="sbo_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="lot" class="es.caib.gestoli.logic.model.Lot"
+			fetch="select">
+			<column name="sbo_codlot">
+				<comment>Codi de lot</comment>
+			</column>
+		</many-to-one>
+		<property name="data" type="timestamp">
+			<column name="sbo_data" length="29">
+				<comment>Data</comment>
+			</column>
+		</property>
+		<property name="kgOliva" type="java.lang.Double">
+			<column name="sbo_kgOliva" precision="17" scale="17" not-null="true">
+				<comment>Kg oliva</comment>
+			</column>
+		</property>
+		<property name="tipusOlivaTaula" type="java.lang.Integer">
+			<column name="sbo_tipOT" not-null="true">
+				<comment>Tipus oliva</comment>
+			</column>
+		</property>
+		<property name="desti" type="java.lang.String">
+			<column name="sbo_desti" length="128">
+				<comment>Desti</comment>
+			</column>
+		</property>
+		<property name="pH1" type="java.lang.Double">
+			<column name="sbo_ph1" precision="17" scale="17">
+				<comment>Comprovacio pH</comment>
+			</column>
+		</property>
+		<property name="quantitatAcidCitric" type="java.lang.Double">
+			<column name="sbo_quaacid" length="128">
+				<comment>Quantitat acid citric</comment>
+			</column>
+		</property>
+		<property name="lotAcidCitric" type="java.lang.String">
+			<column name="sbo_lotacid" precision="17" scale="17">
+				<comment>Lot Acid citric</comment>
+			</column>
+		</property>
+		<property name="pH2" type="java.lang.Double">
+			<column name="sbo_ph2" precision="17" scale="17">
+				<comment>Segona comprovacio de pH</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="sbo_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="valid" type="java.lang.Boolean">
+			<column name="sbo_valid" not-null="true">
+				<comment>Proces valid</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

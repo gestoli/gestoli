@@ -1,0 +1,4 @@
+	<!-- Spring Listener -->
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>

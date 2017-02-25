@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 03-dic-2009 17:52:37 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.SortidaLot" table="oli_sortida_lot"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			de venta formateada */ public String getVendaDataFormat() {
+			SimpleDateFormat sdf = new
+			SimpleDateFormat("dd/MM/yyyy"); String fechaFormateada = ""; if(this.vendaData != null ) {
+			fechaFormateada = sdf.format(this.vendaData); } return
+			fechaFormateada; }</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Sortides de lots</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="slo_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="zona" class="es.caib.gestoli.logic.model.Zona"
+			fetch="select">
+			<column name="slo_canczo">
+				<comment>Canvi de zona: codi de zona</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="lot" class="es.caib.gestoli.logic.model.Lot"
+			fetch="select">
+			<column name="slo_codlot" not-null="true">
+				<comment>Codi de lot</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza"
+			fetch="select">
+			<column name="slo_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<property name="accioSortida" type="java.lang.String">
+			<column name="slo_accio" length="1" not-null="true">
+				<comment>Accio de la sortida: v (venda) c (canvi de zona)</comment>
+			</column>
+		</property>
+		<property name="vendaMotiu" type="java.lang.String">
+			<column name="slo_venmot" length="128">
+				<comment>Venda: motiu de la sortida (promocio, venda, etc.)</comment>
+			</column>
+		</property>
+		<property name="vendaData" type="date">
+			<column name="slo_vendat" length="13">
+				<comment>Venda: data</comment>
+			</column>
+		</property>
+		<property name="vendaDestinatari" type="java.lang.String">
+			<column name="slo_vendes" length="128">
+				<comment>Venda: destinatari</comment>
+			</column>
+		</property>
+		<property name="vendaTipusDocument" type="java.lang.String">
+			<column name="slo_ventdo" length="64">
+				<comment>Venda: tipus de document</comment>
+			</column>
+		</property>
+		<property name="vendaNumeroDocument" type="java.lang.String">
+			<column name="slo_venndo" length="64">
+				<comment>Venda: numero de documento</comment>
+			</column>
+		</property>
+		<property name="vendaObservacions" type="java.lang.String">
+			<column name="slo_venobs">
+				<comment>Venda: observacions</comment>
+			</column>
+		</property>
+		<property name="canviZonaData" type="date">
+			<column name="slo_candat" length="13">
+				<comment>Canvi de zona: data</comment>
+			</column>
+		</property>
+		<property name="canviZonaObservacions" type="java.lang.String">
+			<column name="slo_canobs">
+				<comment>Canvi de zona: observacions</comment>
+			</column>
+		</property>
+		<property name="valid" type="java.lang.Boolean" insert="false">
+			<column name="slo_valid" not-null="true">
+				<comment>Proces valid</comment>
+			</column>
+		</property>
+		<property name="vendaNumeroBotelles" type="java.lang.Integer">
+			<column name="slo_vennbo">
+				<comment>Venda: numero de botelles</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="slo_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<many-to-one name="pais" class="es.caib.gestoli.logic.model.Pais" fetch="select">
+			<column name="slo_codpais"><comment>Codi del pais cap on es fa la sortida</comment></column>
+		</many-to-one>
+		<many-to-one name="provincia" class="es.caib.gestoli.logic.model.Provincia" fetch="select">
+			<column name="slo_codprov"><comment>Codi de la provincia cap on es fa la sortida</comment></column>
+		</many-to-one>
+		<many-to-one name="municipi" class="es.caib.gestoli.logic.model.Municipi" fetch="select">
+			<column name="slo_codmun"><comment>Codi del municipi cap on es fa la sortida</comment></column>
+		</many-to-one>
+		<property name="botellesDevolucio" type="java.lang.Integer">
+			<column name="slo_botdev"><comment>Botelles que se han tornar</comment></column>
+		</property>
+		<property name="olivaDO" type="java.lang.Boolean">
+            <column name="lot_olivdo" not-null="false">
+                <comment>Lot oliva de taula de DO</comment>
+            </column>
+        </property>
+	</class>
+</hibernate-mapping>

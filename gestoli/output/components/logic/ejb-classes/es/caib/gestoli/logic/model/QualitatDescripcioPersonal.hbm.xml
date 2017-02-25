@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatDescripcioPersonal" table="qua_despers" schema="public">
+  		<comment>Qualitat - Descripcio Personal</comment>
+		<id name="codi" type="java.lang.Long">
+			<column name="dpe_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="dpe_nom" not-null="true"><comment>Nom</comment></column>
+		</property>
+		<property name="llinatges" type="java.lang.String">
+			<column name="dpe_llinatges" not-null="false"><comment>Llinatges</comment></column>
+		</property>
+		<property name="dni" type="java.lang.String">
+			<column name="dpe_dni" not-null="false"><comment>Dni</comment></column>
+		</property>
+		<property name="dataNaixement" type="java.util.Date">
+			<column name="dpe_datnac" not-null="false"><comment>Data de naixement</comment></column>
+		</property>
+		<property name="telefon" type="java.lang.String">
+			<column name="dpe_telefon" not-null="false"><comment>Telefon</comment></column>
+		</property>
+		<property name="direccio" type="java.lang.String">
+			<column name="dpe_direccio" not-null="false"><comment>Direccio</comment></column>
+		</property>
+		<property name="formacio" type="java.lang.String">
+			<column name="dpe_formacio" not-null="false"><comment>Formacio</comment></column>
+		</property>
+		<property name="expLaboral" type="java.lang.String">
+			<column name="dpe_expLaboral" not-null="false"><comment>Experiencia Laboral</comment></column>
+		</property>
+		<property name="dataIncorporacio" type="java.util.Date">
+			<column name="dpe_datinc" not-null="false"><comment>Data de incorporacio</comment></column>
+		</property>
+ 	   <many-to-one 
+			name="carrec" 
+			class="es.caib.gestoli.logic.model.QualitatPuestoTreball"
+			column="dpe_codpue" 
+			not-null="false"/>
+		<property name="dataCarrec" type="java.util.Date">
+			<column name="dpe_datcar" not-null="false"><comment>Data de ocupacio del carrec</comment></column>
+		</property>
+		<set name="formacions" inverse="true">
+			<key>
+				<column name="fev_coddpe" not-null="false">
+					<comment>Codi del treballador de l'evaluacio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatFormacioEvaluacio" />
+		</set>
+		<set name="formacionsResponsable" inverse="true">
+			<key>
+				<column name="pfo_coddpe" not-null="false">
+					<comment>Codi de responsable de la formacio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatPlaFormacio" />
+		</set>
+		<set name="formacionsSupervisor" inverse="true">
+			<key>
+				<column name="pfo_codsupfor" not-null="false">
+					<comment>Codi de supervisor de la formacio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatPlaFormacio" />
+		</set>
+		<set name="documents" inverse="true">
+            <key>
+                <column name="doc_coddpe" not-null="true">
+                    <comment>Codi de documents</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.Document" />
+        </set>
+		<set name="mantenimentsControlResponsable" inverse="true">
+			<key>
+				<column name="pmc_responsableIntern" not-null="false">
+					<comment>Codi de responsable del control de manteniment</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatPlaMantenimentControl" />
+		</set>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="dpe_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

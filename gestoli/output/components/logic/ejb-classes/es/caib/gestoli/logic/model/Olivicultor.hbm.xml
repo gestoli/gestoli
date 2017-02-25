@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Olivicultor" table="oli_olivicultor"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf = new
+			SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.getData()); }</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Olivicultors</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="oli_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one 
+			name="usuari" 
+			class="es.caib.gestoli.logic.model.Usuari"
+			fetch="select">
+			<column name="oli_codusu" not-null="true">
+				<comment>Codi de usuari</comment>
+			</column>
+		</many-to-one>
+		<!--many-to-one 
+			name="usuari" 
+			class="es.caib.gestoli.logic.model.Usuari"
+			column= "oli_codusu" 
+			not-null="true" 
+			cascade="save-update"
+			unique="true">
+		</many-to-one-->
+		<many-to-one name="campanya" class="es.caib.gestoli.logic.model.Campanya"
+			fetch="select">
+			<column name="oli_codcam" not-null="true">
+				<comment>Codi de campanya</comment>
+			</column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="oli_codori">
+				<comment>Codi de olivicultor original</comment>
+			</column>
+		</property>
+		<property name="codiDO" type="java.lang.String">
+			<column name="oli_codido" length="128">
+				<comment>Codi de olivicultor a la D.O.</comment>
+			</column>
+		</property>
+		<property name="codiDOExperimental" type="java.lang.String">
+			<column name="oli_codide" length="128">
+				<comment>Codi de olivicultor a la D.O. experimental</comment>
+			</column>
+		</property>
+		<property name="codiDOPOliva" type="java.lang.String">
+			<column name="oli_codidpo" length="128">
+				<comment>Codi de olivicultor a la D.O.P d oliva</comment>
+			</column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="oli_nom" length="128" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="direccio" type="java.lang.String">
+			<column name="oli_direcc" length="256" not-null="true">
+				<comment>Direccio</comment>
+			</column>
+		</property>
+		<many-to-one name="poblacio" class="es.caib.gestoli.logic.model.Municipi" fetch="select">
+			<column name="oli_poblac" not-null="true">
+				<comment>Poblacio</comment>
+			</column>
+		</many-to-one>
+		<property name="codiPostal" type="java.lang.String">
+			<column name="oli_cp" length="16" not-null="true">
+				<comment>Codi postal</comment>
+			</column>
+		</property>
+		<property name="nif" type="java.lang.String">
+			<column name="oli_nif" length="16" not-null="true">
+				<comment>NIF</comment>
+			</column>
+		</property>
+		<property name="compteBancari" type="java.lang.String">
+			<column name="oli_compte" length="64" not-null="false">
+				<comment>Compte bancari</comment>
+			</column>
+		</property>
+		<property name="altaDO" type="java.lang.Boolean">
+			<column name="oli_altado" not-null="true">
+				<comment>Alta a la D.O.</comment>
+			</column>
+		</property>
+		<property name="cartilla" type="java.lang.Boolean">
+			<column name="oli_cartil" not-null="true">
+				<comment>Cartilla de produccio</comment>
+			</column>
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="oli_email" length="128">
+				<comment>Email</comment>
+			</column>
+		</property>
+		<property name="telefon" type="java.lang.String">
+			<column name="oli_telefo" length="16">
+				<comment>Telefon</comment>
+			</column>
+		</property>
+		<property name="fax" type="java.lang.String">
+			<column name="oli_fax" length="16">
+				<comment>Fax</comment>
+			</column>
+		</property>
+		<property name="uidRfid" type="java.lang.String">
+			<column name="oli_uidrfid" length="64">
+				<comment>UID de la tarjeta RFID associada</comment>
+			</column>
+		</property>
+		<property name="subvencionat" type="java.lang.Boolean">
+			<column name="oli_subven" not-null="true">
+				<comment>Subvencionat (no es genera prefactura ni
+					factura ja que no pagara)</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="oli_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="dataBaixa" type="date">
+			<column name="oli_datbaixa" length="13">
+				<comment>Data de baixa</comment>
+			</column>
+		</property>
+		<set name="fincas" inverse="true">
+			<key>
+				<column name="fin_codoli" not-null="true">
+					<comment>Codi de olivicultor</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Finca" />
+		</set>
+		<set name="informacios" inverse="true" table="oli_oliinf">
+			<key>
+				<column name="oin_codoli" not-null="true">
+					<comment>Codi de olivicultor</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Informacio">
+				<column name="oin_codinf" not-null="true">
+					<comment>Codi de informacio</comment>
+				</column>
+			</many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAPPCCFitxaControl" table="qua_appcc_fitxaControl" schema="public">
+  		<comment>Qualitat - APPCC - FitxaControl</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="afc_id" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one
+			name="control"
+			class="es.caib.gestoli.logic.model.QualitatAPPCCControl"
+			column="afc_control"
+			not-null="true"
+			unique="true" />
+		<set name="historicFitxa" inverse="true">
+			<key>
+				<column name="fch_fitxa" not-null="true">
+					<comment>Codi de la fitxa de control</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatAPPCCFitxaControlHistoric" />
+		</set>
+	</class>
+</hibernate-mapping>

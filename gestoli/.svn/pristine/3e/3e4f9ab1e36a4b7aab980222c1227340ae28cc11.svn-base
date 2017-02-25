@@ -1,0 +1,8 @@
+
+<display-name>Gest-OLI</display-name>
+<description>Gest-OLI application</description>
+
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>/WEB-INF/applicationContext.xml</param-value>
+</context-param>

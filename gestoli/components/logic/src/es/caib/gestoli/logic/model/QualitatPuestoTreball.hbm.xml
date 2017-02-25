@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatPuestoTreball" table="qua_puetre" schema="public">
+  		<comment>Qualitat - Puesto Treball</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pue_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nivellJerarquic" type="java.lang.Integer">
+			<column name="pue_nivell" not-null="true"><comment>Nivell jerarquic de major a menor</comment></column>
+		</property>
+		<property name="carrec" type="java.lang.String">
+			<column name="pue_carrec" not-null="true"><comment>Carrec</comment></column>
+		</property>
+	    <many-to-one 
+			name="carrecSuperior" 
+			class="es.caib.gestoli.logic.model.QualitatPuestoTreball"
+			column="pue_carrecSup" 
+			not-null="false"/>
+		<property name="funcions" type="java.lang.String">
+			<column name="pue_funcions" length="5000" not-null="false"><comment>Funcions basiques</comment></column>
+		</property>
+		<property name="formacio" type="java.lang.String">
+			<column name="pue_formacio" length="5000" not-null="false"><comment>Requisits de Formacio</comment></column>
+		</property>
+		<property name="experiencia" type="java.lang.String">
+			<column name="pue_experiencia" length="5000" not-null="false"><comment>Requisits dexperiencia</comment></column>
+		</property>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="pue_codest" 
+			not-null="true"/>
+		<set name="personal" inverse="true">
+			<key>
+				<column name="dpe_codpue" not-null="false">
+					<comment>Codi de carrec del treballador</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal" />
+		</set>
+		<set name="carrecsInferiors" inverse="true">
+			<key>
+				<column name="pue_carrecSup" not-null="false">
+					<comment>Codi del carrec superior</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatPuestoTreball" />
+		</set>
+	</class>
+</hibernate-mapping>

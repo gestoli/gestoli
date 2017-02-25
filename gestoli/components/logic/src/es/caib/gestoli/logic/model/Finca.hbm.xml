@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Finca" table="oli_finca"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Finques</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="fin_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="olivicultor"
+			class="es.caib.gestoli.logic.model.Olivicultor" fetch="select">
+			<column name="fin_codoli" not-null="true">
+				<comment>Codi de olivicultor</comment>
+			</column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="fin_codori">
+				<comment>Codi de finca original</comment>
+			</column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="fin_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="fin_nom" length="128" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="fin_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="deBaixa" type="java.lang.Boolean">
+			<column name="fin_baixa">
+				<comment>De baixa</comment>
+			</column>
+		</property>
+		<set name="plantacios" inverse="true">
+			<key>
+				<column name="pla_codfin" not-null="true">
+					<comment>Codi de finca</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Plantacio" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,75 @@
+package es.caib.gestoli.logic.model;
+
+// Generated 10-nov-2009 17:31:19 by Hibernate Tools 3.2.0.b9
+
+/**
+ * 			Javadoc de les clases Model de Gest Oli
+ * 			@author Oriol Barnes Cruz (obarnes@at4.net)
+ * 		
+ */
+public class Taxa implements java.io.Serializable {
+
+	private Long id;
+
+	private Double taxaPlantacioMajorIgual75;
+
+	private Double taxaPlantacioMenor75;
+
+	private Double taxaVolumEnvasar;
+
+	private Double taxaContraEtiqueta;
+
+	public Taxa() {
+	}
+
+	public Taxa(Long id, Double taxaPlantacioMajorIgual75,
+			Double taxaPlantacioMenor75, Double taxaVolumEnvasar,
+			Double taxaContraEtiqueta) {
+		this.id = id;
+		this.taxaPlantacioMajorIgual75 = taxaPlantacioMajorIgual75;
+		this.taxaPlantacioMenor75 = taxaPlantacioMenor75;
+		this.taxaVolumEnvasar = taxaVolumEnvasar;
+		this.taxaContraEtiqueta = taxaContraEtiqueta;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Double getTaxaPlantacioMajorIgual75() {
+		return this.taxaPlantacioMajorIgual75;
+	}
+
+	public void setTaxaPlantacioMajorIgual75(Double taxaPlantacioMajorIgual75) {
+		this.taxaPlantacioMajorIgual75 = taxaPlantacioMajorIgual75;
+	}
+
+	public Double getTaxaPlantacioMenor75() {
+		return this.taxaPlantacioMenor75;
+	}
+
+	public void setTaxaPlantacioMenor75(Double taxaPlantacioMenor75) {
+		this.taxaPlantacioMenor75 = taxaPlantacioMenor75;
+	}
+
+	public Double getTaxaVolumEnvasar() {
+		return this.taxaVolumEnvasar;
+	}
+
+	public void setTaxaVolumEnvasar(Double taxaVolumEnvasar) {
+		this.taxaVolumEnvasar = taxaVolumEnvasar;
+	}
+
+	public Double getTaxaContraEtiqueta() {
+		return this.taxaContraEtiqueta;
+	}
+
+	public void setTaxaContraEtiqueta(Double taxaContraEtiqueta) {
+		this.taxaContraEtiqueta = taxaContraEtiqueta;
+	}
+
+}

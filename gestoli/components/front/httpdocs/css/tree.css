@@ -1,0 +1,176 @@
+.arbol td {
+	background: none;
+	padding-left: 0px;
+}
+
+.arbol #arbreAqui a.arbre_proces,.arbol #arbreAqui a.arbre_info,.arbol #arbreAqui a.arbre_lot,.arbol #arbreAqui a.ygtvlabel
+	{
+	color: #000000;
+}
+
+.arbol #arbreAqui a.mangarrufes {
+	color: #9e0808;
+	font-weight: normal;
+}
+
+.arbol #arbreAqui a.mangarrufes2 {
+	color: #9e0808;
+	background-color: #fce9da;
+	font-weight: bold;
+	padding: 0 2px 0 2px;
+}
+
+.arbol #arbreAqui a,.arbol #arbreAqui a:hover,.arbol #arbreAqui a:visited
+	{
+	font-family: arial, verdana, lucida, helvetica, sans-serif;
+	font-size: 11px;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.arbol #arbreAqui .arbre_lot {
+	padding-left: 18px;
+	background: url(../img/tree/icona-proces-text.gif) 2px 1px no-repeat;
+}
+
+.arbol #arbreAqui .arbre_info {
+	padding-left: 18px;
+	background: url(../img/tree/icona-proces-info.gif) 3px 1px no-repeat;
+}
+
+.arbol #arbreAqui .arbre_proces {
+	padding-left: 18px;
+	background: url(../img/tree/icona-proces.gif) 2px 0 no-repeat;
+}
+
+.arbol span.titolcont {
+	color: #3b6188;
+	font-family: arial, verdana, lucida, helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 6px;
+}
+
+/* first or middle sibling, no children */
+.arbol .ygtvtn {
+	width: 16px;
+	height: 22px;
+	background: url(../img/tree/tn.gif) 0 0 no-repeat;
+}
+
+/* first or middle sibling, collapsable */
+.arbol .ygtvtm {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/tm.gif) 0 0 no-repeat;
+}
+
+/* first or middle sibling, collapsable, hover */
+.arbol .ygtvtmh {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/tmh.gif) 0 0 no-repeat;
+}
+
+/* first or middle sibling, expandable */
+.arbol .ygtvtp {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/tp.gif) 0 0 no-repeat;
+}
+
+/* first or middle sibling, expandable, hover */
+.arbol .ygtvtph {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/tph.gif) 0 0 no-repeat;
+}
+
+/* last sibling, no children */
+.arbol .ygtvln {
+	width: 16px;
+	height: 22px;
+	background: url(../img/tree/ln.gif) 0 0 no-repeat;
+}
+
+/* Last sibling, collapsable */
+.arbol .ygtvlm {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/lm.gif) 0 0 no-repeat;
+}
+
+/* Last sibling, collapsable, hover */
+.arbol .ygtvlmh {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/lmh.gif) 0 0 no-repeat;
+}
+
+/* Last sibling, expandable */
+.arbol .ygtvlp {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/lp.gif) 0 0 no-repeat;
+}
+
+/* Last sibling, expandable, hover */
+.arbol .ygtvlph {
+	width: 16px;
+	height: 22px;
+	cursor: pointer;
+	background: url(../img/tree/lph.gif) 0 0 no-repeat;
+}
+
+/* Loading icon */
+.arbol .ygtvloading {
+	width: 16px;
+	height: 22px;
+	background: url(../img/tree/loading.gif) 0 0 no-repeat;
+}
+
+/* the style for the empty cells that are used for rendering the depth 
+ * of the node */
+.arbol .ygtvdepthcell {
+	width: 16px;
+	height: 22px;
+	background: url(../img/tree/vline.gif) 0 0 no-repeat;
+}
+
+.arbol .ygtvblankdepthcell {
+	width: 16px;
+	height: 22px;
+}
+
+/* the style of the div around each node */
+.ygtvitem {
+	
+}
+
+/* the style of the div around each node's collection of children */
+.ygtvchildren {
+	
+}
+
+* html .ygtvchildren {
+	height: 2%;
+}
+
+/* the style of the text label in ygTextNode */
+.ygtvlabel,.ygtvlabel:link,.ygtvlabel:visited,.ygtvlabel:hover {
+	margin-left: 2px;
+	text-decoration: none;
+}
+
+.ygtvspacer {
+	height: 10px;
+	width: 10px;
+	margin: 2px;
+}

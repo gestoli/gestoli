@@ -1,0 +1,637 @@
+package es.caib.gestoli.logic.model;
+
+// Generated 10-nov-2009 17:31:19 by Hibernate Tools 3.2.0.b9
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 			Javadoc de les clases Model de Gest Oli
+ * 			@author Oriol Barnes Cruz (obarnes@at4.net)
+ * 		
+ */
+public class PartidaOliva implements Comparable {
+
+	private Long id;
+	private Zona zona;
+	private Traza traza;
+	private Olivicultor olivicultor;
+	private Elaboracio elaboracio;
+	private ElaboracioOliva elaboracioOlivaTaula;
+	private Date data;
+	private String hora;
+	private Integer numeroEntrada;
+	private Boolean sana;
+	private Integer estat;
+	private Boolean envasPetit;
+	private Boolean envasRigid;
+	private Boolean envasVentilat;
+	private Integer tipusOlivaTaula;
+	private Boolean olivaTaula = false;
+	private Integer posicioX;
+	private Integer posicioY;
+	private String observacions;
+	private Boolean valid;
+	private Double quantitat;
+	private String numeroDocument;
+	
+	private Set descomposicioPartidesOlives = new HashSet(0);
+	private Set partidaElaboracions = new HashSet(0);
+
+	public PartidaOliva() {
+	}
+
+	public PartidaOliva(Zona zona, Traza traza, Olivicultor olivicultor,
+			Date data, String hora, Integer numeroEntrada, Boolean sana,
+			Integer estat, Integer posicioX, Integer posicioY, Boolean valid) {
+		this.zona = zona;
+		this.traza = traza;
+		this.olivicultor = olivicultor;
+		this.data = data;
+		this.hora = hora;
+		this.numeroEntrada = numeroEntrada;
+		this.sana = sana;
+		this.estat = estat;
+		this.posicioX = posicioX;
+		this.posicioY = posicioY;
+		this.valid = valid;
+	}
+
+	public PartidaOliva(Zona zona, Traza traza, Olivicultor olivicultor,
+			Elaboracio elaboracio, Date data, String hora,
+			Integer numeroEntrada, Boolean sana, Integer estat, Integer posicioX,
+			Integer posicioY, String observacions, Boolean valid,
+			Set descomposicioPartidesOlives) {
+		this.zona = zona;
+		this.traza = traza;
+		this.olivicultor = olivicultor;
+		this.elaboracio = elaboracio;
+		this.data = data;
+		this.hora = hora;
+		this.numeroEntrada = numeroEntrada;
+		this.sana = sana;
+		this.estat = estat;
+		this.posicioX = posicioX;
+		this.posicioY = posicioY;
+		this.observacions = observacions;
+		this.valid = valid;
+		this.descomposicioPartidesOlives = descomposicioPartidesOlives;
+	}
+	
+	public PartidaOliva(Zona zona, Traza traza, Olivicultor olivicultor,
+			Set partidaElaboracions, Date data, String hora,
+			Integer numeroEntrada, Boolean envasPetit, Boolean envasRigid, Boolean envasVentilat, Integer tipusOlivaTaula, Integer posicioX,
+			Integer posicioY, String observacions, Boolean valid,
+			Set descomposicioPartidesOlives) {
+		this.zona = zona;
+		this.traza = traza;
+		this.olivicultor = olivicultor;
+		this.partidaElaboracions = partidaElaboracions;
+		this.data = data;
+		this.hora = hora;
+		this.numeroEntrada = numeroEntrada;
+		this.sana = true;
+		this.estat = 0;
+		this.envasPetit = envasPetit;
+		this.envasRigid = envasRigid;
+		this.envasVentilat = envasVentilat;
+		this.tipusOlivaTaula = tipusOlivaTaula;
+		this.olivaTaula = true;
+		this.posicioX = posicioX;
+		this.posicioY = posicioY;
+		this.observacions = observacions;
+		this.valid = valid;
+		this.descomposicioPartidesOlives = descomposicioPartidesOlives;
+	}
+	
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Zona getZona() {
+		return this.zona;
+	}
+
+	public void setZona(Zona zona) {
+		this.zona = zona;
+	}
+
+	public Traza getTraza() {
+		return this.traza;
+	}
+
+	public void setTraza(Traza traza) {
+		this.traza = traza;
+	}
+
+	public Olivicultor getOlivicultor() {
+		return this.olivicultor;
+	}
+
+	public void setOlivicultor(Olivicultor olivicultor) {
+		this.olivicultor = olivicultor;
+	}
+
+	public Elaboracio getElaboracio() {
+		return this.elaboracio;
+	}
+
+	public void setElaboracio(Elaboracio elaboracio) {
+		this.elaboracio = elaboracio;
+	}
+
+	public ElaboracioOliva getElaboracioOlivaTaula() {
+		return elaboracioOlivaTaula;
+	}
+
+	public void setElaboracioOlivaTaula(ElaboracioOliva elaboracioOlivaTaula) {
+		this.elaboracioOlivaTaula = elaboracioOlivaTaula;
+	}
+
+	public Set getPartidaElaboracions() {
+		return partidaElaboracions;
+	}
+
+	public void setPartidaElaboracions(Set partidaElaboracions) {
+		this.partidaElaboracions = partidaElaboracions;
+	}
+
+	public Date getData() {
+		return this.data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public String getHora() {
+		return this.hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	public Integer getNumeroEntrada() {
+		return this.numeroEntrada;
+	}
+
+	public void setNumeroEntrada(Integer numeroEntrada) {
+		this.numeroEntrada = numeroEntrada;
+	}
+
+	public Boolean getSana() {
+		return this.sana;
+	}
+
+	public void setSana(Boolean sana) {
+		this.sana = sana;
+	}
+
+	public Integer getEstat() {
+		return estat;
+	}
+
+	public void setEstat(Integer estat) {
+		this.estat = estat;
+	}
+
+	public Boolean getEnvasPetit() {
+		return envasPetit;
+	}
+
+	public void setEnvasPetit(Boolean envasPetit) {
+		this.envasPetit = envasPetit;
+	}
+
+	public Boolean getEnvasRigid() {
+		return envasRigid;
+	}
+
+	public void setEnvasRigid(Boolean envasRigid) {
+		this.envasRigid = envasRigid;
+	}
+
+	public Boolean getEnvasVentilat() {
+		return envasVentilat;
+	}
+
+	public void setEnvasVentilat(Boolean envasVentilat) {
+		this.envasVentilat = envasVentilat;
+	}
+
+	public Integer getTipusOlivaTaula() {
+		return tipusOlivaTaula;
+	}
+
+	public void setTipusOlivaTaula(Integer tipusOlivaTaula) {
+		this.tipusOlivaTaula = tipusOlivaTaula;
+	}
+
+	public Boolean getOlivaTaula() {
+		return olivaTaula;
+	}
+
+	public void setOlivaTaula(Boolean olivaTaula) {
+		this.olivaTaula = olivaTaula;
+	}
+
+	public Integer getPosicioX() {
+		return this.posicioX;
+	}
+
+	public void setPosicioX(Integer posicioX) {
+		this.posicioX = posicioX;
+	}
+
+	public Integer getPosicioY() {
+		return this.posicioY;
+	}
+
+	public void setPosicioY(Integer posicioY) {
+		this.posicioY = posicioY;
+	}
+
+	public String getObservacions() {
+		return this.observacions;
+	}
+
+	public void setObservacions(String observacions) {
+		this.observacions = observacions;
+	}
+
+	public Boolean getValid() {
+		return this.valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
+
+	public Double getQuantitat() {
+		return quantitat;
+	}
+
+	public void setQuantitat(Double quantitat) {
+		this.quantitat = quantitat;
+	}
+
+	public Set getDescomposicioPartidesOlives() {
+		return this.descomposicioPartidesOlives;
+	}
+
+	public void setDescomposicioPartidesOlives(Set descomposicioPartidesOlives) {
+		this.descomposicioPartidesOlives = descomposicioPartidesOlives;
+	}
+
+	// The following is extra code specified in the hbm.xml files
+
+	/**
+	 * Devuelve una descripcion de Variedad / kilos
+	 */
+	public boolean getQualificada() {
+		boolean qualificada = true;
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+						.next();
+				if (!dpo.getDescomposicioPlantacio().getVarietatOliva()
+						.getAutoritzada().booleanValue()) {
+					qualificada = false;
+					break;
+				}
+
+			}
+		}
+		return qualificada;
+	}
+
+	/**
+	 * Devuelve una descripcion de Variedad / kilos
+	 */
+	public String getVarietatsQuilos() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+
+		String valor = "";
+		double total = 0;
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				if (valor != null && !"".equals(valor)){
+					valor += "<br/>";
+				}
+				VarietatOliva var = dpo.getDescomposicioPlantacio().getVarietatOliva();
+				if (var.getExperimental()!= null && var.getExperimental().booleanValue()){
+					valor += var.getNomVarietat()+ " ("+ numberDecimalFormat.format(dpo.getKilos().doubleValue()) + " kgs.)";
+				} else {
+					valor += var.getNom()+ " ("+ numberDecimalFormat.format(dpo.getKilos().doubleValue()) + " kgs.)";
+				}
+				total += dpo.getKilos().doubleValue();
+			}
+		}
+		return valor;
+	}
+	
+	public String getVarietatsQuilosPlantacio() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+
+		String valor = "";
+		double total = 0;
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				if (valor != null && !"".equals(valor)){
+					valor += "<br/>";
+				}
+				VarietatOliva var = dpo.getDescomposicioPlantacio().getVarietatOliva();
+				if (var.getExperimental()!= null && var.getExperimental().booleanValue()){
+					valor += var.getNomVarietat()+ " - " +dpo.getDescomposicioPlantacio().getPlantacio().getFinca().getNom() + " - "+ numberDecimalFormat.format(dpo.getKilos().doubleValue()) + " kgs.";
+				} else {
+					valor += var.getNom()+ " - " +dpo.getDescomposicioPlantacio().getPlantacio().getFinca().getNom() + " - "+ numberDecimalFormat.format(dpo.getKilos().doubleValue()) + " kgs.";
+				}
+				total += dpo.getKilos().doubleValue();
+			}
+		}
+		return valor;
+	}
+
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public String getTotalQuilos() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				total += dpo.getKilos().doubleValue();
+			}
+		}
+		return numberDecimalFormat.format(total);
+	}
+	
+	/**
+	 * Devuelve el total de kilos
+	 */
+	public Double getTotalKilos() {
+		double total = 0;
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				total += dpo.getKilos().doubleValue();
+			}
+		}
+		return total;
+	}
+	
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public boolean getTeVarietatsExperimental() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		String valor = "";
+		List<Object[]> listAux = new ArrayList<Object[]>();
+		
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				VarietatOliva var = dpo.getDescomposicioPlantacio().getVarietatOliva();
+				
+				if ((var.getExperimental() != null) && var.getExperimental()) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public boolean getEsOlivaDeTaula() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		String valor = "";
+		List<Object[]> listAux = new ArrayList<Object[]>();
+		
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				VarietatOliva var = dpo.getDescomposicioPlantacio().getVarietatOliva();
+				
+				if ((var.getOlivaTaula() != null) && var.getOlivaTaula()) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public String getTotalQuilosDesglosats() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		String valor = "";
+		List<Object[]> listAux = new ArrayList<Object[]>();
+		
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+				VarietatOliva var = dpo.getDescomposicioPlantacio().getVarietatOliva();
+				
+				Object[] obj = new Object[3];
+				obj[0] = dpo.getDescomposicioPlantacio().getVarietatOliva().getId();
+				
+				if (var.getExperimental()!= null && var.getExperimental().booleanValue()){
+					obj[1] = var.getNomVarietat() + " - " + dpo.getDescomposicioPlantacio().getPlantacio().getFinca().getNom();
+				} else {
+					obj[1] = var.getNom() + " - " + dpo.getDescomposicioPlantacio().getPlantacio().getFinca().getNom();
+				}
+				
+				obj[2] = dpo.getKilos();
+				
+				//Comprovam si la varietat hi es
+				//Si hi es, sumam els kilos, sinó afageim varietat nova
+				boolean trobat = false;
+				for(Object[] o: listAux){
+					if(o[0].equals(obj[0])){
+						trobat = true;
+						Double val = (Double)o[2] + (Double)obj[2];
+						o[2] = val;
+					}
+				}
+				if(!trobat) {
+					listAux.add(obj);
+				}
+				
+				total += dpo.getKilos().doubleValue();
+			}
+			
+
+			valor += "<strong>Total: " + total + " kg.</strong>";
+			
+			for(Object[] o: listAux){
+				if (valor != null && !"".equals(valor)){
+					valor += "<br/>";
+				}
+				valor += numberDecimalFormat.format((Double)o[2]) + " kg ";
+				valor += o[1];
+				valor += " (" + numberDecimalFormat.format(((Double)o[2] * 100) / total) + "%)";
+			}
+		}
+		return valor;
+	}
+
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public String getNomVarietat() {
+		String nom = "";
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+						.next();
+				if (dpo.getDescomposicioPlantacio() != null) {
+					DescomposicioPlantacio descompPlanta = dpo
+							.getDescomposicioPlantacio();
+					VarietatOliva varietat = descompPlanta.getVarietatOliva();
+					if (varietat != null && varietat.getNom() != null) {
+						if (nom != ""
+								&& !nom.equalsIgnoreCase(varietat.getNom())) {
+							nom = "mezcla";
+							break;
+						} else {
+							if (varietat.getExperimental()!= null && varietat.getExperimental().booleanValue()){
+								nom = varietat.getNomVarietat();
+							} else {
+								nom = varietat.getNom();
+							}
+						}
+					}
+				}
+
+			}
+		}
+		return nom;
+	}
+
+	/**
+	 * Devuelve una fecha formateada
+	 */
+	public String getDataFormat() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(this.data);
+	}
+
+	/**
+	 * Devuelve un nombre de partida
+	 */
+	public String getCodiAssignat() {
+		return ("P(" + this.getDataFormat() + " " + hora + " " + " NUM: " + numeroEntrada + ")");
+	}
+
+	/**
+	 * Devuelve un descripcion de partida
+	 */
+	public String getDescPartida() {
+		return "(" + this.getDataFormat() + " " + hora + " " + " NUM: " + numeroEntrada + ")";
+	}
+
+	/**
+	 * Devuelve el tipo del icono de oliva de la partida
+	 */
+	public Long getTipo() {
+		Long tipo = null;
+		String nom = "";
+		if (this.descomposicioPartidesOlives != null) {
+			Iterator desc = this.descomposicioPartidesOlives.iterator();
+			while (desc.hasNext()) {
+				DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+						.next();
+				if (dpo.getDescomposicioPlantacio() != null) {
+					DescomposicioPlantacio descompPlanta = dpo
+							.getDescomposicioPlantacio();
+					VarietatOliva varietat = descompPlanta.getVarietatOliva();
+					if (varietat != null && varietat.getNom() != null) {
+						if (nom != ""
+								&& !nom.equalsIgnoreCase(varietat.getNom())) {
+							nom = "mezcla";
+							tipo = Long.valueOf("10");
+							break;
+						} else {
+							if (varietat.getExperimental()!= null && varietat.getExperimental().booleanValue()){
+								nom = varietat.getNomVarietat();
+							} else {
+								nom = varietat.getNom();
+							}
+							if (this.olivaTaula != null && this.olivaTaula == true) {
+								if (this.tipusOlivaTaula != null) {
+									tipo = new Long(this.tipusOlivaTaula + 100);
+								}
+							} else {
+								tipo = varietat.getIcona();
+							}
+						}
+					}
+				}
+			}
+		}
+		return tipo;
+	}
+
+	/**
+	 * Comparator
+	 */
+	public int compareTo(Object po) {
+		PartidaOliva partidaOliva = (PartidaOliva) po;
+		if (this.data.compareTo(partidaOliva.getData()) == 0) {
+			return this.numeroEntrada
+					.compareTo(partidaOliva.getNumeroEntrada());
+		} else {
+			return this.data.compareTo(partidaOliva.getData());
+		}
+	}
+	
+	public String getNumeroDocument() {
+		String[] lletres = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+							"aa","ab","ac","ad","ae","af","ag","ah","ai","aj","ak","al","am","an","ao","ap","aq","ar","as","at","au","av","aw","ax","ay","az",
+							"ba","bb","bc","bd","be","bf","bg","bh","bi","bj","bk","bl","bm","bn","bo","bp","bq","br","bs","bt","bu","bv","bw","bx","by","bz"};
+		DecimalFormat numberFormat = new DecimalFormat("#0000");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+		String codiDOP = null;
+		try {
+			codiDOP = numberFormat.format(Integer.valueOf(this.getOlivicultor().getCodiDOPOliva()));
+		} catch (Exception e) {
+			codiDOP = "----";
+		}
+		numeroDocument = codiDOP + dateFormat.format(this.getData()) + lletres[this.getNumeroEntrada()-1];
+		return numeroDocument;
+	}
+
+	// end of extra code specified in the hbm.xml files
+
+}

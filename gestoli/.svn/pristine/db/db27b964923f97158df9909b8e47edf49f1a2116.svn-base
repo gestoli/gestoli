@@ -1,0 +1,26 @@
+
+El archivo login-config.xml del JBoss debe tener esta application-policy
+
+
+    
+	<!--
+		#################
+	-->
+	<!-- seycon -->
+	<!-- ################# -->
+<application-policy name="seycon">
+	<authentication>
+		<login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule"
+			flag="required">
+			<module-option name="unauthenticatedIdentity">guest</module-option>
+			<module-option name="dsJndiName">java:/GestOliDS</module-option>
+			<module-option name="principalsQuery">select usu_contra as passwd
+				from oli_usuari where usu_actiu = 't' and usu_usuari=?</module-option>
+			<module-option name="rolesQuery">select ugr_codgru as
+				userRoles, 'Roles' from oli_usugru where ugr_codusu = (select
+				usu_codi from oli_usuari where usu_usuari=?)</module-option>
+			<module-option name="hashAlgorithm">MD5</module-option>
+			<module-option name="hashEncoding">hex</module-option>
+		</login-module>
+	</authentication>
+</application-policy>

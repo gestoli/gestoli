@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatFormacioEvaluacio" extends="es.caib.gestoli.logic.model.QualitatControl"
+  	 table="qua_formacio_evaluacio" schema="public">
+  		<comment>Qualitat - Pla Formacio - Evaluacio</comment>
+		<key column="fev_id"/>
+		<many-to-one 
+			name="formacio" 
+			class="es.caib.gestoli.logic.model.QualitatPlaFormacio"
+			column="fev_codpfo" 
+			not-null="false"/>
+		<many-to-one 
+			name="treballador" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="fev_coddpe" 
+			not-null="false"/>
+	</joined-subclass>
+</hibernate-mapping>

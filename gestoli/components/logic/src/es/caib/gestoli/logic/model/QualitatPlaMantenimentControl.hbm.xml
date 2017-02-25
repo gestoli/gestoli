@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatPlaMantenimentControl" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_pla_manteniment_control" schema="public">
+  		<comment>Qualitat - Pla Manteniment Control</comment>
+  		<key column="pmc_id"/>
+		<many-to-one 
+			name="manteniment" 
+			class="es.caib.gestoli.logic.model.QualitatPlaManteniment"
+			column="pmc_manteniment" 
+			not-null="true"/>
+		<property name="dataRealitzacio" type="java.util.Date">
+			<column name="pmc_dataRealitzacio" not-null="false"><comment>Data realitzacio</comment></column>
+		</property>
+		<property name="dataAnterior" type="java.util.Date">
+			<column name="pmc_dataAnterior" not-null="false"><comment>Data anterior</comment></column>
+		</property>
+		<property name="accioRealitzada" type="java.lang.String">
+			<column name="pmc_accions" length="5000" not-null="true"><comment>Accions realitzades</comment></column>
+		</property>
+		<property name="altresAccions" type="java.lang.String">
+			<column name="pmc_altresAccions" length="100" not-null="false"><comment>Altres Accions realitzades</comment></column>
+		</property>
+		<property name="isResponsableIntern" type="java.lang.Boolean">
+			<column name="pmc_isResponsableIntern" not-null="false"><comment> True -> responsableIntern // False -> responsableExtern</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableIntern" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pmc_responsableIntern" 
+			not-null="false"/>
+		<property name="responsableExtern" type="java.lang.String">
+			<column name="pmc_responsableExtern" length="15" not-null="false"><comment>Responsable extern</comment></column>
+		</property>
+	</joined-subclass>
+</hibernate-mapping>

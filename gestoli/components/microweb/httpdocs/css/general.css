@@ -1,0 +1,790 @@
+/* Estilos generales */
+body {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	background: #ffffff url(../img/general/fondoGeneral.jpg) top center
+		repeat-x;
+}
+
+p,h1,h2,h3,h4,h5,ul,li {
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	list-style-type: none;
+}
+
+img {
+	border: none;
+}
+
+div.separadorH {
+	clear: both;
+	overflow: hidden;
+	height: 1px;
+}
+
+h2.microweb {
+	font-size: 28px;
+	color: #DD0000;
+	margin-bottom: 16px;
+	position: relative;
+	font-weight: normal;
+}
+
+h3.microweb {
+	color: #ffffff;
+	background-color: #DD0000;
+	font-size: 15px;
+	margin-bottom: 16px;
+	padding-right: 21px;
+	padding-left: 7px;
+	float: left;
+	position: relative;
+}
+
+strong.microweb {
+	background-color: #F1CC2E;
+	font-weight: normal;
+}
+
+form,fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+/* campos formulario 
+
+ <div id="nombre" class="campoForm">
+    <label></label>
+    <div class="bordeInput">
+	 	<div id="nombreBordeFoco" class="bordeFoco">
+        <input/>
+		  <textarea></textarea>
+		</div>
+    </div>
+</div>
+
+checkbox:
+
+<div class="etiqueta">
+    <input type="checkbox" />
+    <label></label>
+</div> */
+form {
+	font-size: 15px;
+	width: 495px;
+	margin: 0 auto;
+	padding-top: 15px;
+}
+
+.required,.etiqueta,.campoForm {
+	margin-bottom: 15px;
+	float: left;
+}
+
+.required label,.campoForm label { /*background-color: #F9E574;*/
+	padding: 2px 16px 3px 5px;
+}
+
+.required .bordeInput,.campoForm .bordeInput {
+	padding: 3px;
+	/*background-color: #F9E574;*/
+	float: left;
+}
+
+.required .bordeFoco,.required .bordeFocoTextarea,.campoForm .bordeFoco,.campoForm .bordeFocoTextarea
+	{ /*background-color: #F9E574;*/
+	float: left;
+}
+
+.required .bordeFoco,.campoForm .bordeFoco {
+	padding: 2px !important;
+	padding: 1px 2px;
+}
+
+.required .bordeFocoTextarea,.campoForm .bordeFocoTextarea {
+	padding: 1px 2px;
+}
+
+.required input,.required textarea,.campoForm input,.campoForm textarea
+	{
+	border: 1px solid #809DB9;
+	font-size: 13px;
+}
+
+/*
+.lineaCampos{
+	clear: left;
+	height: 62px;
+	position: relative;
+}
+*/ /* error */
+.error .bordeFoco,.error .bordeFocoTextarea {
+	background-color: #DD0000;
+}
+
+.error input,.error textarea {
+	border: 1px solid #ffffff;
+	color: #DD0000;
+}
+
+.error label {
+	color: #DD0000;
+	/*	clear: left;
+	float: left;
+	white-space: nowrap;*/
+}
+
+/* estructura parrafo error
+<p class="error">
+     <span class="capa1"></span>
+     <span class="capa2"></span>
+     <span class="capa3"></span>
+     <span class="capa4"></span>
+     <span class="capa5">
+         <span class="capa6">
+             Texto de error
+         </span>
+     </span>
+ </p>
+*/
+p.error {
+	margin-top: 14px;
+	color: #ffffff;
+	font-size: 12px;
+	position: relative;
+	float: left;
+	margin-right: 0 !important;
+	margin-right: -8px;
+	overflow: hidden;
+}
+
+p.error .capa1,p.error .capa2,p.error .capa3,p.error .capa4 {
+	position: absolute;
+	width: 8px;
+	height: 7px;
+	display: block;
+	float: left;
+}
+
+p.error .capa1 {
+	top: 0;
+	left: 0 !important;
+	left: 8px;
+	background: url(../img/general/microweb/error_esq_sup_izq.png) top left
+		no-repeat !important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/microweb/error_esq_sup_izq.png', sizingMethod = 'crop' )
+		;
+}
+
+p.error .capa2 {
+	top: 0;
+	right: 0 !important;
+	right: 5px;
+	background: url(../img/general/microweb/error_esq_sup_der.png) top right
+		no-repeat !important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/microweb/error_esq_sup_der.png', sizingMethod = 'crop' )
+		;
+}
+
+p.error .capa3 {
+	bottom: 0 !important;
+	bottom: -9px;
+	right: 0 !important;
+	right: 5px;
+	background: url(../img/general/microweb/error_esq_inf_der.png) bottom
+		right no-repeat !important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../img/general/microweb/error_esq_inf_der.png', sizingMethod = 'crop'
+		);
+}
+
+p.error .capa4 {
+	bottom: 0 !important;
+	bottom: -9px;
+	left: 0 !important;
+	left: 8px;
+	background: url(../img/general/microweb/error_esq_inf_izq.png) bottom
+		left no-repeat !important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/microweb/error_esq_inf_izq.png', sizingMethod = 'crop' )
+		;
+}
+
+p.error .capa5 {
+	background-color: #DD0000;
+	margin: 0px 7px 0px 8px;
+	/*min-height: 19px !important;
+	height: auto !important;
+	height: 19px;*/
+	padding: 7px 0 5px 0;
+	display: block;
+	float: left;
+}
+
+p.error .capa6 {
+	background-color: #DD0000;
+	margin-left: -8px;
+	padding: 0 8px;
+	margin-right: -7px;
+	display: block;
+	float: left;
+	position: relative;
+}
+
+/* checkbox */
+.etiqueta { /*background-color: #F9E574;*/
+	padding: 2px;
+}
+
+.etiqueta input {
+	float: left;
+}
+
+/* oculta la barra de scroll lateral cuando no sea necesaria */
+.campoForm textarea {
+	overflow: hidden;
+	overflow: auto;
+}
+
+/* observaciones */
+#observacionesForm {
+	padding-top: 45px;
+	position: relative;
+}
+
+#observacionesForm label {
+	float: left;
+	padding-bottom: 0;
+}
+
+#observacionesForm p {
+	position: absolute;
+	top: 50px;
+	right: 14px;
+	width: 140px;
+	font-size: 10px;
+}
+
+#observacionesForm .label { /*background-color: #F9E574;*/
+	padding: 2px 2px 3px 5px;
+}
+
+#observacionesForm #carDisp {
+	font-size: 11px;
+	color: #DD0000;
+}
+
+/* calendario */
+.calendarioForm,.calendarioForm img {
+	float: left;
+}
+
+.calendarioForm {
+	width: 21px;
+	height: 21px;
+	margin: 2px 0px 0px 4px;
+	cursor: pointer;
+}
+
+/* estilo general botones 
+<div class="btnCorto">
+   <a>texto</a>
+</div>*/
+.btnLargo,.btnCorto, .btnLargo2 {
+	height: 31px;
+	padding-top: 3px;
+	text-align: center;
+	font-weight: bold;
+	cursor: pointer;
+	float: left;
+	margin-right: 4px;
+}
+
+.btnLargo a,.btnCorto a, .btnLargo2 a {
+	color: #616161;
+	text-decoration: none;
+	font-size: 13px;
+}
+
+.btnLargo a:hover,.btnCorto a:hover, .btnLargo2 a:hover {
+	text-decoration: underline;
+}
+
+.btnCorto {
+	background: url(../img/general/btnCorto.png) top left no-repeat
+		!important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/btnCorto.png', sizingMethod = 'crop' );
+	width: 110px;
+}
+
+.btnLargo {
+	background: url(../img/general/btnLargo.png) top left no-repeat
+		!important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/btnLargo.png', sizingMethod = 'crop' );
+	width: 141px;
+}
+
+.btnLargo2 {
+	background: url(../img/general/btnLargo.png) top left no-repeat
+		!important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/btnLargo.png', sizingMethod = 'crop' );
+	width: 141px;
+}
+
+/* Layout general */
+#layoutPrincipal {
+	background-color: #fff;
+	width: 965px;
+	margin-left: auto;
+	margin-right: auto;
+	min-height: 500px;
+	background: url(../img/general/fondoContHoriz.jpg) left top repeat-y;
+}
+
+#layoutPrincipal #layoutPagina.extranet {
+	background: url(../img/general/fondoBurbujas.jpg) 0 29px no-repeat;
+}
+
+#layoutPrincipal #layoutPagina {
+	background: url(../img/general/microweb/fondoBurbujas.jpg) 0 29px
+		no-repeat;
+}
+
+#layoutPrincipal #layoutPagina #menuSuperior {
+	background-color: #000;
+	height: 29px;
+	text-align: left;
+	background: url(../img/menu/fondoMenu.gif) top center repeat-x;
+}
+
+#layoutPrincipal #layoutPagina #cabeceraGeneral {
+	height: 114px;
+	/*background: url(../img/general/fondoCabecera.jpg) top left no-repeat;*/
+	text-align: left;
+}
+
+#layoutPrincipal #layoutPagina #cabeceraGeneral.microweb {
+	/*background: url(../img/general/microweb/fondoCabeceraMicroweb.jpg) top center no-repeat;*/
+	
+}
+
+#layoutPrincipal #layoutPagina #pathCabecera {
+	height: 40px;
+	/*background: url(../img/general/fondoPath.jpg) top left no-repeat;*/
+}
+
+#layoutPrincipal #layoutPagina #pathCabecera.microweb {
+	/*background: url(../img/general/microweb/fondoPathMicroweb.jpg) top center no-repeat;*/
+	
+}
+
+#layoutPrincipal #layoutPagina .fondoBottom {
+	background: url(../img/general/fondoBottom.jpg) bottom center no-repeat;
+	height: 51px;
+}
+
+#layoutPrincipal #layoutPagina .fondoIzquierda {
+	background: url(../img/general/fondoIzq.jpg) top left no-repeat;
+}
+
+#layoutPrincipal #layoutPagina .fondoDerecha {
+	background: url(../img/general/fondoDer.jpg) top right no-repeat;
+}
+
+/*
+#layoutPrincipal #layoutPagina .fondoVertical{
+	background: url(../img/general/fondoContenido.jpg) top center repeat-x;
+	margin-left: 15px;
+	margin-right: 15px;
+	min-height: 364px;
+	height: auto !important;
+	height: 364px;	
+}
+/*
+#layoutPrincipal #layoutPagina .fondoVerticalMicroweb{
+	background: url(../img/general/microweb/fondoVerticalMicroweb.jpg) top left repeat-x;
+	width: 842px;
+	margin: 0 auto;
+	padding-bottom: 53px;
+	min-height: 348px;
+	height: auto !important;
+	height: 348px;
+	position: relative;
+}
+
+#layoutPrincipal #layoutPagina .bottomFondoVerticalMicroweb{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 53px;
+	width: 842px;
+	background: url(../img/general/microweb/bottomFondoVerticalMicroweb.jpg) top left no-repeat;
+}
+
+#layoutPrincipal #layoutPagina .fondoHorizontal{
+	background: url(../img/general/fondoContHoriz.jpg) 0 300px repeat-y;
+}*/ /* path */
+#layoutPrincipal #layoutPagina #pathCabecera {
+	text-align: left;
+	padding-left: 39px;
+	color: #DD0000;
+	font-size: 16px;
+	position: relative;
+}
+
+/*
+#layoutPrincipal #layoutPagina #pathCabecera #fondoPath{
+	position: absolute;
+	right: 144px !important;
+	right: 143px;
+	bottom: -48px;
+	width: 123px;
+	height: 48px;
+	right: 218px;
+	bottom: -32px;
+    width: 24px;
+	height: 37px;
+	background: url(../img/general/fdoPath.gif) top center no-repeat;
+	background: url(../img/general/fdoPath.jpg) top center no-repeat;
+}*/
+#layoutPrincipal #layoutPagina #pathCabecera strong {
+	font-size: 28px;
+	font-weight: normal;
+}
+
+/* Cabecera */
+#layoutPrincipal #layoutPagina #cabeceraGeneral h1 {
+	padding-top: 21px;
+	margin-left: 39px;
+	float: left;
+}
+
+#layoutPrincipal #layoutPagina #cabeceraGeneral h1 a {
+	display: block;
+	height: 58px;
+	width: 226px;
+	background: url(../img/general/gestoli.png) top center no-repeat
+		!important;
+	cursor: pointer;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../img/general/gestoli.png', sizingMethod = 'crop' );
+}
+
+#layoutPrincipal #layoutPagina #cabeceraGeneral h1 a span {
+	display: none;
+}
+
+/* Contenido principal */
+#layoutPrincipal #layoutPagina #contenidoPrincipal {
+	text-align: left;
+	min-height: 363px !important;
+	height: 363px;
+}
+
+#layoutPrincipal #layoutPagina #contenidoPrincipal.microweb {
+	width: 842px;
+	margin: 0 auto;
+	height: auto;
+}
+
+/* Pie General */
+#layoutPrincipal #pieGeneral {
+	padding-top: 26px;
+	background-color: #ffffff;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie {
+	
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie div {
+	margin-top: 80px !important;
+	margin-top: 40px;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie div a {
+	margin-left: 12px;
+	margin-right: 12px;
+	text-decoration: none;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span a {
+	font: normal 12px Arial, Helvetica, sans-serif;
+	color: #616161;
+	height: 19px;
+	display: block;
+	float: left;
+	padding: 0px;
+	text-decoration: underline;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span a:hover {
+	background-color: #EBEBEB;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span a .izq {
+	padding: 2px 0 2px 7px !important;
+	padding: 0 0 2px 7px;
+	line-height: 19px;
+	background-color: #fff;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span a:hover .izq {
+	background: url(../img/general/btnIzq.gif) top left no-repeat;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span a .der {
+	padding: 2px 7px 2px 0;
+	line-height: 19px;
+	background-color: #fff;
+	text-decoration: underline !important;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span a:hover .der {
+	background: url(../img/general/btnDer.gif) top right no-repeat;
+}
+
+#layoutPrincipal #pieGeneral .enlacesPie span .separadorEnlaces {
+	background: url(../img/general/separadorLinks.gif) top center no-repeat;
+	display: block;
+	float: left;
+	height: 20px;
+	width: 1px;
+	margin-right: 1px;
+}
+
+/* login */
+#loginState {
+	float: right;
+	height: 29px;
+	margin-right: 17px;
+	position: relative;
+	bottom: 0px !important;
+	bottom: 3px;
+}
+
+#loginState strong {
+	color: #9E9E9E;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	padding: 4px 0 4px 20px;
+	background: url(../img/menu/candado.gif) 0px 0px no-repeat;
+	line-height: 29px;
+}
+
+#loginState span {
+	color: #fff;
+	font: normal 15px Arial, Helvetica, sans-serif;
+}
+
+#loginState a {
+	color: #EA0000;
+	font: normal 12px Arial, Helvetica, sans-serif;
+	text-decoration: underline;
+}
+
+.accesoLogin {
+	float: right;
+	margin: 39px 39px 0 0;
+	padding: 4px 12px 8px 11px;
+	font-size: 13px;
+	position: relative;
+	background: url(../img/general/microweb/login_cen.gif) left top repeat-x
+		;
+}
+
+.accesoLogin a {
+	color: #000000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.accesoLogin strong {
+	padding-left: 19px;
+	height: 19px;
+	float: left;
+	display: block;
+	background: url(../img/general/microweb/candadoLogin.gif) left top
+		no-repeat;
+}
+
+.accesoLogin .capa1,.accesoLogin .capa2 {
+	width: 11px;
+	height: 25px;
+	position: absolute;
+	top: 0;
+}
+
+.accesoLogin .capa1 {
+	background: url(../img/general/microweb/login_izq.gif) left top
+		no-repeat;
+	left: 0;
+}
+
+.accesoLogin .capa2 {
+	background: url(../img/general/microweb/login_der.gif) left top
+		no-repeat;
+	right: 0;
+}
+
+/* Navegador Multipagina */
+.navegadorMultipagina {
+	margin: 25px 52px 0 25px;
+	text-align: right;
+}
+
+.navegadorMultipagina .pagelinks {
+	font: normal 20px Arial, Helvetica, sans-serif;
+	position: relative;
+}
+
+.navegadorMultipagina .pagelinks a {
+	text-decoration: underline;
+	color: #000;
+}
+
+.navegadorMultipagina .pagelinks strong {
+	color: #DD0000;
+}
+
+.navegadorMultipagina .pagelinks a.anterior {
+	background: url(../img/general/anterior.png) top center no-repeat
+		!important;
+	display: block;
+	width: 17px;
+	height: 16px;
+	position: absolute;
+	left: -23px;
+	top: 4px;
+	cursor: pointer;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/anterior.png', sizingMethod = 'crop' );
+}
+
+.navegadorMultipagina .pagelinks a.siguiente {
+	background: url(../img/general/siguiente.png) top center no-repeat
+		!important;
+	display: block;
+	width: 17px;
+	height: 16px;
+	position: absolute;
+	right: -18px !important;
+	right: 25px;
+	top: 4px;
+	cursor: pointer;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/siguiente.png', sizingMethod = 'crop' );
+}
+
+#multipaginaEstrecho {
+	margin-right: 250px;
+	position: relative;
+}
+
+#multipaginaEstrecho .pagelinks a.siguiente {
+	position: absolute;
+	right: -18px !important;
+	right: 225px;
+	cursor: pointer;
+}
+
+/* Listado Olivicultor */
+#listadoOlivicultor .btnCorto {
+	margin-left: 20px !important;
+	margin-left: 10px;
+	margin-top: 13px;
+}
+
+#listadoOlivicultor label {
+	font-size: 13px;
+}
+
+#listadoOlivicultor .etiqueta {
+	float: left;
+	padding-right: 22px;
+}
+
+#listadoOlivicultor .filtroListadoOlivicultor {
+	padding-top: 12px;
+	margin: 0 0 15px 20px;
+}
+
+#listadoOlivicultor .filtroListadoOlivicultor span {
+	/*background-color: #F9E574;*/
+	position: relative;
+	bottom: -1px;
+	left: 0px;
+	padding: 2px 24px 2px 4px;
+}
+
+#listadoUsuarios {
+	padding-top: 10px;
+}
+
+#listadoUsuarios .btnCorto {
+	margin-left: 20px !important;
+	margin-left: 10px;
+	margin-top: 15px;
+}
+
+#fichaEstablecimiento {
+	text-align: center;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento {
+	position: relative;
+	margin-left: 25px;
+	margin-right: 25px;
+	height: 39px;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento span {
+	position: absolute;
+	left: 0px;
+	top: 10px;
+	font-size: 12px;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento span a,#fichaEstablecimiento .menufichaEstablecimiento span strong
+	{ /*background-color: #F9E574;*/
+	padding: 2px;
+	color: #616161;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento span strong {
+	color: #000;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento .btnCorto {
+	position: absolute;
+	right: 0px;
+}
+
+.simulaEstablecimiento {
+	width: 887px;
+	height: 477px;
+	background: url(../img/tmp/simulaEstablecimiento.gif) top center
+		no-repeat;
+	margin-left: auto;
+	margin-right: auto;
+}

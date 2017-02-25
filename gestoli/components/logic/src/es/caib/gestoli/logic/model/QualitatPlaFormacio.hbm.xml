@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatPlaFormacio" table="qua_pla_formacio" schema="public">
+  		<comment>Qualitat - Pla Formacio</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pfo_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="descripcio" type="java.lang.String">
+			<column name="pfo_descripcio" length="5000" not-null="true"><comment>Descripcio</comment></column>
+		</property>
+		<property name="continguts" type="java.lang.String">
+			<column name="pfo_continguts" not-null="false"><comment>Continguts</comment></column>
+		</property>
+		<property name="periodic" type="java.lang.Boolean">
+			<column name="pfo_periodic" not-null="false"><comment>Periodic</comment></column>
+		</property>
+		<property name="frecuencia" type="java.lang.String">
+			<column name="pfo_frecuencia" not-null="false"><comment>Frecuencia (tri (Trimestral), sem (Semestral), anu (Anual))</comment></column>
+		</property>
+		<property name="dataPrevista" type="java.util.Date">
+			<column name="pfo_dataPrevista" not-null="false"><comment>Data prevista</comment></column>
+		</property>
+		<set name="personalAssistent" inverse="true">
+			<key>
+				<column name="fev_codpfo" not-null="false">
+					<comment>Codi del pla de formacio de l'evaluacio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatFormacioEvaluacio" />
+		</set>
+		<set name="carrecAssistent" inverse="true" table="qua_pfopue" cascade="all-delete-orphan"> 
+			<key>
+				<column name="fpu_codpfo" not-null="true">
+					<comment>Codi de pla de formacio</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.QualitatPuestoTreball">
+				<column name="fpu_codpue" not-null="true">
+					<comment>Codi del carrec</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<property name="isResponsableIntern" type="java.lang.Boolean">
+			<column name="pfo_isResponsableIntern" not-null="false"><comment> True -> responsableIntern // False -> responsableExtern</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableIntern" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pfo_coddpe" 
+			not-null="false"/>
+		<property name="responsableExtern" type="java.lang.String">
+			<column name="pfo_responsableExtern" length="15" not-null="false"><comment>Responsable extern</comment></column>
+		</property>
+		<property name="duracio" type="java.lang.Integer">
+			<column name="pfo_duracio" not-null="false"><comment>Duracio de la formacio</comment></column>
+		</property>
+		<property name="duracioTipus" type="java.lang.String">
+			<column name="pfo_duracioTipus" not-null="false"><comment>Tipus de duracio (h (horas), d (dias), s (semanas))</comment></column>
+		</property>
+		<many-to-one 
+			name="supervisorFormacio" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pfo_codsupfor" 
+			not-null="false"/>
+		<property name="activitatSupervisio" type="java.lang.String">
+			<column name="pfo_activitatSupervisio" not-null="false"><comment>Activitat Supervisio</comment></column>
+		</property>
+		<property name="dataSupervisio" type="java.util.Date">
+			<column name="pfo_dataSupervisio" not-null="false"><comment>Data supervisio</comment></column>
+		</property>
+		
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="pfo_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

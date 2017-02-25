@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.HistoricZona" table="oli_histzona"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Zones</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="hez_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="zona" class="es.caib.gestoli.logic.model.Zona" fetch="select">
+			<column name="hez_codzon" not-null="true"><comment>Codi de la zona</comment></column>
+		</many-to-one>
+		<many-to-one name="establiment" class="es.caib.gestoli.logic.model.HistoricEstabliment" fetch="select">
+			<column name="hez_codest" not-null="true">
+				<comment>Codi de establiment</comment>
+			</column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="hez_codori">
+				<comment>Codi de zona original</comment>
+			</column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="hez_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="hez_nom" length="128" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="fictici" type="java.lang.Boolean">
+			<column name="hez_fictic" not-null="true">
+				<comment>Ficticia</comment>
+			</column>
+		</property>
+		<property name="imatgePlanol" type="java.lang.Long">
+			<column name="hez_imapla">
+				<comment>Codi de imatge de planol</comment>
+			</column>
+		</property>
+		<property name="defecte" type="java.lang.Boolean">
+			<column name="hez_defect" not-null="true">
+				<comment>Per defecte</comment>
+			</column>
+		</property>
+		<property name="defecteTrasllat" type="java.lang.Boolean">
+			<column name="hez_defectTrasllat" not-null="true">
+				<comment>Zona per defecte al trasllat</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="hez_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<set name="diposits" inverse="true">
+			<key>
+				<column name="hed_codzon" not-null="true">
+					<comment>Codi de zona</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.HistoricDiposit" />
+		</set>
+	</class>
+</hibernate-mapping>

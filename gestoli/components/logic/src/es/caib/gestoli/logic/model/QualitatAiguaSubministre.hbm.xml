@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAiguaSubministre" table="qua_aigua_subm" schema="public">
+  		<comment>Qualitat - Pla abastament aigua</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="aig_id" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one 
+			name="responsablePla" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="aig_responsable" 
+			not-null="false"/>
+		<property name="netejaInstalacio" type="java.lang.Boolean">
+			<column name="aig_netejaInstalacio" not-null="false"></column>
+		</property>
+		<property name="higienePersonal" type="java.lang.Boolean">
+			<column name="aig_higienePersonal" not-null="false"></column>
+		</property>
+		<property name="netejaRoba" type="java.lang.Boolean">
+			<column name="aig_netejaRoba" not-null="false"></column>
+		</property>
+		<property name="elaboracioProductes" type="java.lang.Boolean">
+			<column name="aig_elaboracioProductes" not-null="false"></column>
+		</property>
+		<property name="altresUsos" type="java.lang.String">
+			<column name="aig_altresUsos" not-null="false"><comment>Altres Usos</comment></column>
+		</property>
+		<property name="xarxaPublica" type="java.lang.Boolean">
+			<column name="aig_xarxaPublica" not-null="false"></column>
+		</property>
+		<property name="abastamentPropi" type="java.lang.Boolean">
+			<column name="aig_abastamentPropi" not-null="false"></column>
+		</property>
+		<property name="cloracio" type="java.lang.Boolean">
+			<column name="aig_cloracio" not-null="false"></column>
+		</property>
+		<property name="ozonitzacio" type="java.lang.Boolean">
+			<column name="aig_ozonitzacio" not-null="false"></column>
+		</property>
+		<property name="filtracio" type="java.lang.Boolean">
+			<column name="aig_filtracio" not-null="false"></column>
+		</property>
+		<property name="descalcificacio" type="java.lang.Boolean">
+			<column name="aig_descalcificacio" not-null="false"></column>
+		</property>
+		<property name="altresTractaments" type="java.lang.String">
+			<column name="aig_altresTractaments" not-null="false"><comment>Altres Tractaments</comment></column>
+		</property>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="aig_codest" 
+			not-null="true"
+			unique="true" /> 
+	</class>
+</hibernate-mapping>

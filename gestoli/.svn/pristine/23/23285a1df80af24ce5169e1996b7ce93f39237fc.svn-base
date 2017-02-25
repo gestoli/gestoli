@@ -1,0 +1,45 @@
+/**
+ * TaxaCommand.java
+ *
+ */
+package es.caib.gestoli.front.spring;
+
+import es.caib.gestoli.logic.model.Taxa;
+
+
+/**
+ * Objeto que representa el formulario de mantenimento
+ * de establecimientos.
+ * 
+ * 
+ */
+public class TaxaCommand extends Taxa {
+	
+	private static final long serialVersionUID = 2312195857884374067L;
+	
+	
+	
+	
+	/**
+     * Rellena los campos de este objeto con la información
+     * del establecimiento.
+     * 
+     * @param es Taxa
+     */
+    public void fromTaxa(Taxa taxa) {
+    	setId(taxa.getId());
+    	setTaxaContraEtiqueta(taxa.getTaxaContraEtiqueta());
+    	setTaxaPlantacioMajorIgual75(taxa.getTaxaPlantacioMajorIgual75());
+    	setTaxaPlantacioMenor75(taxa.getTaxaPlantacioMenor75());
+    	setTaxaVolumEnvasar(taxa.getTaxaVolumEnvasar());
+    	setTaxaRT(taxa.getTaxaRT());
+    	
+    }
+
+
+	
+
+   	
+    
+	
+}

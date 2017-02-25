@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatDepartament" table="qua_departament" schema="public">
+  		<comment>Qualitat - Departament</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="dep_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="dep_nom" length="50" not-null="true"><comment>Causa</comment></column>
+		</property>
+	</class>
+</hibernate-mapping>

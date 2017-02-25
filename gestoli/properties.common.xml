@@ -1,0 +1,53 @@
+<project name="properties.common">
+
+   <dirname property="project.dir" file="${ant.file.properties.common}"/>
+
+   <property file="${project.dir}/build.properties"/>
+   <property file="${project.dir}/deploy.properties"/>
+   <property file="${project.dir}/versions.properties"/>
+
+   <property file="deploy.properties"/>
+
+   <property name="lib" location="${project.dir}/lib"/>
+   <property name="etc" location="${project.dir}/etc"/>
+   <property name="tags" location="${project.dir}/tags"/>
+   <property name="output" location="${project.dir}/output"/>
+   <property name="product" location="${output}/product"/>
+
+   <property name="modules" value="${output}/modules"/>
+   <property name="doc" value="${output}/doc"/>
+
+   <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+         <pathelement location="${lib}/ant-contrib-1.0b3.jar"/>
+      </classpath>
+   </taskdef>
+
+   <var name="common" value="${output}/components/${component}"/>
+   <var name="output.front" value="${output}/components/front"/>
+   <var name="output.logic" value="${output}/components/logic"/>
+   <var name="ejb.home" value="${basedir}"/>
+   <var name="ejb.src" value="${ejb.home}/src"/>
+
+   <var name="ejb.classes" value="${common}/ejb-classes"/>
+   <var name="ejb.gen-src" value="${common}/gen-src-ejb"/>
+   <var name="ejb.gen-etc" value="${common}/gen-etc-ejb"/>
+   <var name="ejb.client" value="${common}/ejb-client"/>
+   <var name="gen.ejb.uptodate.file" value="${ejb.gen-etc}/ejb-uptodate.txt" />
+
+   <var name="front.home" value="${basedir}"/>
+   <var name="front.src" value="${front.home}/src"/>
+
+   <var name="front.classes" value="${common}/front-classes"/>
+   <var name="front.gen-etc" value="${common}/gen-etc-front"/>
+   <var name="gen.front.uptodate.file" value="${front.gen-etc}/front-uptodate.txt" />
+
+   <var name="front.httpdocs.applet" value="${front.home}/httpdocs/applet/es/caib/gestoli/front/applet"/>
+   <var name="front.classes.applet" value="${front.classes}/es/caib/gestoli/front/applet/"/>
+
+   	<path id="xdoclet_1_2_3.jar">
+      <fileset dir="${lib}/xdoclet">
+         <include name="*.jar"/>
+      </fileset>
+   </path>
+</project>

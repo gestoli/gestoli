@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatNoConformitat" table="qua_noConformitat" schema="public">
+  		<comment>Qualitat - No Conformitat</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="noc_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="dataNoConformitat" type="java.util.Date">
+			<column name="noc_dataNoConformitat" not-null="false"><comment>Data no conformitat</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableDeteccio" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="noc_responsableDeteccio" 
+			not-null="true"/>
+		<property name="descripcio" type="java.lang.String">
+			<column name="noc_descripcio" length="255" not-null="true"><comment>Descripció no conformitat</comment></column>
+		</property>
+		<property name="causa" type="java.lang.String">
+			<column name="noc_causa" length="255" not-null="false"><comment>Causa</comment></column>
+		</property>
+		<property name="dataTancament" type="java.util.Date">
+			<column name="noc_dataTancament" not-null="false"><comment>Data Tancament no conformitat</comment></column>
+		</property>
+		<set name="accions" inverse="true">
+			<key>
+				<column name="nca_noConformitat" not-null="true">
+					<comment>Codi de noConformitat de l'accio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatNoConformitatAccio" />
+		</set>
+		<many-to-one 
+			name="departament" 
+			class="es.caib.gestoli.logic.model.QualitatDepartament"
+			column="noc_departament" 
+			not-null="false"/>
+	    <many-to-one 
+			name="control" 
+			class="es.caib.gestoli.logic.model.QualitatControl"
+			column="noc_codctl" 
+			not-null="false"/>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="noc_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

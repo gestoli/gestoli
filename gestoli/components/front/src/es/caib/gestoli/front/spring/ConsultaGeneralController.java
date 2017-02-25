@@ -1,0 +1,590 @@
+package es.caib.gestoli.front.spring;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractFormController;
+import org.springframework.web.servlet.mvc.BaseCommandController;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import es.caib.gestoli.front.util.Idioma;
+import es.caib.gestoli.front.util.Util;
+import es.caib.gestoli.logic.interfaces.OliConsultaEjb;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.model.Campanya;
+import es.caib.gestoli.logic.util.Constants;
+
+/**
+ * <p>Controlador para las acciones de dar de alta o editar un
+ * registro de tipos de información.</p>
+ * <p>Los parámetros de la petición HTTP relevantes para este
+ * controlador son:
+ * <ul>
+ *   <li><code>id</code>
+ *    - Identificador del registro. Este parámetro es el que
+ *      determina si se ha de mostrar la página de creación o la
+ *      página de edición.</li>
+ * </ul></p>
+ * <p>No hay información para la vista:
+ * <p>Este controlador distingue entre las peticiones del tipo
+ * GET y las de tipo POST. Si la petición es de tipo POST
+ * se ejecuta la acción de creación o de edición. Si la petición es de
+ * tipo GET solo se muestra la página.
+ *
+ */
+public class ConsultaGeneralController extends SimpleFormController {
+
+    /*
+     * Objeto para escribir mensajes de log.
+     */
+	private static Logger logger = Logger.getLogger(ConsultaGeneralController.class);
+
+    /*
+     * Servicio para acceder a las funcionalidades de la aplicación.
+     */
+	private OliConsultaEjb oliConsultaEjb;
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+	private String rolDoGestor;
+	private String rolAdministracio;
+	private String rolDoControl;
+	private String desqualificat;
+	private String pendentQualificar;
+	private String qualificat;
+	private String campanyaSessionKey;
+
+	private HibernateTemplate hibernateTemplate;
+
+    public ModelAndView onSubmit(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object command,
+            BindException errors)
+    throws ServletException {
+    	ConsultaGeneralCommand consulta = (ConsultaGeneralCommand) command;
+    	Map myModel = new HashMap();
+    	try {
+    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+    		if (consulta.getDataInici() != null) myModel.put("dataInici", sdf.format(consulta.getDataInici()));
+    		if (consulta.getDataFi() != null) myModel.put("dataFi", sdf.format(consulta.getDataFi()));
+    		if (consulta.getTemporadaId() != null) myModel.put("temporadaId", consulta.getTemporadaId());
+    		if (consulta.getBuscar() != null) myModel.put("buscar", consulta.getBuscar());
+    			
+    		myModel.put("path", "consultar_general");
+    		
+
+		} catch (Exception ex) {
+			throw new ServletException(ex);
+		}
+    	
+		return new ModelAndView(getSuccessView(), myModel);
+    }
+    
+    /**
+     * Retorna todos los datos del modelo necesarios para mostrar
+     * el formulario de inserción (LOVs y cosas de esas) si no hay.
+     * @see SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest, java.lang.Object, org.springframework.validation.Errors)
+     */
+    protected Map referenceData(
+            HttpServletRequest request,
+            Object command,
+            Errors errors) throws Exception {
+        Map myModel = new HashMap();
+        Long miliT = new Date().getTime();
+
+        try {
+        	ConsultaGeneralCommand consulta = (ConsultaGeneralCommand) command;
+        	
+        	oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+        	Long milisegons = new Date().getTime();
+        	
+        	logger.info("-------------------------------INICI CONSULTA--------------------------");
+        	logger.info("Inici cerca totes les campanyes");
+        	Collection temporadas = oliInfraestructuraEjb.campanyaCercaTotes();
+        	System.out.println(" Temps en fer la consulta: "+ (new Date().getTime() - milisegons) +" ms.");
+			myModel.put("temporadas", temporadas);
+			Long temporadaId = null;
+    		if(request.getParameter("temporadaId")!= null){
+    			if(!request.getParameter("temporadaId").equals("")){
+    				temporadaId = Long.valueOf(request.getParameter("temporadaId"));
+    			}    			
+    		}else if(temporadas.iterator().hasNext()){
+    			temporadaId =((Campanya)temporadas.iterator().next()).getId();
+    			consulta.setTemporadaId(temporadaId);
+    		}
+    		consulta.setBuscar("true");
+    		
+    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    		Date dataInici = null;
+    		Date dataFi = null;
+    		if(request.getParameter("buscar")!= null && request.getParameter("buscar").equals("true")){
+    			
+    		boolean calcularExistenciescampanyaAnterior = false;
+    			if (request.isUserInRole(rolDoGestor) || request.isUserInRole(rolAdministracio) || request.isUserInRole(rolDoControl)) {
+        			if (Util.isDataCorrecta(request.getParameter("dataInici"), "dd/MM/yyyy") || Util.isDataCorrecta(request.getParameter("dataFi"), "dd/MM/yyyy")) {
+    	        		if(request.getParameter("dataInici")!= null && !request.getParameter("dataInici").equals("")){
+    	        			dataInici = sdf.parse(request.getParameter("dataInici"));
+    	        			consulta.setDataInici(dataInici);
+    	        		}
+    	        		if(request.getParameter("dataFi")!= null && !request.getParameter("dataFi").equals("")){
+    	        			dataFi = sdf.parse(request.getParameter("dataFi"));
+    	        			consulta.setDataFi(dataFi);
+    	        		}
+    	        	}else{ 
+    	        		consulta.setTemporadaId(temporadaId);
+    	        		if(temporadaId != null){
+    	    				Campanya campanya = oliInfraestructuraEjb.campanyaAmbId(temporadaId.intValue());
+    	    				dataInici = campanya.getData();
+    	   					dataFi = campanya.getDataFi();
+    	   					calcularExistenciescampanyaAnterior = true;
+    	    			}
+    	        	}
+    	        	
+    	        	Long campanyaActualId = (Long)request.getSession().getAttribute(campanyaSessionKey);
+    	        	logger.info("Inici olives entrades");
+    	        	milisegons = new Date().getTime();
+        			Double olivesEntrades = consultarOlivesEntrades(temporadaId,dataInici, dataFi,campanyaActualId );
+                	System.out.println(" Fi entrades: "+ (new Date().getTime() - milisegons) +" ms.");
+        			if(olivesEntrades == null){
+        				olivesEntrades = Double.valueOf("0");
+        			}
+        			logger.info("Inici olis elaborats");
+        			milisegons = new Date().getTime();
+    	        	Double oliElaborat = consultarOliElaborat(temporadaId,dataInici, dataFi, campanyaActualId);
+    	        	System.out.println(" Temps per fer la consulta: "+ (new Date().getTime() - milisegons) +" ms.");
+        			
+        			if(oliElaborat == null){
+        				oliElaborat = Double.valueOf("0");
+        			}
+//        			Double oliQualificat = consultarOliQualificat(temporadaId,dataInici, dataFi );
+//        			if(oliQualificat == null){
+//        				oliQualificat = Double.valueOf("0");
+//        			}
+//        			Double oliDesqualificat = consultarOliDesqualificat(temporadaId,dataInici, dataFi );
+//        			if(oliDesqualificat == null){
+//        				oliDesqualificat = Double.valueOf("0");
+//        			}
+//        			Double oliPendentQualificar = consultarOliPendentQualificar(temporadaId,dataInici, dataFi );
+//        			if(oliPendentQualificar == null){
+//        				oliPendentQualificar = Double.valueOf("0");
+//        			}
+        			logger.info("Inici oli comercialitzat");
+        			milisegons = new Date().getTime();
+        			Double oliComercialitzatDO = consultarOliComercialitzatDO(temporadaId,dataInici, dataFi, campanyaActualId );
+        			System.out.println(" Temps en fer la consulta: "+ (new Date().getTime() - milisegons) +" ms.");
+        			if(oliComercialitzatDO == null){
+        				oliComercialitzatDO = Double.valueOf("0");
+        			}
+        			logger.info("Inici oli DO envasadores");
+        			milisegons = new Date().getTime();
+        			Double oliDOaEnvasadores = consultarOliDOaEnvasadores(temporadaId,dataInici, dataFi );
+        			System.out.println(" Temps en fer la consulta: "+ (new Date().getTime() - milisegons) +" ms.");
+        			if(oliDOaEnvasadores == null){
+        				oliDOaEnvasadores = Double.valueOf("0");
+        			}
+        			
+//        			Double existenciaOliDO = consultarExistenciaOliDO(temporadaId,dataInici, dataFi );
+//        			if(existenciaOliDO == null){
+//        				existenciaOliDO = Double.valueOf("0");
+//        			}
+//        			Double existenciaOliDOTemporadaAnterior = null;
+//        			if(calcularExistenciescampanyaAnterior){
+//        				existenciaOliDOTemporadaAnterior = consultarExistenciaOliemporadaAnteriorDO(temporadaId);
+//        				if(existenciaOliDOTemporadaAnterior == null){
+//        					existenciaOliDOTemporadaAnterior = Double.valueOf("0");
+//            			}
+//        			}
+        			
+        			Long milis = new Date().getTime();
+        			logger.info("Inici existencies inicials");
+        			oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+                    Double[] existenciesInicials = oliConsultaEjb.getQuantitatOliExistenciesQualificacioAndEstabliment(null, dataInici);
+                    logger.info("Fi existencies inicials (" + (new Date().getTime() - milis) + "ms)");
+
+                    logger.info("Inici existencies finals");
+                    Date df = (dataFi == null? new Date(): dataFi);
+                    milis = new Date().getTime();
+                    Double[] existenciesFinals = oliConsultaEjb.getQuantitatOliExistenciesQualificacioAndEstabliment(null, df);
+                    logger.info("Fi existencies finals (" + (new Date().getTime() - milis) + "ms)");
+                    
+                    logger.info("Inici sortides");
+                    milis = new Date().getTime();
+                    Double sortides[] = oliConsultaEjb.getSortidesEntreDiasEnEstablecimiento(dataInici, df, null);
+                    logger.info("Fi sortides (" + (new Date().getTime() - milis) + "ms)");
+                    
+                    logger.info("existencia Oli DO Temporada Anterior: " + existenciesInicials[Constants.CATEGORIA_DO-1]);
+                    logger.info("existencia Oli DO: " + existenciesFinals[Constants.CATEGORIA_DO-1]);
+                    logger.info("sortides Oli DO: " + sortides[Constants.CATEGORIA_DO-1]);
+                    logger.info("existencia Oli Pendent Temporada Anterior: " + existenciesInicials[Constants.CATEGORIA_PENDENT-1]);
+                    logger.info("existencia Oli Pendent: " + existenciesFinals[Constants.CATEGORIA_PENDENT-1]);
+                    logger.info("sortides Oli Pendent: " + sortides[Constants.CATEGORIA_PENDENT-1]);
+                    logger.info("existencia Oli No DO Temporada Anterior: " + existenciesInicials[Constants.CATEGORIA_NO_DO-1]);
+                    logger.info("existencia Oli No DO: " + existenciesFinals[Constants.CATEGORIA_NO_DO-1]);
+                    logger.info("sortides Oli No DO: " + sortides[Constants.CATEGORIA_NO_DO-1]);
+                    
+                    Double oliQualificat = existenciesFinals[Constants.CATEGORIA_DO-1] - existenciesInicials[Constants.CATEGORIA_DO-1] + sortides[Constants.CATEGORIA_DO-1];
+                    Double oliDesqualificat = existenciesFinals[Constants.CATEGORIA_NO_DO-1] - existenciesInicials[Constants.CATEGORIA_NO_DO-1] + sortides[Constants.CATEGORIA_NO_DO-1];
+                    Double oliPendentQualificar = existenciesFinals[Constants.CATEGORIA_PENDENT-1] - existenciesInicials[Constants.CATEGORIA_PENDENT-1] + sortides[Constants.CATEGORIA_PENDENT-1];
+                    Double oliSortidesQualificat = sortides[Constants.CATEGORIA_DO-1];
+                    Double oliSortidesDesqualificat = sortides[Constants.CATEGORIA_NO_DO-1];
+                    Double oliSortidesPendentQualificar = sortides[Constants.CATEGORIA_PENDENT-1];
+                    		
+    	        	if(!errors.hasErrors()){
+            			myModel.put("olivesEntrades", olivesEntrades);
+            			myModel.put("oliElaborat", oliElaborat);
+            			myModel.put("oliQualificat", oliQualificat);
+            			myModel.put("oliDesqualificat", oliDesqualificat);
+            			myModel.put("oliPendentQualificar", oliPendentQualificar);
+            			myModel.put("oliComercialitzatDO", oliComercialitzatDO);
+            			myModel.put("oliDOaEnvasadores", oliDOaEnvasadores);
+            			myModel.put("existenciaOliDO", existenciesFinals[Constants.CATEGORIA_DO-1]);
+            			myModel.put("existenciaOliPendent", existenciesFinals[Constants.CATEGORIA_PENDENT-1]);
+            			myModel.put("existenciaOliNoDO", existenciesFinals[Constants.CATEGORIA_NO_DO-1]);
+            			myModel.put("existenciaOliDOTemporadaAnterior", existenciesInicials[Constants.CATEGORIA_DO-1]);
+            			myModel.put("existenciaOliPendentTemporadaAnterior", existenciesInicials[Constants.CATEGORIA_PENDENT-1]);
+            			myModel.put("existenciaOliNoDOTemporadaAnterior", existenciesInicials[Constants.CATEGORIA_NO_DO-1]);
+            			myModel.put("oliSortidesQualificat", oliSortidesQualificat);
+            			myModel.put("oliSortidesDesqualificat", oliSortidesDesqualificat);
+            			myModel.put("oliSortidesPendentQualificar", oliSortidesPendentQualificar);
+            		}
+        		}
+    		}
+    		myModel.put("path", "consultar_general");
+        	
+        	
+        } catch (Exception ex) {
+        	logger.error("Error obtenint consulta general", ex);
+        }
+        logger.info("----------------------------------FI CONSULTA--------------------------");
+        System.out.println(" Temps en fer la consulta: "+ (new Date().getTime() - miliT) +" ms.");
+        return myModel;
+    }
+    
+    /**
+     * En el cas de que sigui una edició retorna l'objecte omplit amb
+     * les dades actuals del registre. En caso de que sigui una creació
+     * retorna l'objecte buit.
+     * 
+     * @see AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+     */
+    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+    	ConsultaGeneralCommand consulta = (ConsultaGeneralCommand)request.getSession().getAttribute("consulta");
+    	if (consulta == null) 
+    		consulta = new ConsultaGeneralCommand();
+    	else 
+    		request.getSession().removeAttribute("consulta");
+    	
+        
+    	try{
+    		
+    		Date dataInici = null;
+    		Date dataFi = null;
+    		    		
+    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    		
+    		if(request.getParameter("dataInici") != null && !((String)request.getParameter("dataInici")).equals("")) {
+    			dataInici = sdf.parse(request.getParameter("dataInici"));
+    		} 
+    		
+    		if(request.getParameter("dataFi") != null && !((String)request.getParameter("dataFi")).equals("")) {
+    			dataFi = sdf.parse(request.getParameter("dataFi"));
+    		}
+    		
+    		oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    		Collection temporadas = oliInfraestructuraEjb.campanyaCercaTotes();
+    		request.setAttribute("temporadas", temporadas);
+			Long temporadaId = null;
+    		if(request.getParameter("temporadaId")!= null){
+    			if(!request.getParameter("temporadaId").equals("")){
+    				temporadaId = Long.valueOf(request.getParameter("temporadaId"));
+    				Campanya campanya = oliInfraestructuraEjb.campanyaAmbId(temporadaId.intValue());
+    				dataInici = campanya.getData();
+   					dataFi = campanya.getDataFi();
+    			}    			
+    		}else if(temporadas.iterator().hasNext()){
+    			temporadaId =((Campanya)temporadas.iterator().next()).getId();
+    			consulta.setTemporadaId(temporadaId);
+    		}
+    		
+    		if(dataInici != null) consulta.setDataInici(dataInici);
+    		if(dataFi != null) consulta.setDataFi(dataFi);			
+    		if(request.getParameter("buscar")!= null && request.getParameter("buscar").equals("true")){
+    			consulta.setBuscar("true");
+    		}
+    		
+    		
+    	}catch (Exception e) {
+    		 logger.error("Error formBackingObject-ConsultaGeneralController", e);
+		}   	
+    	
+    	return consulta;
+    }
+    
+   
+    
+    /**
+     * Configuración del <i>binder</i>. Si hay campos en el <i>command</i>
+     * con tipos que no sean <i>String</i> se ha de configurar su
+     * correspondiente binder aquí.
+     * @see BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest, org.springframework.web.bind.ServletRequestDataBinder)
+     */
+    protected void initBinder(
+    		HttpServletRequest request,
+    		ServletRequestDataBinder binder)
+    throws Exception {
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	CustomDateEditor dateEditor = new CustomDateEditor(sdf, true);
+    	binder.registerCustomEditor(java.util.Date.class, dateEditor);
+    }
+
+    
+    private Double consultarExistenciaOliDO(Long temporadaId,Date dataInici,Date dataFi ) {
+    	Double existenciaOliDO = null;
+    	try{
+		    List categorias = new ArrayList();
+		   	categorias.add(Integer.valueOf(qualificat));
+		   	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//    		existenciaOliDO =  oliConsultaEjb.getTotalOliExistenteDO(temporadaId, dataInici, dataFi, categorias.toArray());
+		   	existenciaOliDO =  oliConsultaEjb.getTotalOliExistenteDO(dataFi, categorias.toArray());
+    	}catch (Exception e) {
+    		logger.error("Error consultarExistenciaOliDO", e);
+		}    	
+    	return existenciaOliDO;
+    }
+    
+    private Double consultarExistenciaOliemporadaAnteriorDO(Long temporadaId) {
+    	Double existenciaOliDO = null;
+    	try{
+		    List categorias = new ArrayList();
+		   	categorias.add(Integer.valueOf(qualificat));
+		   	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+    		existenciaOliDO =  oliConsultaEjb.getTotalOliExistenteTempAnteriorDO(temporadaId, categorias.toArray());
+    	}catch (Exception e) {
+    		logger.error("Error consultarExistenciaOliDO", e);
+		}    	
+    	return existenciaOliDO;
+    }
+    
+    private Double consultarOlivesEntrades(Long temporadaId,Date dataInici,Date dataFi,Long temporadaActual ) {
+    	Double olivesEntrades = null;
+    	try{
+    		oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//    		olivesEntrades = oliConsultaEjb.getTotalOlivasEntradas(temporadaId, dataInici, dataFi,temporadaActual);
+    		olivesEntrades = oliConsultaEjb.getTotalOlivasEntradas(dataInici, dataFi);
+    	}catch (Exception e) {
+    		logger.error("Error consultarOlivesEntrades", e);
+		}    	
+    	return olivesEntrades;
+    }
+    
+    private Double consultarOliElaborat(Long temporadaId,Date dataInici,Date dataFi,Long temporadaActual ) {
+    	Double oliElaborat = null;
+    	try{
+    		oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//    		oliElaborat = oliConsultaEjb.getTotalOliElaborat(temporadaId, dataInici, dataFi,temporadaActual);
+    		oliElaborat = oliConsultaEjb.getTotalOliElaborat(dataInici, dataFi);
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliElaborat", e);
+		}    	
+    	return oliElaborat;
+    }
+    
+    private Double consultarOliQualificat(Long temporadaId,Date dataInici,Date dataFi ) {
+    	Double oliQualificat = null;
+    	try{
+    		List categorias = new ArrayList();
+		   	categorias.add(Integer.valueOf(qualificat));
+		   	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//    		oliQualificat = oliConsultaEjb.getTotalOliByCategoriasConsulta(temporadaId, dataInici, dataFi, categorias.toArray());
+		   	oliQualificat = oliConsultaEjb.getTotalOliByCategoriasConsulta(dataInici, dataFi, categorias.toArray());
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliQualificat", e);
+		}    	
+    	return oliQualificat;
+    }
+    
+    private Double consultarOliDesqualificat(Long temporadaId,Date dataInici,Date dataFi ) {
+    	Double oliDesqualificat = null;
+    	try{
+    		List categorias = new ArrayList();
+		   	categorias.add(Integer.valueOf(desqualificat));
+		   	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//    		oliDesqualificat =  oliConsultaEjb.getTotalOliByCategoriasConsulta(temporadaId, dataInici, dataFi, categorias.toArray());
+		   	oliDesqualificat =  oliConsultaEjb.getTotalOliByCategoriasConsulta(dataInici, dataFi, categorias.toArray());
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliDesqualificat", e);
+		}    	
+    	return oliDesqualificat;
+    }
+    
+    private Double consultarOliPendentQualificar(Long temporadaId,Date dataInici,Date dataFi ) {
+    	Double oliPendentQualificar = null;
+    	try{
+    		List categorias = new ArrayList();
+		   	categorias.add(Integer.valueOf(pendentQualificar));
+		   	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//    		oliPendentQualificar =  oliConsultaEjb.getTotalOliByCategoriasConsulta(temporadaId, dataInici, dataFi, categorias.toArray());
+		   	logger.info("Inici oliPendentQualificar");
+		   	Long milis = new Date().getTime();
+		   	oliPendentQualificar =  oliConsultaEjb.getTotalOliByCategoriasConsulta(dataInici, dataFi, categorias.toArray());
+		   	logger.info("Fi oliPendentQualificar (" + (new Date().getTime() - milis) + "ms)");
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliPendentQualificar", e);
+		}    	
+    	return oliPendentQualificar;
+    }
+    
+    private Double consultarOliComercialitzatDO(Long temporadaId,Date dataInici,Date dataFi,Long temporadaActual ) {
+    	Double oliComercialitzatDO = null;
+    	try{
+    		List categorias = new ArrayList();
+		   	categorias.add(Integer.valueOf(qualificat));
+		   	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//		   	oliComercialitzatDO =  oliConsultaEjb.getTotalOliComercialitzatByCategoriasConsulta(temporadaId, dataInici, dataFi, categorias.toArray(),temporadaActual);
+		   	oliComercialitzatDO =  oliConsultaEjb.getTotalOliComercialitzatByCategoriasConsulta(dataInici, dataFi, categorias.toArray());
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliPendentQualificar", e);
+		}    	
+    	return oliComercialitzatDO;
+    }
+    
+    private Double consultarOliDOaEnvasadores(Long temporadaId,Date dataInici,Date dataFi ) {
+    	Double oliDOaEnvasadores = null;
+    	try{    		
+    		oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+//		    oliDOaEnvasadores =  oliConsultaEjb.getTotalOliDOaEnvasadoresConsulta(temporadaId, dataInici, dataFi,Integer.valueOf(qualificat));
+    		oliDOaEnvasadores =  oliConsultaEjb.getTotalOliDOaEnvasadoresConsulta(dataInici, dataFi,Integer.valueOf(qualificat));
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliPendentQualificar", e);
+		}    	
+    	return oliDOaEnvasadores;
+    }
+    //---
+    private Double consultarOliDOdeEnvasadores(Long temporadaId,Date dataInici,Date dataFi ) {
+    	Double oliDOdeEnvasadores = null;
+    	try{
+    		oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+    		oliDOdeEnvasadores =  oliConsultaEjb.getTotalOliDOdeEnvasadoresConsulta(temporadaId, dataInici, dataFi, Integer.valueOf(qualificat));
+//    		oliDOdeEnvasadores =  oliConsultaEjb.getTotalOliDOdeEnvasadoresConsulta(dataInici, dataFi, Integer.valueOf(qualificat));
+    	}catch (Exception e) {
+    		logger.error("Error consultarOliPendentQualificar", e);
+		}    	
+    	return oliDOdeEnvasadores;
+    }
+    
+    /**
+     * Injecció de la dependència consultaEjb
+     *
+     * @param consultaEjb La classe a injectar.
+     */
+  
+    public void setOliConsultaEjb(OliConsultaEjb oliConsultaEjb) {
+        this.oliConsultaEjb = oliConsultaEjb;
+    }
+	
+    /**
+     * Inyección de la dependencia oliInfraestructuraEjb
+     * @param oliInfraestructuraEjb La clase a inyectar.
+     */
+    public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+        this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+    }
+
+    
+    /**
+	 * Injecció de la dependència desqualificat
+	 * @param desqualificat La classe a injectar.
+	 */
+	public void setDesqualificat(String desqualificat) {
+		this.desqualificat = desqualificat;
+	}
+	
+	/**
+	 * Injecció de la dependència pendentQualificar
+	 * @param desqualificat La classe a injectar.
+	 */
+	public void setPendentQualificar(String pendentQualificar) {
+		this.pendentQualificar = pendentQualificar;
+	}
+	
+	/**
+	 * Injecció de la dependència pendentQualificar
+	 * @param desqualificat La classe a injectar.
+	 */
+	public void setQualificat(String qualificat) {
+		this.qualificat = qualificat;
+	}
+
+	/**
+	 * Metodo 'setRolDoGestor'
+	 * @param rolDoGestor 
+	 */
+	public void setRolDoGestor(String rolDoGestor) {
+		this.rolDoGestor = rolDoGestor;
+	}
+	
+
+	/**
+	 * Metodo 'setRolAdministracio'
+	 * @param rolAdministracio 
+	 */
+	public void setRolAdministracio(String rolAdministracio) {
+		this.rolAdministracio = rolAdministracio;
+	}
+	
+	/**
+	 * @param rolDoControl the rolDoControl to set
+	 */
+	public void setRolDoControl(String rolDoControl) {
+		this.rolDoControl = rolDoControl;
+	}
+	
+	private String missatge(String clave, HttpServletRequest request) {
+		String valor = getApplicationContext().getMessage(clave, null, Idioma.getLocale(request));
+		return valor;
+	}
+	
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+	
+	public void setCampanyaSessionKey(String campanyaSessionKey) {
+		this.campanyaSessionKey = campanyaSessionKey;
+	}
+
+	
+}

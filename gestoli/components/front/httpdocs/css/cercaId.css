@@ -1,0 +1,33 @@
+#cercaIdMicroweb {
+	padding: 0 20px;
+	min-height: 418px;
+	height: auto !important;
+	height: 418px;
+}
+
+#cercaIdMicroweb h2.microweb {
+	margin-bottom: 5px;
+}
+
+#cercaIdMicroweb p {
+	font-size: 15px;
+	text-align: justify;
+	margin-bottom: 15px;
+}
+
+#cercaIdMicroweb strong {
+	font-size: 13px;
+}
+
+#cercaIdMicroweb ul li {
+	background: url(../../../img/web/general/microweb/redot.png) 0px 0px no-repeat
+		!important;
+	padding-left: 12px;
+	font-size: 13px;
+	margin-top: 7px;
+	display: block;
+	width: 800px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/web/general/microweb/redot.png', sizingMethod = 'crop' );
+}

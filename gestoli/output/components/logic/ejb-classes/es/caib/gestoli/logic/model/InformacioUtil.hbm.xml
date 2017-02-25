@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.InformacioUtil" table="oli_informacio_util" schema="public">
+  		<comment>Informacio Util</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="inu_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="dataAlta" type="java.util.Date">
+			<column name="inu_dataAlta" not-null="true"><comment>Data alta</comment></column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="inu_actiu" not-null="false"><comment>Informacio Activa</comment></column>
+		</property>
+		<property name="dataInici" type="java.util.Date">
+			<column name="inu_dataInici" not-null="false"><comment>Data Inici</comment></column>
+		</property>
+		<property name="dataFinal" type="java.util.Date">
+			<column name="inu_dataFinal" not-null="false"><comment>Data Final</comment></column>
+		</property>
+		<property name="descripcio" type="java.lang.String">
+			<column name="inu_descripcio" length="5000" not-null="false"><comment>Descripcio</comment></column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="inu_nom" not-null="false"><comment>Nom</comment></column>
+		</property>
+		<property name="descripcioEs" type="java.lang.String">
+			<column name="inu_descripcioEs" length="5000" not-null="false"><comment>Descripcio ESP</comment></column>
+		</property>
+		<property name="nomEs" type="java.lang.String">
+			<column name="inu_nomEs" not-null="false"><comment>Nom ESP</comment></column>
+		</property>
+		<property name="imatgePrincipal" type="java.lang.Long">
+			<column name="inu_imatgePral" not-null="false"><comment>Imatge Principal</comment></column>
+		</property>
+		<property name="imatgeSecundaria" type="java.lang.Long">
+			<column name="inu_imatgeSecundaria" not-null="false"><comment>Imatge Secundaria</comment></column>
+		</property>		
+	</class>
+</hibernate-mapping>

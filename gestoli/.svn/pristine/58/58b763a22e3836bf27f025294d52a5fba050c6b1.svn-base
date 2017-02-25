@@ -1,0 +1,517 @@
+package es.caib.gestoli.logic.ejb;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.ejb.SessionBean;
+
+import org.apache.log4j.Logger;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import es.caib.gestoli.logic.dao.AnaliticaDao;
+import es.caib.gestoli.logic.dao.AnaliticaParametreDao;
+import es.caib.gestoli.logic.dao.AnaliticaParametreTipusDao;
+import es.caib.gestoli.logic.dao.AnaliticaValorDao;
+import es.caib.gestoli.logic.dao.ArxiuDao;
+import es.caib.gestoli.logic.dao.CampanyaDao;
+import es.caib.gestoli.logic.dao.CategoriaOliDao;
+import es.caib.gestoli.logic.dao.ColorDao;
+import es.caib.gestoli.logic.dao.DescomposicioPartidaOlivaDao;
+import es.caib.gestoli.logic.dao.DescomposicioPlantacioDao;
+import es.caib.gestoli.logic.dao.DipositDao;
+import es.caib.gestoli.logic.dao.ElaboracioDao;
+import es.caib.gestoli.logic.dao.EntradaDipositDao;
+import es.caib.gestoli.logic.dao.EntradaLotDao;
+import es.caib.gestoli.logic.dao.EstablimentDao;
+import es.caib.gestoli.logic.dao.EtiquetatgeDao;
+import es.caib.gestoli.logic.dao.EtiquetesLotDao;
+import es.caib.gestoli.logic.dao.FacturaDao;
+import es.caib.gestoli.logic.dao.FincasDao;
+import es.caib.gestoli.logic.dao.GrupDao;
+import es.caib.gestoli.logic.dao.HistoricEstablimentDao;
+import es.caib.gestoli.logic.dao.HistoricLlistatFacturaDao;
+import es.caib.gestoli.logic.dao.HistoricOlivicultorDao;
+import es.caib.gestoli.logic.dao.IdiomaDao;
+import es.caib.gestoli.logic.dao.LotDao;
+import es.caib.gestoli.logic.dao.MarcaDao;
+import es.caib.gestoli.logic.dao.MaterialDipositDao;
+import es.caib.gestoli.logic.dao.MaterialTipusEnvasDao;
+import es.caib.gestoli.logic.dao.MunicipiDao;
+import es.caib.gestoli.logic.dao.OlivicultorDao;
+import es.caib.gestoli.logic.dao.PaisDao;
+import es.caib.gestoli.logic.dao.PartidaOliDao;
+import es.caib.gestoli.logic.dao.PartidaOlivaDao;
+import es.caib.gestoli.logic.dao.PlantacioDao;
+import es.caib.gestoli.logic.dao.ProvinciaDao;
+import es.caib.gestoli.logic.dao.RendimentVarietatDao;
+import es.caib.gestoli.logic.dao.SolicitanteDao;
+import es.caib.gestoli.logic.dao.SortidaDipositDao;
+import es.caib.gestoli.logic.dao.SortidaLotDao;
+import es.caib.gestoli.logic.dao.SortidaOrujoDao;
+import es.caib.gestoli.logic.dao.TaxaDao;
+import es.caib.gestoli.logic.dao.TipusEnvasDao;
+import es.caib.gestoli.logic.dao.TipusEstablimentDao;
+import es.caib.gestoli.logic.dao.TrasllatDao;
+import es.caib.gestoli.logic.dao.TrazaDao;
+import es.caib.gestoli.logic.dao.UsuariDao;
+import es.caib.gestoli.logic.dao.VarietatOliDao;
+import es.caib.gestoli.logic.dao.VarietatOlivaDao;
+import es.caib.gestoli.logic.dao.ZonaDao;
+import es.caib.gestoli.logic.model.CategoriaOli;
+import es.caib.gestoli.logic.model.Diposit;
+import es.caib.gestoli.logic.model.EntradaDiposit;
+import es.caib.gestoli.logic.model.Establiment;
+import es.caib.gestoli.logic.model.Lot;
+
+/**
+ * 
+ * <!-- begin-user-doc --> A generated session bean <!-- end-user-doc --> * <!--
+ * begin-xdoclet-definition -->
+ * 
+ * @ejb.bean name="OliSistraEjb"
+ *           description="An EJB named OliSistraEjb"
+ *           display-name="OliSistraEjb"
+ *           jndi-name="OliSistraEjb"
+ *           local-jndi-name="OliSistraEjbLocal"
+ *           type="Stateless"
+ *           transaction-type="Container"
+ * @ejb.transaction type="Required"
+ * 
+ *           <!-- end-xdoclet-definition -->
+ */
+
+public abstract class OliSistraEjbBean implements SessionBean {
+	private static Logger logger = Logger.getLogger(OliSistraEjbBean.class);
+
+	private GrupDao grupDao;
+	private UsuariDao usuariDao;
+	private IdiomaDao idiomaDao;
+	private TaxaDao taxaDao;
+	private ColorDao colorDao;
+	private MaterialTipusEnvasDao materialTipusEnvasDao;
+	private TipusEnvasDao tipusEnvasDao;
+	private TipusEstablimentDao tipusEstablimentDao;
+	private MarcaDao marcaDao;
+	private EstablimentDao establimentDao;
+	private EtiquetatgeDao etiquetatgeDao;
+	private OlivicultorDao olivicultorDao;
+	private FincasDao fincasDao;
+	private PlantacioDao plantacioDao;
+	private DescomposicioPlantacioDao descomposicioPlantacioDao;
+	private DescomposicioPartidaOlivaDao descomposicioPartidaOlivaDao;
+	private ZonaDao zonaDao;
+	private DipositDao dipositDao;
+	private CampanyaDao campanyaDao;
+	private ArxiuDao arxiuDao;
+	private MaterialDipositDao materialDipositDao;
+	private VarietatOliDao varietatOliDao;
+	private VarietatOlivaDao varietatOlivaDao;
+	private FacturaDao facturaDao;
+	private PartidaOlivaDao partidaOlivaDao;
+	private SolicitanteDao solicitanteDao;
+	private LotDao lotDao;
+	private AnaliticaDao analiticaDao;
+	private AnaliticaParametreTipusDao analiticaParametreTipusDao;
+	private AnaliticaParametreDao analiticaParametreDao;
+	private AnaliticaValorDao analiticaValorDao;
+	private CategoriaOliDao categoriaOliDao;
+	private TrasllatDao trasllatDao;
+	private SortidaLotDao sortidaLotDao;
+	private EntradaLotDao entradaLotDao;
+	private SortidaDipositDao sortidaDipositDao;
+	private EntradaDipositDao entradaDipositDao;
+	private TrazaDao trazaDao;
+	private PartidaOliDao partidaOliDao;
+	private PaisDao paisDao;
+	private ProvinciaDao provinciaDao;
+	private MunicipiDao municipiDao;
+	private HistoricOlivicultorDao historicOlivicultorDao;
+	private HistoricEstablimentDao historicEstablimentDao;
+	private ElaboracioDao elaboracioDao;
+	private HistoricLlistatFacturaDao historicLlistatFacturaDao;
+	private SortidaOrujoDao sortidaOrujoDao;
+	private RendimentVarietatDao rendimentVarietatDao;
+	private EtiquetesLotDao etiquetesLotDao;
+	
+	private HibernateTemplate hibernateTemplate;
+						   
+
+	/**
+	 * Creacio del EJB <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.create-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public void ejbCreate() {
+		grupDao = new GrupDao();
+		usuariDao = new UsuariDao();
+		idiomaDao = new IdiomaDao();
+		taxaDao = new TaxaDao();
+		colorDao = new ColorDao();
+		materialTipusEnvasDao = new MaterialTipusEnvasDao();
+		tipusEnvasDao = new TipusEnvasDao();
+		tipusEstablimentDao = new TipusEstablimentDao();
+		marcaDao = new MarcaDao();
+		establimentDao = new EstablimentDao();
+		etiquetatgeDao = new EtiquetatgeDao();
+		olivicultorDao = new OlivicultorDao();
+		fincasDao = new FincasDao();
+		plantacioDao = new PlantacioDao();
+		descomposicioPlantacioDao = new DescomposicioPlantacioDao();
+		descomposicioPartidaOlivaDao = new DescomposicioPartidaOlivaDao();
+		zonaDao = new ZonaDao();
+		dipositDao = new DipositDao();
+		campanyaDao = new CampanyaDao();
+		arxiuDao = new ArxiuDao();
+		materialDipositDao = new MaterialDipositDao();
+		varietatOliDao = new VarietatOliDao();
+		varietatOlivaDao = new VarietatOlivaDao();
+		facturaDao = new FacturaDao();
+		partidaOlivaDao = new PartidaOlivaDao();
+		solicitanteDao = new SolicitanteDao();
+		lotDao = new LotDao();
+		analiticaDao = new AnaliticaDao();
+		analiticaParametreDao = new AnaliticaParametreDao();
+		analiticaParametreTipusDao = new AnaliticaParametreTipusDao();
+		analiticaValorDao = new AnaliticaValorDao();
+		categoriaOliDao = new CategoriaOliDao();
+		trasllatDao = new TrasllatDao();
+		sortidaLotDao = new SortidaLotDao();
+		entradaLotDao = new EntradaLotDao();
+		sortidaDipositDao = new SortidaDipositDao();
+		entradaDipositDao = new EntradaDipositDao();
+		trazaDao = new TrazaDao();
+		partidaOliDao = new PartidaOliDao();
+		paisDao = new PaisDao();
+		provinciaDao = new ProvinciaDao();
+		municipiDao = new MunicipiDao();
+		historicOlivicultorDao = new HistoricOlivicultorDao();
+		historicEstablimentDao = new HistoricEstablimentDao();
+		elaboracioDao = new ElaboracioDao();
+		historicLlistatFacturaDao = new HistoricLlistatFacturaDao();
+		sortidaOrujoDao = new SortidaOrujoDao();
+		rendimentVarietatDao = new RendimentVarietatDao();
+		etiquetesLotDao = new EtiquetesLotDao();
+	}
+
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public void ejbRemove() {
+	}
+
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Establiment establimentAmbCifNifResponsable(String cif) {
+		establimentDao.setHibernateTemplate(getHibernateTemplate());
+		return establimentDao.getCifResponsable(cif);
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findEntradesOlivaEntreDates(Date dataInici, Date dataFi, Long idEstabliment) {
+		partidaOlivaDao.setHibernateTemplate(getHibernateTemplate());
+		return partidaOlivaDao.getPartidasEntreDiasEnEstablecimiento(dataInici, dataFi, idEstabliment, new Boolean(true));
+	}
+	
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findElaboracionsEntreDates(Date dataInici, Date dataFi, Long idEstabliment, boolean asc, Boolean valid) {
+		elaboracioDao.setHibernateTemplate(getHibernateTemplate());
+		return elaboracioDao.getElaboracionesEntreDiasEnEstablecimiento(dataInici, dataFi, idEstabliment, asc, valid);
+	
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findSortidesLotEntreDates(Date dataInici, Date dataFi, Long idEstabliment) {
+		sortidaLotDao.setHibernateTemplate(getHibernateTemplate());
+		return sortidaLotDao.findByEstablecimientoEntreDates(idEstabliment, new Boolean(true), dataInici, dataFi);	
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findSortidesDipositEntreDates(Date dataInici, Date dataFi, Long idEstabliment) {
+		sortidaDipositDao.setHibernateTemplate(getHibernateTemplate());
+		return sortidaDipositDao.getSortidaDipositVendaEntreDiasEnEstablecimiento(dataInici, dataFi, idEstabliment, new Boolean(true));	
+	}
+	
+	
+	/**
+	 * Busca las salidas de depositos entre 2 fechas para un establecimiento
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection getSortidesDipositEntreFechasAndEstablecimiento(Date finicio, Date ffin, Long idEst, Boolean valid){
+		sortidaDipositDao.setHibernateTemplate(getHibernateTemplate());
+		return sortidaDipositDao.getSortidesDipositEntreFechasAndEstablecimiento(finicio, ffin, idEst, valid);
+	
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findExistenciesDipositsByEstablimentCategoriasAndData(Long establimentId, Object[] categorias, Date data) {
+		Collection dipositsAmbExistencia = new ArrayList();
+		dipositDao.setHibernateTemplate(getHibernateTemplate());
+		Collection diposits = dipositDao.findByEstablimentEnData(establimentId, data);
+		for (Iterator it = diposits.iterator(); it.hasNext();){
+			Diposit diposit = (Diposit)it.next();
+			entradaDipositDao.setHibernateTemplate(getHibernateTemplate());
+			Double entrades = entradaDipositDao.getSumaEntradesDipositPerDipositFinsData(diposit.getId(), data, new Boolean(true));
+			sortidaDipositDao.setHibernateTemplate(getHibernateTemplate());
+			Double sortides = sortidaDipositDao.getSumaSortidesDipositPerDipositFinsData(diposit.getId(), data, new Boolean(true));
+			Double existencies = entrades - sortides;
+			if (existencies > 0.0001){ // Evitam problemes amb decimals
+				entradaDipositDao.setHibernateTemplate(getHibernateTemplate());
+				CategoriaOli cat = entradaDipositDao.getCategoriaUltimaEntradesDipositPerDipositFinsData(diposit.getId(), data, new Boolean(true));
+				for (int i = 0; i < categorias.length; i++){
+					if (cat != null && cat.getId().equals((Integer)categorias[i])){
+						String nomDiposit = diposit.getCodiAssignat();
+						if (!diposit.getEstabliment().getId().equals(establimentId)){
+							if (diposit.getZonaOrigenTrasllat() != null){
+								nomDiposit = "(" + diposit.getZonaOrigenTrasllat().getEstabliment().getNom() + ") " + diposit.getCodiAssignat();
+							} else {
+								nomDiposit = "(" + diposit.getEstabliment().getNom() + ") " + diposit.getCodiAssignat();
+							}
+						}
+						Object[] obj = {diposit.getId(),
+//										(diposit.getCodiOriginal() == null ? diposit.getCodiAssignat() : diposit.getCodiOriginal()),
+										nomDiposit,
+										existencies, //litres
+										(existencies * 0.916), //quilos
+										cat,
+										(diposit.getPartidaOli() != null)?diposit.getPartidaOli().getOlivicultorEsPropietari():null};
+						dipositsAmbExistencia.add(obj);
+						break;
+					}
+				}
+			}
+		}
+		return dipositsAmbExistencia;
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findExistenciesLotsByEstablimentCategoriasAndData(Long establimentId, Object[] categorias, Date data) {
+		Collection lotsAmbExistencia = new ArrayList();
+		lotDao.setHibernateTemplate(getHibernateTemplate());
+		Collection lots = lotDao.findByEstablimentIData(establimentId, data, new Boolean(true));
+		for (Iterator it = lots.iterator(); it.hasNext();){
+			Lot lot = (Lot)it.next();
+			sortidaLotDao.setHibernateTemplate(getHibernateTemplate());
+			Integer sortides = sortidaLotDao.getSumaSortidesLotFinsData(lot.getId(), data, new Boolean(true));
+			entradaLotDao.setHibernateTemplate(getHibernateTemplate());
+			Integer devolucions = entradaLotDao.getSumaDevolucionsLotFinsData(lot.getId(), data, new Boolean(true));
+			Double existencies = (lot.getNumeroBotellesActuals() + sortides - devolucions) * lot.getEtiquetatge().getTipusEnvas().getVolum();
+			if (existencies > 0.0001){ // Evitam problemes amb decimals
+				CategoriaOli cat = lot.getPartidaOli().getCategoriaOli();
+				for (int i = 0; i < categorias.length; i++){
+					if (cat.getId().equals((Integer)categorias[i])){
+						Object[] obj = {lot.getId(),
+										lot.getCodiAssignat(),
+										existencies, //Existències litre
+										(existencies * 0.916), //Existències kilos
+										cat, //Categoria lot
+										(lot.getEtiquetatge() != null)?lot.getEtiquetatge().getMarca().getNom():"", //Marca
+										(lot.getEtiquetatge() != null)?lot.getEtiquetatge().getTipusEnvas().getNomSelect():"", //Etiquetatge
+										(lot.getNumeroBotellesActuals() + sortides),//Nº botelles
+										(lot.getPartidaOli() != null)?lot.getPartidaOli().getOlivicultorEsPropietari():"",
+										(lot.getProducte() != null)?lot.getProducte().getNom():""}; //Producte }; 
+						lotsAmbExistencia.add(obj);
+						break;
+					}
+				}
+			}
+		}
+		return lotsAmbExistencia;
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findAllCampanyes() {
+		campanyaDao.setHibernateTemplate(getHibernateTemplate());
+		return campanyaDao.findAll();
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Date findDataFiCampanya(Long idCampanya){
+		campanyaDao.setHibernateTemplate(getHibernateTemplate());
+		return campanyaDao.getDataFi(idCampanya);
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findLotsByEstablimentEntreDates(Long idEstabliment, Date dataInici, Date dataFi, Boolean valid){
+		lotDao.setHibernateTemplate(getHibernateTemplate());
+		return lotDao.findAllByEstablimentEntreDates(idEstabliment, dataInici, dataFi, valid);
+	}
+	
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findExistenciesLotsByEstabliment(Long establimentId) {
+		lotDao.setHibernateTemplate(getHibernateTemplate());
+		return lotDao.findExistenciesLotsByEstabliment(establimentId, new Boolean(true));
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection findDipositsActiusByEstabliment(Long establimentId){
+		dipositDao.setHibernateTemplate(getHibernateTemplate());
+		return dipositDao.findActiusByEstabliment(establimentId);
+	}
+	
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public List findEtiquetatgesByEstabliment(Long idEstabliment){
+		etiquetatgeDao.setHibernateTemplate(getHibernateTemplate());
+		return etiquetatgeDao.findByEstabliment(idEstabliment);
+	}
+	
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public Collection movimentsEntreEstablimentsEntradaConsulta(Date dataInici, Date dataFi, Long idEstabliment){
+		trasllatDao.setHibernateTemplate(getHibernateTemplate());
+		return trasllatDao.getMovimentsEntreEstablimentsEntradaEntreDiasEnEstablecimiento(dataInici, dataFi, idEstabliment);
+	}
+
+	/**
+	 * 
+	 * <!-- begin-xdoclet-definition -->
+	 * 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition -->
+	 */
+	public EntradaDiposit findEntradaDipositByTraza(Long idTraza){
+		entradaDipositDao.setHibernateTemplate(getHibernateTemplate());
+		return entradaDipositDao.findByTraza(idTraza, true);
+	}
+	
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * <!-- begin-xdoclet-definition --> 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition --> 
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 * <!-- begin-xdoclet-definition --> 
+	 * @ejb.interface-method view-type="both"
+	 * @ejb.permission unchecked="true"
+	 * <!-- end-xdoclet-definition --> 
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+	
+	
+}

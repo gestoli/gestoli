@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.SortidaOliFacturacio" table="oli_sortida_facturacio" schema="public">
+		<comment>Sortides de oli entradas per lexcel de factuaracio</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="sof_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="idImportacio" type="java.lang.Long">
+			<column name="sof_idImportacio" not-null="true">
+				<comment>id del document de importacio. Tots els registres del document tindran la mateixa id</comment>
+			</column>
+		</property>
+		<property name="dataInsercio" type="java.util.Date">
+			<column name="sof_dataInsercio" not-null="true">
+				<comment>data de insercio</comment>
+			</column>
+		</property>
+		<property name="tipusSortida" type="java.lang.String">
+			<column name="sof_tipusSortida" length="1" not-null="false">
+				<comment>Tipus de sortida: l (lot), d (diposit)</comment>
+			</column>
+		</property>
+		<property name="nomArxiu" type="java.lang.String">
+			<column name="sof_nomArxiu" not-null="false">
+				<comment>Nom de larxiu de facturacio a importar</comment>
+			</column>
+		</property>
+		<property name="pais" type="java.lang.String">
+			<column name="sof_pais" not-null="false">
+				<comment>Pais cap on es fa la sortida</comment>
+			</column>
+		</property>
+		<property name="provincia" type="java.lang.String">
+			<column name="sof_provincia" not-null="false">
+				<comment>Provincia cap on es fa la sortida</comment>
+			</column>
+		</property>
+		<property name="municipi" type="java.lang.String">
+			<column name="sof_municipi" not-null="false">
+				<comment>Municipi cap on es fa la sortida</comment>
+			</column>
+		</property>
+		<property name="lot" type="java.lang.String">
+			<column name="sof_lot" not-null="false">
+				<comment>Nom del lot de la sortida</comment>
+			</column>
+		</property>
+		<property name="producte" type="java.lang.String">
+			<column name="sof_producte" not-null="false">
+				<comment>Nom del producte de la sortida</comment>
+			</column>
+		</property>
+		<property name="accioSortida" type="java.lang.String">
+			<column name="sof_accio" length="1" not-null="false">
+				<comment>Accio de la sortida: v (venda) c (canvi de zona)</comment>
+			</column>
+		</property>
+		<property name="vendaData" type="java.lang.String">
+			<column name="sof_vendaData" not-null="false">
+				<comment>Venda: data</comment>
+			</column>
+		</property>
+		<property name="vendaNumeroBotelles" type="java.lang.String">
+			<column name="sof_vendaNumeroBotelles" not-null="false">
+				<comment>Venda: numero botelles</comment>
+			</column>
+		</property>
+		<property name="vendaMotiu" type="java.lang.String">
+			<column name="sof_vendaMotiu" length="128"  not-null="false">
+				<comment>Venda: motiu de la sortida (promocio, venda, etc.)</comment>
+			</column>
+		</property>
+		<property name="vendaObservacions" type="java.lang.String">
+			<column name="sof_vendaObservacions" not-null="false">
+				<comment>Venda: observacions</comment>
+			</column>
+		</property>
+		<property name="vendaDestinatari" type="java.lang.String">
+			<column name="sof_vendaDestinatari" length="128" not-null="false">
+				<comment>Venda: destinatari</comment>
+			</column>
+		</property>
+		<property name="vendaNumeroDocument" type="java.lang.String">
+			<column name="sof_vendaNumDoc" length="64" not-null="false">
+				<comment>Venda: numero de documento</comment>
+			</column>
+		</property>
+		<property name="vendaTipusDocument" type="java.lang.String">
+			<column name="sof_vendaTipusDoc" length="64" not-null="false">
+				<comment>Venda: tipus de document</comment>
+			</column>
+		</property>
+		<property name="estat" type="java.lang.Boolean">
+			<column name="sof_estat" not-null="false">
+				<comment>Estat de la insercio</comment>
+			</column>
+		</property>
+		<property name="error" type="java.lang.String">
+			<column name="sof_error" not-null="false">
+				<comment>Motiu de lerror</comment>
+			</column>
+		</property>
+		<property name="idSortida" type="java.lang.Long">
+			<column name="sof_idSortida" not-null="false">
+				<comment>Id de la sortida generada</comment>
+			</column>
+		</property>
+		
+	</class>
+</hibernate-mapping>

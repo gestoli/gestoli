@@ -1,0 +1,204 @@
+package es.caib.gestoli.front.spring;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.propertyeditors.CustomBooleanEditor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.mvc.BaseCommandController;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import es.caib.gestoli.front.util.Idioma;
+import es.caib.gestoli.logic.interfaces.OliConsultaEjb;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.model.DescomposicioPartidaOliva;
+import es.caib.gestoli.logic.model.EtiquetesLot;
+import es.caib.gestoli.logic.model.PartidaOliva;
+import es.caib.gestoli.logic.model.VarietatOliva;
+
+/**
+ * <p>Controlador para las acciones de dar de alta o editar un
+ * registro de tipos de información.</p>
+ * <p>Los parámetros de la petición HTTP relevantes para este
+ * controlador son:
+ * <ul>
+ *   <li><code>id</code>
+ *    - Identificador del registro. Este parámetro es el que
+ *      determina si se ha de mostrar la página de creación o la
+ *      página de edición.</li>
+ * </ul></p>
+ * <p>No hay información para la vista:
+ * <p>Este controlador distingue entre las peticiones del tipo
+ * GET y las de tipo POST. Si la petición es de tipo POST
+ * se ejecuta la acción de creación o de edición. Si la petición es de
+ * tipo GET solo se muestra la página.
+ *
+ */
+public class CercaTrazabilitatController extends SimpleFormController {
+
+    /*
+     * Objeto para escribir mensajes de log.
+     */
+	private static Logger logger = Logger.getLogger(CercaTrazabilitatController.class);
+
+    /*
+     * Servicio para acceder a las funcionalidades de la aplicación.
+     */
+	private OliConsultaEjb oliConsultaEjb;
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+	private HibernateTemplate hibernateTemplate;
+
+    /**
+     * Retorna todos los datos del modelo necesarios para mostrar
+     * el formulario de inserción (LOVs y cosas de esas) si no hay.
+     * @see SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest, java.lang.Object, org.springframework.validation.Errors)
+     */
+    protected Map referenceData(
+            HttpServletRequest request,
+            Object command,
+            Errors errors) throws Exception {
+        Map myModel = new HashMap();
+        HttpSession session = request.getSession();
+        try {
+        	CercaTrazabilitatLlistatCommand consulta = (CercaTrazabilitatLlistatCommand) command;
+        	oliConsultaEjb.setHibernateTemplate(getHibernateTemplate());
+        	oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+        	
+   			Long idEstabliment = Long.valueOf(request.getParameter("idEstabliment"));
+   			Long tipus = Long.valueOf(request.getParameter("tipus"));
+   			String id = request.getParameter("id");
+   			String titol = "";
+   			String nomesLots = "SI";
+        	
+        	Collection llista = new ArrayList();
+        	switch(tipus.intValue()){
+        	case 1:	// Marca
+        		titol = missatge("consulta.cerca.marca", request) + ": " + oliInfraestructuraEjb.marcaAmbId(Long.parseLong(id)).getNom();
+        		llista = oliConsultaEjb.trazabilitatMarca(Long.parseLong(id));
+        		nomesLots = "NO";
+        		break;
+        	case 2:	// Lot de botelles buides
+        		titol = missatge("consulta.cerca.lot.botelles.buides", request) + ": " + id;
+        		llista = oliConsultaEjb.trazabilitatLotBotelles(id);
+        		nomesLots = "NO";
+        		break;
+        	case 3:	// Lot de botelles plenes
+        		titol = missatge("consulta.cerca.lot.botelles.plenes", request) + ": " + oliInfraestructuraEjb.lotAmbId(Long.parseLong(id)).getCodiAssignat();
+        		llista = oliConsultaEjb.trazabilitatLot(Long.parseLong(id));
+        		nomesLots = "NO";
+        		break;
+        	case 4:	// Contraetiquetes
+        		EtiquetesLot etis = oliInfraestructuraEjb.etiquetesLotAmbId(Long.parseLong(id));
+        		titol = missatge("consulta.cerca.contraetiquetes", request) + ": " + etis.getEtiquetaInicial() + " - " + etis.getEtiquetaFinal();
+        		llista = oliConsultaEjb.trazabilitatEtiquetesLot(etis);
+        		nomesLots = "NO";
+        		break;
+        	case 5:	// Lot de talc
+        		titol = missatge("consulta.cerca.lot.talc", request) + ": " + id;
+        		llista = oliConsultaEjb.trazabilitatLotTalc(id, idEstabliment);
+        		nomesLots = "NO";
+        		break;
+        	case 6:	// Entrada d'oliva
+        		titol = missatge("consulta.cerca.entrada.dia", request) + ": " + oliInfraestructuraEjb.partidaAmbId(Long.parseLong(id)).getDescPartida();
+        		llista = oliConsultaEjb.trazabilitatPartidaOliva(Long.parseLong(id));
+        		nomesLots = "NO";
+        		break;
+        	case 7:	// Dipòsit
+        		titol = missatge("consulta.cerca.diposits.data", request) + ": " + oliInfraestructuraEjb.dipositAmbId(Long.parseLong(id)).getCodiAssignat();
+        		String sData = request.getParameter("data");
+        		Date data = new Date();
+        		if (sData != null && !sData.equals("")){ 
+        			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        			data = df.parse(sData);
+        		}
+        		llista = oliConsultaEjb.trazabilitatDiposit(Long.parseLong(id), data);
+        		nomesLots = "NO";
+        		break;
+        	}
+        	
+        	
+        	myModel.put("titol", titol);
+        	myModel.put("trazabilitat", llista);
+        	myModel.put("nomesLots", nomesLots);
+        	myModel.put("path", "consultar_cerca_trazabilitat");
+        	
+        } catch (Exception ex) {
+        	logger.error("Error obtenint la cerca per traçabilitat", ex);
+        }
+        return myModel;
+    }
+    
+//    /**
+//     * En el cas de que sigui una edició retorna l'objecte omplit amb
+//     * les dades actuals del registre. En caso de que sigui una creació
+//     * retorna l'objecte buit.
+//     * 
+//     * @see AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+//     */
+//    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+//    	CercaTrazabilitatLlistatCommand consulta = new CercaTrazabilitatLlistatCommand();
+//    	try{
+//    		
+//    	}catch (Exception e) {
+//			logger.error("EXCEPTION", e);
+//		}   	
+//    	
+//    	return consulta;
+//    }
+    
+    /**
+     * Configuración del <i>binder</i>. Si hay campos en el <i>command</i>
+     * con tipos que no sean <i>String</i> se ha de configurar su
+     * correspondiente binder aquí.
+     * @see BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest, org.springframework.web.bind.ServletRequestDataBinder)
+     */
+    protected void initBinder(
+    		HttpServletRequest request,
+    		ServletRequestDataBinder binder)
+    throws Exception {
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	CustomDateEditor dateEditor = new CustomDateEditor(sdf, true);
+    	binder.registerCustomEditor(java.util.Date.class, dateEditor);
+    	binder.registerCustomEditor(Boolean.class, new CustomBooleanEditor("S", "N", true));
+    }
+    
+    /* Injeccions de dependència */
+  
+	
+	private String missatge(String clave, HttpServletRequest request) {
+		String valor = getApplicationContext().getMessage(clave, null, Idioma.getLocale(request));
+		return valor;
+	}
+	
+	public OliConsultaEjb getOliConsultaEjb() {
+		return oliConsultaEjb;
+	}
+
+	public void setOliConsultaEjb(OliConsultaEjb oliConsultaEjb) {
+		this.oliConsultaEjb = oliConsultaEjb;
+	}
+
+	public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+		this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+}

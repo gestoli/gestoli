@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Factura" table="oli_factura"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Factures</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="fac_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="olivicultor"
+			class="es.caib.gestoli.logic.model.Olivicultor" fetch="select">
+			<column name="fac_codoli" not-null="true">
+				<comment>Codi de olivicultor</comment>
+			</column>
+		</many-to-one>
+		<property name="numero" type="java.lang.Integer">
+			<column name="fac_numero" not-null="true">
+				<comment>Numero</comment>
+			</column>
+		</property>
+		<property name="any" type="java.lang.Integer">
+			<column name="fac_any" not-null="true">
+				<comment>Any</comment>
+			</column>
+		</property>
+		<property name="data" type="date">
+			<column name="fac_data" length="13" not-null="true">
+				<comment>Data</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

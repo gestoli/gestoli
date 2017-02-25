@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatPlaNeteja" table="qua_planet" schema="public">
+  		<comment>Qualitat - Pla de neteja i desinfecció</comment>
+		<id name="codi" type="java.lang.Long">
+			<column name="pne_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="accio" type="java.lang.String">
+			<column name="pne_accio" not-null="true"><comment>Acció</comment></column>
+		</property>
+		<many-to-one 
+			name="producte" 
+			class="es.caib.gestoli.logic.model.QualitatSubministre"
+			column="pne_prod" 
+			not-null="false"/>
+		<property name="dosis" type="java.lang.String">
+			<column name="pne_dosis" not-null="false"><comment>Dosis</comment></column>
+		</property>
+		<property name="esGeneral" type="java.lang.Boolean">
+			<column name="pne_esGeneral" not-null="false"><comment> True -> general // False -> equip </comment></column>
+		</property>
+		<property name="elementPlanta" type="java.lang.String">
+			<column name="pne_elem" not-null="false"><comment>Element de la planta</comment></column>
+		</property>
+		<many-to-one 
+			name="equip" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioEquip"
+			column="pne_equip" 
+			not-null="false"/>
+		<property name="frequencia" type="java.lang.String">
+			<column name="pne_freq" not-null="false"><comment>Freqüencia de realitzacio</comment></column>
+		</property>
+		<many-to-one 
+			name="responsable" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pne_resp" 
+			not-null="false"/>
+		<many-to-one 
+			name="respVerificacio" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pne_respverr" 
+			not-null="false"/>
+		<property name="periodicitatVerificacio" type="java.lang.String">
+			<column name="pne_freqver" not-null="false"><comment>Frequencia de verificacio</comment></column>
+		</property>
+		<many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="pne_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

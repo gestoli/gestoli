@@ -1,0 +1,966 @@
+package es.caib.gestoli.logic.dao;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import es.caib.gestoli.logic.exception.InfrastructureException;
+import es.caib.gestoli.logic.model.Diposit;
+import es.caib.gestoli.logic.model.EntradaDiposit;
+import es.caib.gestoli.logic.model.Trasllat;
+import es.caib.gestoli.logic.model.Traza;
+import es.caib.gestoli.logic.util.Constants;
+
+
+/**
+ * Home object for domain model class Color
+ * @see es.caib.gestoli.logic.model.Color
+ * @author Oriol Barnés
+ */
+public class TrasllatDao {
+	private static Logger logger = Logger.getLogger(TrasllatDao.class);
+	private HibernateTemplate hibernateTemplate;
+
+
+	/**
+	 * Recupera todos los registros
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAll() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAll ini");
+			col = getHibernateTemplate().find("from Trasllat as tdi order by tdi.id");			
+		} catch (HibernateException ex) {
+			logger.error("findAll failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAll fin");
+		return col;
+	}
+
+
+
+	/**
+	 * Devuelve el objeto que tiene el id
+	 * @param id
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Trasllat getById(Long id) throws InfrastructureException {
+		Trasllat trasllat;
+		try {
+			logger.debug("getById ini");
+			trasllat = (Trasllat)getHibernateTemplate().load(Trasllat.class, id);			
+		} catch (HibernateException ex) {
+			logger.error("getById failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getById fin");
+		return trasllat;
+	}
+	
+	/**
+	 * Recupera el Trasllat por la traza 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Trasllat findByTraza(Long idTraza) throws InfrastructureException {
+		List col;
+		Trasllat trasllat = null;
+		try {
+			logger.debug("findByTraza ini");
+			String q = "from Trasllat as tdi where tdi.traza.id="+idTraza;
+			col = getHibernateTemplate().find(q);
+			if(col!= null && col.size()>0){
+				trasllat = (Trasllat)col.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("findByTraza failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findByTraza fin");
+		return trasllat;
+	}
+
+	/**
+	 * Recupera el Trasllat por la traza 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findByEstablimentOrigen(Long idEstabliment) throws InfrastructureException {
+		Collection col;
+		
+		try {
+			logger.debug("findByEstablimentOrigen ini");
+			col = getHibernateTemplate().find("from Trasllat as tdi " +
+					"where tdi.establimentByTdiCodeor.id = " + idEstabliment + " and tdi.valid = true");		
+			
+		} catch (HibernateException ex) {
+			logger.error("findByEstablimentOrigen failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findByEstablimentOrigen fin");
+		return col;
+	}
+	
+	
+	/**
+	 * Retorna true si existen traslados asociados a depositos
+	 * 
+	 * 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public boolean existenTrasladosAsociadosDeposito(Long idDiposit, Boolean valid) throws InfrastructureException {
+		List traslado;
+		try {
+			logger.debug("existenTrasladosAsociadosDeposito ini");
+			String q = "select count(dip.id) from Diposit dip " +
+			"where dip.id = " + idDiposit + " and " +
+			"dip in (select elements(tdi.diposits) from Trasllat tdi where 1 = 1 and tdi.esDiposit = true ";
+			if (valid != null && valid.booleanValue()) q += " and tdi.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and tdi.valid = false ";
+			q += ")";
+			traslado = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("existenTrasladosAsociadosDeposito failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		if (traslado != null && traslado.size()> 0 && ((Long)traslado.get(0)).intValue() > 0) {
+			logger.debug("existenTrasladosAsociadosDeposito fin");
+			return true;
+		}
+		logger.debug("existenTrasladosAsociadosDeposito fin");
+		return false;
+	}
+	
+	/**
+	 * Retorna true si existen traslados asociados a depositos posteriores a la fecha indicada
+	 * 
+	 * 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public boolean existenTrasladosAsociadosDepositoByFecha(Long idDiposit, Boolean valid, Date fecha,Long idEstablecimientoOrigen) throws InfrastructureException {
+		List traslado;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fechaAccion = df.format(fecha);
+		try {
+			logger.debug("existenTrasladosAsociadosDeposito ini");
+			String q = "select count(dip.id) from Diposit dip " +
+			"where dip.id = " + idDiposit + " and " +
+			"dip in (select elements(tdi.diposits) from Trasllat tdi where tdi.dataAlta >= '"+fechaAccion+"' and tdi.establimentByTdiCodeor.id = "+idEstablecimientoOrigen;
+			q += " and (tdi.acceptatTrasllat = true or tdi.acceptatTrasllat is null) ";
+			q += " and tdi.esDiposit = true ";
+			if (valid != null && valid.booleanValue()) q += " and tdi.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and tdi.valid = false ";
+			q += ")";
+			
+			traslado = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("existenTrasladosAsociadosDeposito failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		if (traslado != null && traslado.size()> 0 && ((Long)traslado.get(0)).intValue() > 0) {
+			logger.debug("existenTrasladosAsociadosDeposito fin");
+			return true;
+		}
+		logger.debug("existenTrasladosAsociadosDeposito fin");
+		return false;
+	}
+	
+	/**
+	 * Retorna true si existen traslados asociados a depositos posteriores a la accion indicada
+	 * 
+	 * 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public boolean existenTrasladosPosterioresAsociadosDepositoByTraza(Long idDiposit, Boolean valid, Long trazaId,Long idEstablecimientoOrigen) throws InfrastructureException {
+		List traslado;
+		
+		try {
+			logger.debug("existenTrasladosPosterioresAsociadosDepositoByTraza ini");
+			String q = "select count(dip.id) from Diposit dip " +
+			"where dip.id = " + idDiposit + " and " +
+			"dip in (select elements(tdi.diposits) from Trasllat tdi where tdi.traza.id > '"+trazaId+"' and tdi.establimentByTdiCodeor.id = "+idEstablecimientoOrigen;
+			q += " and (tdi.acceptatTrasllat = true or tdi.acceptatTrasllat is null) ";
+			q += " and tdi.esDiposit = true ";
+			if (valid != null && valid.booleanValue()) q += " and tdi.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and tdi.valid = false ";
+			q += ")";
+			
+			traslado = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("existenTrasladosPosterioresAsociadosDepositoByTraza failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		if (traslado != null && traslado.size()> 0 && ((Long)traslado.get(0)).intValue() > 0) {
+			logger.debug("existenTrasladosPosterioresAsociadosDepositoByTraza fin");
+			return true;
+		}
+		logger.debug("existenTrasladosPosterioresAsociadosDepositoByTraza fin");
+		return false;
+	}
+
+	/**
+	 * Actualiza un registro
+	 * @param trasllat
+	 * @throws InfrastructureException
+	 */
+	public void makePersistent(Trasllat trasllat) throws InfrastructureException {
+		try {
+			logger.debug("makePersistent ini");
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			getHibernateTemplate().saveOrUpdate(trasllat);
+			getHibernateTemplate().flush();
+			logger.debug("makePersistent fin");
+		} catch (HibernateException ex) {
+			logger.error("makePersistent failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+	/**
+	 * Devuelve Traslados de depositos por establecimiento y entre 2 fechas
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection getSalidaTrasladosEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long estId) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		try {
+			logger.debug("getTrasladosEntreDiasEnEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.data >= '"+fi+"' and tdi.data <= '"+ff+"' and tdi.establimentByTdiCodeor = "+ estId +" and tdi.valid = true order by tdi.data desc");
+		} catch (HibernateException ex) {
+			logger.error("getTrasladosEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getTrasladosEntreDiasEnEstablecimiento fin");
+		return col;
+	}
+
+	/**
+	 * Devuelve Traslados de depositos  entre 2 fechas o bien por temporada
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection getSalidaTrasladosEntreDiasoTemporadas(Long temporadaId, Date dataInici, Date dataFin) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			logger.debug("getSalidaTrasladosEntreDiasoTemporadas ini");
+			String q = "from Trasllat tdi where tdi.acceptatTrasllat = true "; 
+			q += " and tdi.traslladant = true and tdi.valid = true ";
+
+			if(dataInici!= null || dataFin != null){
+				if(dataInici != null){
+					String fi = df.format(dataInici);
+					q = q+ " and  tdi.data >= '"+fi+"' ";
+				}
+				if(dataFin != null){
+					String ff = df.format(dataFin);
+					q = q+ " and  tdi.data <= '"+ff+"' ";
+				}
+
+				q = q+" and tdi.establimentByTdiCodeor.campanya.id= (select max(cam.id) from Campanya cam)";
+
+			}else{
+				q = q+ " and tdi.establimentByTdiCodeor.campanya.id="+temporadaId;
+			}
+
+			col = getHibernateTemplate().find(q);			
+
+		} catch (HibernateException ex) {
+			logger.error("getSalidaTrasladosEntreDiasoTemporadas failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSalidaTrasladosEntreDiasoTemporadas fin");
+		return col;
+	}
+
+	/**
+	 *Devuelve total de litros de aceite QUALIFICAT Traslados de depositos  entre 2 fechas o por temporada
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Double getTotalOliDOaEnvasadores(Long temporadaId, Date dataInici, Date dataFi, Integer idAutorizada) throws InfrastructureException {
+		logger.debug("getTotalOliDOaEnvasadores ini");
+		Collection listaTrasllat = getSalidaTrasladosEntreDiasoTemporadas(temporadaId, dataInici, dataFi);
+		//Para cada uno de lor registro  Trasllat separamos los depositos y devolvemos un objeto rasllatDipositCommand
+		double litros = 0;
+		for(Iterator it=listaTrasllat.iterator();it.hasNext();){
+			Trasllat trasllat = (Trasllat)it.next();
+			if(trasllat.getDiposits()!= null){
+				for(Iterator itDip=trasllat.getDiposits().iterator();itDip.hasNext();){
+					Diposit diposit = (Diposit)itDip.next();
+					if(idAutorizada!= null && diposit.getPartidaOli().getCategoriaOli()!= null){
+						if(diposit.getPartidaOli().getCategoriaOli().getId().intValue() == idAutorizada.intValue() && diposit.getVolumActual()!= null){
+							litros+= diposit.getVolumActual().doubleValue();
+						}						
+					}
+
+				}
+			}
+		}
+		logger.debug("getTotalOliDOaEnvasadores fin");
+		return Double.valueOf(String.valueOf(litros));
+	}
+
+	/**
+	 *Devuelve total de litros de aceite QUALIFICAT Traslados de depositos  entre 2 fechas o por temporada
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Double getTotalOliDOaEnvasadoresEntreDates(Date dataInici, Date dataFi, Integer idAutorizada) throws InfrastructureException {
+		logger.debug("getTotalOliDOaEnvasadoresEntreDates ini");
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		double litros = 0;
+		try {
+			String fi = null;
+			String ff = null;
+			if (dataInici != null) fi = df.format(dataInici);
+			if (dataFi != null) ff = df.format(dataFi);
+			String q =" from Trasllat tdi where " +
+					"	 (tdi.dataAcceptarEnviament is not null " +
+					"		and tdi.quantitatEnviament is not null ";
+			if (fi != null) 
+				q +="		and tdi.dataAcceptarEnviament >= '"+fi+"' ";
+			if (ff != null)
+				q +="		and  tdi.dataAcceptarEnviament <= '"+ff+"' ";
+			q +=	"		and tdi.quantitatEnviament > 0 ) or " +
+					"	 (tdi.dataAcceptarRetorn is not null " +
+					"		and tdi.quantitatRetorn is not null ";
+			if (fi != null)
+				q +="		and tdi.dataAcceptarRetorn >= '"+fi+"' ";
+			if (ff != null)
+				q +="		and  tdi.dataAcceptarRetorn <= '"+ff+"' ";
+			q +=	"		and tdi.quantitatRetorn > 0) " +
+					"and tdi.valid = true " +
+					"order by tdi.data desc";
+			
+			Collection listaTrasllat = getHibernateTemplate().find(q);
+			//Para cada uno de lor registro  Trasllat separamos los depositos y devolvemos un objeto trasllatDipositCommand
+			for(Iterator it=listaTrasllat.iterator();it.hasNext();){
+				Trasllat trasllat = (Trasllat)it.next();
+				
+				for(Iterator itTra=trasllat.getTraza().getTrazasForTtrCodtrafill().iterator();itTra.hasNext();){
+						Traza traza = (Traza)itTra.next();
+						if (traza.getTipus().intValue() == Constants.CODI_TRAZA_TIPUS_ENTRADA_DIPOSIT){
+							EntradaDiposit edi = (EntradaDiposit)(getHibernateTemplate().find("from EntradaDiposit as edi where edi.traza.id=" + traza.getId() + " and edi.valid = true ").get(0));
+							if(idAutorizada!= null && edi.getCategoriaOli()!= null && edi.getCategoriaOli().getId().intValue() == idAutorizada.intValue()){
+								litros += edi.getLitres();
+						}
+	
+					}
+				}
+			}
+		} catch (HibernateException ex) {
+			logger.error("getTotalOliDOaEnvasadoresEntreDates failed", ex);
+			throw new InfrastructureException(ex);
+		}	
+		logger.debug("getTotalOliDOaEnvasadoresEntreDates fin");
+		return Double.valueOf(String.valueOf(litros));
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos por establecimiento y entre 2 fechas
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection getEntradaTrasladosEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long estId) throws InfrastructureException {
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		try {
+			logger.debug("getEntradaTrasladosEntreDiasEnEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.data >= '"+fi+"' and tdi.data <= '"+ff+"' and tdi.acceptatTrasllat = true and tdi.establimentByTdiCodede = "+ estId +" order by tdi.data desc");			
+
+		} catch (HibernateException ex) {
+			logger.error("getEntradaTrasladosEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getEntradaTrasladosEntreDiasEnEstablecimiento fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos por establecimiento y entre 2 fechas
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long estId) throws InfrastructureException {
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		try {
+			logger.debug("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"	 tdi.data >= '"+fi+"' " +
+					"and tdi.data <= '"+ff+"' " +
+					"and (tdi.establimentByTdiCodede = "+ estId +" " +
+					  "or tdi.establimentByTdiCodeor = "+ estId +") " +
+					"and tdi.valid = true " +
+					"order by tdi.data desc");
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento fin");
+		return col;
+	}
+	
+	public Collection getMovimentsEntreEstablimentsSortidaEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long estId) throws InfrastructureException {
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		try {
+			logger.debug("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"	 (tdi.dataAcceptarEnviament is not null " +
+					"		and tdi.quantitatEnviament is not null " +
+					"		and tdi.dataAcceptarEnviament >= '"+fi+"' " +
+					"		and  tdi.dataAcceptarEnviament <= '"+ff+"' " +
+					"		and tdi.quantitatEnviament > 0 " +
+					"		and tdi.establimentByTdiCodeor = "+ estId +") or " +
+					"	 (tdi.dataAcceptarRetorn is not null " +
+					"		and tdi.quantitatRetorn is not null " +
+					"		and tdi.dataAcceptarRetorn >= '"+fi+"' " +
+					"		and  tdi.dataAcceptarRetorn <= '"+ff+"' " +
+					"		and tdi.quantitatRetorn > 0 " +
+					"		and tdi.establimentByTdiCodede = "+ estId +") " +
+					"and tdi.valid = true " +
+					"order by tdi.data desc");
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento fin");
+		return col;
+	}
+	
+	public Collection getMovimentsEntreEstablimentsEntradaEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long estId) throws InfrastructureException {
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		try {
+			logger.debug("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"	 (tdi.dataAcceptarEnviament is not null " +
+					"		and tdi.quantitatEnviament is not null " +
+					"		and tdi.dataAcceptarEnviament >= '"+fi+"' " +
+					" 		and  tdi.dataAcceptarEnviament <= '"+ff+"' " +
+					"		and tdi.quantitatEnviament > 0 " +
+					"		and tdi.establimentByTdiCodede = "+ estId +") or " +
+					"	 (tdi.dataAcceptarRetorn is not null " +
+					"		and tdi.quantitatRetorn is not null " +
+					"		and tdi.dataAcceptarRetorn >= '"+fi+"' " +
+					"		and  tdi.dataAcceptarRetorn <= '"+ff+"' " +
+					"		and tdi.quantitatRetorn > 0 " +
+					"		and tdi.establimentByTdiCodeor = "+ estId +") " +
+					"and tdi.valid = true " +
+					"order by tdi.data desc");
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getMovimentsEntreEstablimentsEntreDiasEnEstablecimiento fin");
+		return col;
+	}
+
+	public Collection getMovimentsEntreEstablimentsSortidaPendentsEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long estId) {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		try {
+			logger.debug("getMovimentsEntreEstablimentsSortidaPendentsEntreDiasEnEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"	 (tdi.dataAcceptarEnviament is null " +
+					"		and tdi.quantitatEnviament is not null " +
+					"		and tdi.dataAlta >= '"+fi+"' " +
+					"		and  tdi.dataAlta <= '"+ff+"' " +
+					"		and tdi.quantitatEnviament > 0 " +
+					"		and tdi.establimentByTdiCodeor = "+ estId + ") or " +
+					"	 (tdi.dataAcceptarRetorn is null " +
+					"		and tdi.quantitatRetorn is not null " +
+					"		and tdi.dataAlta >= '"+fi+"' " +
+					"		and  tdi.dataAlta <= '"+ff+"' " +
+					"		and tdi.quantitatRetorn > 0 " +
+					"		and tdi.establimentByTdiCodede = "+ estId +") " +
+					" and tdi.valid = true " +
+					" order by tdi.data desc");
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("getMovimentsEntreEstablimentsSortidaPendentsEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getMovimentsEntreEstablimentsSortidaPendentsEntreDiasEnEstablecimiento fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos  entre 2 fechas o bien por temporada
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection getEntradaTrasladosEntreDiasoTemporadas(Long temporadaId, Date dataInici, Date dataFin) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			logger.debug("getEntradaTrasladosEntreDiasoTemporadas ini");
+			String q = "from Trasllat tdi where tdi.retornatEstablimentOrigen = true ";
+
+			if(dataInici!= null || dataFin != null){
+				if(dataInici != null){
+					String fi = df.format(dataInici);
+					q = q+ " and  tdi.data >= '"+fi+"' ";
+				}
+				if(dataFin != null){
+					String ff = df.format(dataFin);
+					q = q+ " and  tdi.data <= '"+ff+"' ";
+				}
+
+				q = q+" and tdi.establimentByTdiCodede.campanya.id= (select max(cam.id) from Campanya cam)";
+
+			}else{
+				q = q+ " and tdi.establimentByTdiCodede.campanya.id="+temporadaId;
+			}
+
+			col = getHibernateTemplate().find(q);			
+
+		} catch (HibernateException ex) {
+			logger.error("getEntradaTrasladosEntreDiasoTemporadas failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getEntradaTrasladosEntreDiasoTemporadas fin");
+		return col;
+	}
+
+	/**
+	 * Devuelve total de litros de aceite QUALIFICAT Traslados de depositos  entre 2 fechas o por temporada
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Double getTotalOliDOdeEnvasadores(Long temporadaId, Date dataInici, Date dataFi, Integer idAutorizada) throws InfrastructureException {
+		logger.debug("getTotalOliDOdeEnvasadores ini");
+		Collection listaTrasllat = getEntradaTrasladosEntreDiasoTemporadas(temporadaId, dataInici, dataFi);
+		//Para cada uno de lor registro  Trasllat separamos los depositos y devolvemos un objeto rasllatDipositCommand
+		double litros = 0;
+		for(Iterator it=listaTrasllat.iterator();it.hasNext();){
+			Trasllat trasllat = (Trasllat)it.next();
+			if(trasllat.getDiposits()!= null){
+				for(Iterator itDip=trasllat.getDiposits().iterator();itDip.hasNext();){
+					Diposit diposit = (Diposit)itDip.next();
+					if(idAutorizada!= null && diposit.getPartidaOli() != null && diposit.getPartidaOli().getCategoriaOli() !=null && diposit.getPartidaOli().getCategoriaOli()!= null){
+						if(diposit.getPartidaOli().getCategoriaOli().getId().intValue() == idAutorizada.intValue() && diposit.getVolumActual()!= null){
+							litros+= diposit.getVolumActual().doubleValue();
+						}						
+					}
+
+				}
+			}
+		}
+		logger.debug("getTotalOliDOdeEnvasadores fin");
+		return Double.valueOf(String.valueOf(litros));
+	}
+	
+	/**
+	 * Devuelve total de litros de aceite QUALIFICAT Traslados de depositos  entre 2 fechas o por temporada
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Double getTotalOliDOdeEnvasadoresEntreDates(Long temporadaId, Date dataInici, Date dataFi, Integer idAutorizada) throws InfrastructureException {
+		logger.debug("getTotalOliDOdeEnvasadoresEntreDates ini");
+//		Collection listaTrasllat = getEntradaTrasladosEntreDiasoTemporadas(temporadaId, dataInici, dataFi);
+		Collection listaTrasllat = null;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		double litros = 0;
+		
+		try {
+			String q = "from Trasllat tdi where tdi.retornatEstablimentOrigen = true ";
+			if(dataInici != null){
+				String fi = df.format(dataInici);
+				q = q+ " and  tdi.data >= '"+fi+"' ";
+			}
+			if(dataFi != null){
+				String ff = df.format(dataFi);
+				q = q+ " and  tdi.data <= '"+ff+"' ";
+			}
+			listaTrasllat = getHibernateTemplate().find(q);	
+		} catch (HibernateException ex) {
+			logger.error("getTotalOliDOdeEnvasadoresEntreDates failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		
+		//Para cada uno de lor registro  Trasllat separamos los depositos y devolvemos un objeto rasllatDipositCommand
+		if (listaTrasllat != null){
+			for(Iterator it=listaTrasllat.iterator();it.hasNext();){
+				Trasllat trasllat = (Trasllat)it.next();
+				if(trasllat.getDiposits()!= null){
+					for(Iterator itDip=trasllat.getDiposits().iterator();itDip.hasNext();){
+						Diposit diposit = (Diposit)itDip.next();
+						if(idAutorizada!= null && diposit.getPartidaOli() != null && diposit.getPartidaOli().getCategoriaOli() !=null && diposit.getPartidaOli().getCategoriaOli()!= null){
+							if(diposit.getPartidaOli().getCategoriaOli().getId().intValue() == idAutorizada.intValue() && diposit.getVolumActual()!= null){
+								litros+= diposit.getVolumActual().doubleValue();
+							}						
+						}
+	
+					}
+				}
+			}
+		}
+		logger.debug("getTotalOliDOdeEnvasadoresEntreDates fin");
+		return Double.valueOf(String.valueOf(litros));
+	}
+	
+	/**
+	 * Devuelve boolean true si existen Traslados de depositos pendientes de ser aceptados o pendientes de ser devueltos a su origen
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Boolean existenAccionesPendientesByEstablecimiento(Long estId) throws InfrastructureException {
+		Collection col;
+		Boolean existenAccionesPendientesByEstablecimiento = Boolean.valueOf(false);
+		try {
+			logger.debug("existenAccionesPendientesByEstablecimiento ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.acceptatTrasllat is null and tdi.establimentByTdiCodede = "+ estId + " and tdi.valid = true ") ;
+			if(col!= null && col.size()>0){
+				existenAccionesPendientesByEstablecimiento = Boolean.valueOf(true);
+			}
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.acceptatTrasllat = true  and tdi.retornatEstablimentOrigen = false and tdi.establimentByTdiCodede = "+ estId + " and tdi.valid = true ") ;
+			if(col!= null && col.size()>0){
+				existenAccionesPendientesByEstablecimiento = Boolean.valueOf(true);
+			}
+			
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.retornatEstablimentOrigen = true and tdi.traslladant = true and tdi.establimentByTdiCodeor = "+ estId + " and tdi.valid = true ") ;
+			if(col!= null && col.size()>0){
+				existenAccionesPendientesByEstablecimiento = Boolean.valueOf(true);
+			}
+			
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.acceptatTrasllat = false and tdi.esDiposit = false and tdi.establimentByTdiCodede = "+ estId + " and tdi.valid = true ") ;
+			if(col!= null && col.size()>0){
+				existenAccionesPendientesByEstablecimiento = Boolean.valueOf(true);
+			}
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("existenAccionesPendientesByEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("existenAccionesPendientesByEstablecimiento fin");
+		return existenAccionesPendientesByEstablecimiento;
+	}
+
+	
+	/**
+	 * Devuelve Traslados de depositos por establecimiento pendientes de ser aceptados
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findTrasllatsByEstablimentPendientesAceptar(Long estId) throws InfrastructureException {
+		Collection col;
+		
+		try {
+			logger.debug("findTrasllatsByEstablimentPendientesAceptar ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"(tdi.acceptatTrasllat = false or tdi.acceptatTrasllat is null) and tdi.traslladant = true and tdi.retornatEstablimentOrigen = false  and tdi.establimentByTdiCodede = "+ estId +" " +
+					"and tdi.valid = true");
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsByEstablimentPendientesAceptar failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsByEstablimentPendientesAceptar fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos por establecimiento pendientes de ser aceptados
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findTrasllatsByEstablimentOrigenEntreDates(Date dataInici, Date dataFi, Long estId) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String di = sdf.format(dataInici);
+		String df = sdf.format(dataFi);
+		
+		try {
+			logger.debug("findTrasllatsByEstablimentEntreDates ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.dataAlta >= '" + di + "' and tdi.dataAlta <= '" + df + "' " +
+					"and tdi.establimentByTdiCodeor = "+ estId + " " +
+					"and tdi.valid = true");
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsByEstablimentEntreDates failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsByEstablimentEntreDates fin");
+		return col;
+	}
+	
+	public Collection findTrasllatsByEstablimentOrigenIDestiEntreDates(Date dataInici, Date dataFi, Long estId) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String di = sdf.format(dataInici);
+		String df = sdf.format(dataFi);
+		
+		try {
+			logger.debug("findTrasllatsByEstablimentEntreDates ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"((tdi.dataAcceptarEnviament >= '" + di + "' and tdi.dataAcceptarEnviament <= '" + df + "') or " +
+					"(tdi.dataAcceptarRetorn >= '" + di + "' and tdi.dataAcceptarRetorn <= '" + df + "')) " +
+					"and (tdi.establimentByTdiCodeor = "+ estId + " or tdi.establimentByTdiCodede = "+ estId + ") " +
+					"and tdi.valid = true");
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsByEstablimentEntreDates failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsByEstablimentEntreDates fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos por establecimiento pendientes de ser devueltos
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findTrasllatsByEstablimentPendientesDevolver(Long estId) throws InfrastructureException {
+		Collection col;
+		System.out.println("Establiment Id: "+estId);
+		try {
+			logger.debug("findTrasllatsByEstablimentPendientesDevolver ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.acceptatTrasllat = true  and tdi.retornatEstablimentOrigen = false and tdi.establimentByTdiCodede = "+ estId+" " +
+			"and tdi.valid = true");				
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsByEstablimentPendientesDevolver failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsByEstablimentPendientesDevolver fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos por establecimiento pendientes de ser aceptador su devolución
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findTrasllatsByEstablimentPendientesAceptarDevolver(Long estId) throws InfrastructureException {
+		Collection col;
+		System.out.println("Establiment Id: "+estId);
+		try {
+			logger.debug("findTrasllatsByEstablimentPendientesDevolver ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.acceptatTrasllat = false  and tdi.retornatEstablimentOrigen = true and tdi.traslladant = true and tdi.establimentByTdiCodeor = "+ estId+" " +
+			"and tdi.valid = true");				
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsByEstablimentPendientesDevolver failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsByEstablimentPendientesDevolver fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos pendientes de ser trasladados
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findTrasllatsPendientesTraslado() throws InfrastructureException {
+		Collection col;
+		
+		try {
+			logger.debug("findTrasllatsPendientesTraslado ini");
+			col = getHibernateTemplate().find(" from Trasllat tdi where " +
+					"tdi.acceptatTrasllat = true  and tdi.data <= now() and tdi.traslladant = false and tdi.valid = true") ;		
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsPendientesTraslado failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsPendientesTraslado fin");
+		return col;
+	}
+	
+	/**
+	 * Devuelve Traslados de depositos que no han completado su traslado y retorno.
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findTrasllatsNoCompletados() throws InfrastructureException {
+		Collection col;
+		
+		try {
+			logger.debug("findTrasllatsNoCompletados ini");
+			String q = "from Trasllat tdi " +
+					"where tdi.valid = true and tdi.id not in (select tra.id from Trasllat tra " +
+					"where (tdi.acceptatTrasllat = true and tdi.retornatEstablimentOrigen = true and tdi.traslladant = true) " +
+					"or (tdi.acceptatTrasllat = false and tdi.retornatEstablimentOrigen = false and tdi.traslladant = false))";	
+			
+			col = getHibernateTemplate().find(q);
+			
+		} catch (HibernateException ex) {
+			logger.error("findTrasllatsNoCompletados failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findTrasllatsNoCompletados fin");
+		return col;
+	}
+	
+	/**
+	 * Marca como aceptado un traslado de deposito 
+	 * @param id de trasllat
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public void aceptarTraslado(Long trasllatDippositId) throws InfrastructureException {
+		
+		try {
+			logger.debug("aceptarTraslado ini");
+			Trasllat tdi = this.getById(trasllatDippositId);
+			if(tdi!= null){
+				tdi.setAcceptatTrasllat(Boolean.valueOf(true));
+				tdi.setTraslladant(Boolean.valueOf(false));
+				makePersistent(tdi);
+			}		
+			
+		} catch (HibernateException ex) {
+			logger.error("aceptarTraslado failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("aceptarTraslado fin");		
+	}
+	
+	/**
+	 * Marca como rechazado un traslado de deposito 
+	 * @param id de trasllat
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public void rechazarTraslado(Long trasllatDippositId) throws InfrastructureException {
+		
+		try {
+			logger.debug("aceptarTraslado ini");
+			Trasllat tdi = this.getById(trasllatDippositId);
+			if(tdi!= null){
+				tdi.setAcceptatTrasllat(Boolean.valueOf(false));
+				tdi.setTraslladant(Boolean.valueOf(false));
+				makePersistent(tdi);
+			}
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("aceptarTraslado failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("aceptarTraslado fin");		
+	}
+	
+	
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 *
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+	
+	
+	
+	/*************************** LIMIT ******************************************************/
+	/**
+	 * Retorna true si un contenidor està en camí
+	 * 
+	 * 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public boolean contenidorEnCami(Long idDiposit) throws InfrastructureException {
+		List traslado;
+		try {
+			logger.debug("contenidorEnCami ini");
+			String q = "select count(tdi.id) " +
+					"from Trasllat tdi " +
+					"left join tdi.diposits dip " +
+					"where " +
+					"dip.id = " + idDiposit + " and " +
+					"tdi.traslladant = true and tdi.valid = true";
+			traslado = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("contenidorEnCami failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		if (traslado != null && traslado.size()> 0 && ((Long)traslado.get(0)).intValue() > 0) {
+			logger.debug("contenidorEnCami fin");
+			return true;
+		}
+		logger.debug("contenidorEnCami fin");
+		return false;
+	}
+
+}

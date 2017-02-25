@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="">
+  <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+  <property name="hibernate.connection.password"/>
+  <property name="hibernate.connection.url">jdbc:postgresql://dgtic.in.at4.net:5432/gestoli_db</property>
+  <property name="hibernate.connection.username">postgres</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+  <property name="hibernate.hbm2ddl.auto">update</property>
+  <mapping resource="es/caib/gestoli/logic/model/Campanya.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/EntradaDiposit.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Color.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Establiment.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Elaboracio.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/ElaboracioOliva.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Bota.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/TipusEstabliment.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Lot.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Zona.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/EntradaLot.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/VarietatOliva.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/MaterialTipusEnvas.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/TipusEnvas.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Trasllat.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Factura.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/MaterialDiposit.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Marca.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Analitica.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/AnaliticaValor.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/AnaliticaParametre.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/AnaliticaParametreTipus.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Finca.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Taxa.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Plantacio.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Olivicultor.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Usuari.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/PartidaOliva.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/PartidaFonoll.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Diposit.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/VarietatOli.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/SortidaLot.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Informacio.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/SortidaDiposit.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/DescomposicioPartidaOliva.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Arxiu.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Etiquetatge.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Idioma.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Traza.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Solicitant.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/CategoriaInformacio.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Document.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/Grup.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/DescomposicioPlantacio.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/CategoriaOli.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/HistoricOlivicultor.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/HistoricEstabliment.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/HistoricLlistatFactura.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/PartidaOli.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/SortidaOrujo.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/RendimentVarietat.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/EtiquetesLot.hbm.xml"/>
+  <mapping resource="es/caib/gestoli/logic/model/SortidaPartida.hbm.xml"/>
+   <mapping resource="es/caib/gestoli/logic/model/SortidaBotaGranel.hbm.xml"/>
+ </session-factory>
+</hibernate-configuration>

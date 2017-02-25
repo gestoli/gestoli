@@ -1,0 +1,9 @@
+1. gestoli.keystore -->  Copiar gestoli.keystore al directori <jboss_dir>\server\default\conf
+2. server.xml		-->  Afegir a <jboss_dir>\server\default\deploy\jbossweb-tomcat50.sar\server.xml:
+
+						<!-- SSL/TLS Connector configuration using the admin devl guide keystore-->
+				      	<Connector port="8443" address="${jboss.bind.address}"
+				        	maxThreads="100" minSpareThreads="5" maxSpareThreads="15"
+				           	scheme="https" secure="true" clientAuth="false"
+				           	keystoreFile="${jboss.server.home.dir}/conf/gestoli.keystore"
+				           	keystorePass="gestoli" sslProtocol = "TLS" />

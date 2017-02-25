@@ -1,0 +1,997 @@
+package es.caib.gestoli.logic.dao;
+
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import es.caib.gestoli.logic.exception.InfrastructureException;
+import es.caib.gestoli.logic.model.Campanya;
+import es.caib.gestoli.logic.model.Olivicultor;
+
+
+/**
+ * Home object for domain model class Establiment
+ * @see es.caib.gestoli.logic.model.Establiment
+ * 
+ */
+public class OlivicultorDao {
+	private static Logger logger = Logger.getLogger(OlivicultorDao.class);
+	private HibernateTemplate hibernateTemplate;
+
+
+	/**
+	 * Recupera todos los registros
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAll() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAll ini");
+			col = getHibernateTemplate().find("from Olivicultor as oli order by oli.codiDO, oli.codiDOExperimental"); 
+		} catch (HibernateException ex) {
+			logger.error("findAll failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAll fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera todos los registros
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllEliminats() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllEliminats ini");
+			col = getHibernateTemplate().find("from Olivicultor as oli where oli.dataBaixa is not null order by oli.codiDO, oli.codiDOExperimental"); 
+		} catch (HibernateException ex) {
+			logger.error("findAllEliminats failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllEliminats fin");
+		return col; 
+	}
+
+
+	/**
+	 * Recupera todos los registros de una campanya determinada
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllOlivicultorsByCampanyaOrderedByCodiDOAsc(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDOAsc ini");
+			col = getHibernateTemplate().find("from Olivicultor as oli where oli.campanya.id = "+campanyaId+" order by oli.codiDO, oli.codiDOExperimental"); 
+		} catch (HibernateException ex) {
+			logger.error("findAllOlivicultorsByCampanyaOrderedByCodiDOAsc failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDOAsc fin");
+		return col; 
+	}
+
+
+	/**
+	 * Recupera todos los registros de una campanya determinada
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllOlivicultorsByCampanyaOrderedByCodiDODesc(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDODesc ini");
+			col = getHibernateTemplate().find(
+					"from Olivicultor as oli " +
+					"where oli.campanya.id = " + campanyaId + " " +
+					"and oli.dataBaixa is null " +
+					"and (oli.codiDO is not null or oli.codiDOExperimental is not null or oli.codiDOPOliva is not null) " +
+					"order by oli.codiDO desc, oli.codiDOExperimental desc, oli.codiDOPOliva desc"); 
+		} catch (HibernateException ex) {
+			logger.error("findAllOlivicultorsByCampanyaOrderedByCodiDODesc failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDODesc fin");
+		return col; 
+	}
+
+	/**
+	 * Recupera todos los registros de una campanya determinada filtrados
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllOlivicultorsByCampanyaOrderedByCodiDODescAmbFiltre(Long campanyaId, String cerca)  throws InfrastructureException {
+			Collection col;
+			try {
+				logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDODescAmbFiltre ini");
+				
+//				like :cerca
+				col = getHibernateTemplate().find(
+						"select oli " +
+						"from Olivicultor as oli, Usuari usu " +
+						"where oli.usuari.id = usu.id " +
+						"and oli.campanya.id = " + campanyaId + " " +
+						"and oli.dataBaixa is null " +
+						"and (oli.codiDO is not null or oli.codiDOExperimental is not null or oli.codiDOPOliva is not null) " +
+						"and ( upper(oli.nom) like upper('%"+cerca+"%') " +
+						"     or upper(oli.codiDO) like upper('%"+cerca+"%') " +
+						"     or upper(oli.codiDOExperimental) like upper('%"+cerca+"%') " +
+						"	  or upper(usu.usuari) like upper('%"+cerca+"%')) " +
+						"order by oli.codiDO desc, oli.codiDOExperimental desc"); 
+			} catch (HibernateException ex) {
+				logger.error("findAllOlivicultorsByCampanyaOrderedByCodiDODescAmbFiltre failed", ex);
+				throw new InfrastructureException(ex);
+			}
+			logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDODescAmbFiltre fin");
+			return col; 
+	}
+	
+	/**
+	 * Recupera todos los registros de una campanya determinada
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllOlivicultorsEnCampanyaActualOrderedByNom() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDODesc ini");
+			col = getHibernateTemplate().find(
+					"from Olivicultor as oli " +
+					"where oli.campanya.id = (select max(cam.id) from Campanya cam) " +
+					"and oli.dataBaixa is null " +
+					"order by oli.nom asc"); 
+		} catch (HibernateException ex) {
+			logger.error("findAllOlivicultorsByCampanyaOrderedByCodiDODesc failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllOlivicultorsByCampanyaOrderedByCodiDODesc fin");
+		return col; 
+	}
+	
+
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya actual
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findOlivicultorsAltaDOenCampanyaActual() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findOlivicultorsAltaDOenCampanyaActual ini");
+			col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.campanya = (select max(cam.id) from Campanya cam) order by oli.codiDO, oli.codiDOExperimental"); 
+		} catch (HibernateException ex) {
+			logger.error("findOlivicultorsAltaDOenCampanyaActual failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findOlivicultorsAltaDOenCampanyaActual fin");
+		return col; 
+	}
+
+
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya actual SIN CARTILLA
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findOlivicultorsAltaDOSinCartillaEnCampanyaActual() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findOlivicultorsAltaDOSinCartillaEnCampanyaActual ini");
+			col = getHibernateTemplate().find("from Olivicultor oli where oli.cartilla = false and oli.altaDO = true and oli.campanya = (select max(cam.id) from Campanya cam) order by oli.codiDO, oli.codiDOExperimental"); 
+		} catch (HibernateException ex) {
+			logger.error("findOlivicultorsAltaDOSinCartillaEnCampanyaActual failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findOlivicultorsAltaDOSinCartillaEnCampanyaActual fin");
+		return col; 
+	}	
+
+
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya actual SIN CARTILLA y que no estén subvencionados
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findOlivicultorsAltaDOSinCartillaNoSubvencionadosEnCampanyaActual() throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findOlivicultorsAltaDOSinCartillaNoSubvencionadosEnCampanyaActual ini");
+			col = getHibernateTemplate().find("from Olivicultor oli where oli.cartilla = false and oli.altaDO = true and oli.subvencionat = false and oli.campanya = (select max(cam.id) from Campanya cam) order by oli.nom"); 
+		} catch (HibernateException ex) {
+			logger.error("findOlivicultorsAltaDOSinCartillaNoSubvencionadosEnCampanyaActual failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findOlivicultorsAltaDOSinCartillaNoSubvencionadosEnCampanyaActual fin");
+		return col; 
+	}	
+
+
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya dada
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllAltaDOByCampanya(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllAltaDOByCampanya ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" order by oli.codiDO, oli.codiDOExperimental");
+			} else {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.id in ( select holi.olivicultor.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+") order by oli.codiDO, oli.codiDOExperimental");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllAltaDOByCampanya failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllAltaDOByCampanya fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya dada productors RA
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllAltaDOByCampanyaRA(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllAltaDOByCampanyaRA ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" and oli.codiDO is not null order by oli.codiDO");
+			} else {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.id in ( select holi.olivicultor.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+") and holi.codiDO is not null order by oli.codiDO");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllAltaDOByCampanyaRA failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllAltaDOByCampanyaRA fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya dada productors RE
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllAltaDOByCampanyaRE(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllAltaDOByCampanyaRE ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" and oli.codiDOExperimental is not null order by oli.codiDOExperimental");
+			} else {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.id in ( select holi.olivicultor.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+") and holi.codiDOExperimental is not null order by holi.codiDOExperimental");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllAltaDOByCampanyaRE failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllAltaDOByCampanyaRE fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya dada productors RE
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllAltaDOByCampanyaRT(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllAltaDOByCampanyaRT ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" and oli.codiDOPOliva is not null order by oli.codiDOPOliva");
+			} else {
+				col = getHibernateTemplate().find("from Olivicultor oli where oli.id in ( select holi.olivicultor.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+") and holi.codiDOPOliva is not null order by holi.codiDOPOliva");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllAltaDOByCampanyaRT failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllAltaDOByCampanyaRT fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera tots els ids dels olivicultors dados de alta en la DO de la campanya dada 
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllIdAltaDOByCampanya(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllIdAltaDOByCampanya ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("select oli.id from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" order by oli.codiDO, oli.codiDOExperimental");
+			} else {
+				col = getHibernateTemplate().find("select holi.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+" order by holi.codiDO, holi.codiDOExperimental");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllIdAltaDOByCampanya failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllIdAltaDOByCampanya fin");
+		return col; 
+	}
+	
+	public Collection findAllIdAltaDOByCampanyaRA(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllIdAltaDOByCampanyaRA ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("select oli.id from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" and oli.codiDO is not null order by oli.codiDO");
+			} else {
+				col = getHibernateTemplate().find("select holi.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+" and holi.codiDO is not null order by holi.codiDO");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllIdAltaDOByCampanyaRA failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllIdAltaDOByCampanyaRA fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera tots els ids dels olivicultors dados de alta en la DO de la campanya dada  productors RE
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllIdAltaDOByCampanyaRE(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllIdAltaDOByCampanyaRE ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("select oli.id from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" and oli.codiDOExperimental is not null order by oli.codiDOExperimental");
+			} else {
+				col = getHibernateTemplate().find("select holi.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+" and holi.codiDOExperimental is not null order by holi.codiDOExperimental");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllIdAltaDOByCampanyaRE failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllIdAltaDOByCampanyaRE fin");
+		return col; 
+	}
+	
+	/**
+	 * Recupera tots els ids dels olivicultors dados de alta en la DO de la campanya dada  productors RE
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAllIdAltaDOByCampanyaRT(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAllIdAltaDOByCampanyaRT ini");
+			List campanyes = getHibernateTemplate().find("from Campanya where id = " + campanyaId);
+			Campanya cam = (Campanya)campanyes.get(0);
+			if (cam.getDataFi() == null) {
+				col = getHibernateTemplate().find("select oli.id from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" and oli.codiDOPOliva is not null order by oli.codiDOPOliva");
+			} else {
+				col = getHibernateTemplate().find("select holi.id from HistoricOlivicultor holi where holi.altaDO = true and holi.campanya.id = "+campanyaId+" and holi.codiDOPOliva is not null order by holi.codiDOPOliva");
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAllIdAltaDOByCampanyaRT failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAllIdAltaDOByCampanyaRT fin");
+		return col; 
+	}
+	
+	
+
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya dada
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findOlivicultorsAltaDOCartillaByCampanya(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findOlivicultorsAltaDOCartillaByCampanya ini");
+			//aquest canvi ho ha demanat na Marga bauzà de la DO. 
+			//Quan es fa una consulta de la cartilla de producció, si l'olivicultor no ha pagat no surt al llistat i segons ella això no té sentit.
+			//col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.cartilla = true and oli.campanya.id = "+campanyaId+" order by oli.codiDO desc, oli.codiDOExperimental desc");
+			col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.campanya.id = "+campanyaId+" order by oli.codiDO desc, oli.codiDOExperimental desc");
+			logger.debug("findOlivicultorsAltaDOCartillaByCampanya fin");
+		} catch (HibernateException ex) {
+			logger.error("findOlivicultorsAltaDOCartillaByCampanya failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		return col; 
+
+	}
+
+
+	/**
+	 * Recupera todos los olivicultores dados de alta en la DO de la campanya dada con cartilla y ordenado por nombre
+	 * @param campanyaId
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findOlivicultorsAltaDOCartillaByCampanyaOrderNom(Long campanyaId) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findOlivicultorsAltaDOCartillaByCampanyaOrderNom ini");
+			col = getHibernateTemplate().find("from Olivicultor oli where oli.altaDO = true and oli.cartilla = true and oli.campanya.id = "+campanyaId+" order by oli.nom"); 
+			logger.debug("findOlivicultorsAltaDOCartillaByCampanyaOrderNom fin");
+		} catch (HibernateException ex) {
+			logger.error("findOlivicultorsAltaDOCartillaByCampanyaOrderNom failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		return col; 
+
+	}
+	
+	public Collection findOlivicultorsByEstabliment(Long idEstabliment){
+		Collection col;
+		try {
+			logger.debug("findOlivicultorsByEstabliment ini");
+			col = getHibernateTemplate().find(
+					"from " +
+					"	Olivicultor oli " +
+					"where " +
+					//"	oli.altaDO = true and " +
+					//"	oli.cartilla = true and  " +
+					"	oli.id in (select pao.olivicultor.id from PartidaOliva pao where pao.zona.establiment.id = " + idEstabliment + " and pao.valid = true) " +
+					"order by " +
+					"	oli.nom"); 
+			logger.debug("findOlivicultorsByEstabliment fin");
+		} catch (HibernateException ex) {
+			logger.error("findOlivicultorsByEstabliment failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		return col; 
+	}
+	
+	
+
+	/**
+	 * Devuelve el objeto que tiene el id
+	 * @param id
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Olivicultor getById(Long id) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("getById ini");
+			String q = "from Olivicultor as oli where oli.id = '"+id+"'";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				logger.debug("getById fin");
+				return (Olivicultor)olivicultores.get(0);
+			}
+
+		} catch (HibernateException ex) {
+			logger.error("getById failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getById fin");
+		return null;		
+	}
+
+
+	/**
+	 * Devuelve el valor del altaDO del olivicuiltor
+	 * @param id
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Olivicultor olivicultorUsuari(Long usuariId) throws InfrastructureException {
+		List olivicultores;
+		Olivicultor olivicultor= new Olivicultor();
+		try {
+			logger.debug("olivicultorUsuari ini");
+			String q = "select oli.id, oli.altaDO, oli.cartilla from Olivicultor as oli where oli.usuari.id = " + usuariId;
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				Object object[] = (Object[]) olivicultores.get(0);
+				olivicultor.setId((Long)object[0]);
+				olivicultor.setAltaDO((Boolean)object[1]);
+				olivicultor.setCartilla((Boolean)object[2]);
+				logger.debug("olivicultorUsuari fin");
+				return olivicultor;
+			}
+		} catch (HibernateException ex) {
+			logger.error("olivicultorUsuari failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("olivicultorUsuari fin");
+		return null;		
+	}
+
+
+	/**
+	 * Devuelve el valor del altaDO del olivicuiltor
+	 * @param id
+	 * @param idCampanya
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Olivicultor olivicultorUsuari(Long usuariId, Long idCampanya) throws InfrastructureException {
+		List olivicultores;
+		Olivicultor olivicultor= new Olivicultor();
+		try {
+			logger.debug("olivicultorUsuari ini");
+			String q = "select oli.id, oli.altaDO, oli.cartilla from Olivicultor as oli where oli.usuari.id = " + usuariId + " and oli.campanya.id = " + idCampanya;
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				Object object[] = (Object[]) olivicultores.get(0);
+				olivicultor.setId((Long)object[0]);
+				olivicultor.setAltaDO((Boolean)object[1]);
+				olivicultor.setCartilla((Boolean)object[2]);
+				logger.debug("olivicultorUsuari fin");
+				return olivicultor;
+			}
+		} catch (HibernateException ex) {
+			logger.error("olivicultorUsuari failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("olivicultorUsuari fin");
+		return null;		
+	}
+
+
+	/**
+	 * Retorna true si existen fincas para un olivicultor
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Boolean olivicultorUsuariTieneFincas(Long usuariId, Long idCampanya) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("olivicultorUsuariTieneFincas ini");
+			String q = "from Olivicultor as oli where oli.usuari.id = " + usuariId + " and oli.campanya.id = " + idCampanya;
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				Olivicultor olivicultor = (Olivicultor) olivicultores.get(0);
+				if (olivicultor.getFincas().size() > 0){
+					logger.debug("olivicultorUsuariTieneFincas fin");
+					return Boolean.valueOf(true);
+				}else{
+					logger.debug("olivicultorUsuariTieneFincas fin");
+					return Boolean.valueOf(false);
+				}
+			}
+		} catch (HibernateException ex) {
+			logger.error("olivicultorUsuariTieneFincas failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("olivicultorUsuariTieneFincas fin");
+		return Boolean.valueOf(false);		
+	}
+
+
+	/**
+	 * Retorna true si existen olivicultores dados de alta en DO
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Boolean existenOlivicultoresAltaDOConFincas() throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("existenOlivicultoresAltaDOConFincas ini");
+			String q = "from Olivicultor as oli where oli.altaDO = true";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				for (Iterator it = olivicultores.iterator(); it.hasNext();){
+					Olivicultor olivicultor = (Olivicultor) it.next();
+					if (olivicultor.getFincas().size() > 0){
+						logger.debug("existenOlivicultoresAltaDOConFincas fin");
+						return Boolean.valueOf(true);
+					}
+				}
+			}
+		} catch (HibernateException ex) {
+			logger.error("existenOlivicultoresAltaDOConFincas failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("existenOlivicultoresAltaDOConFincas fin");
+		return new Boolean(false);
+	}
+
+
+	/**
+	 * Retorna true si existen olivicultores asociados a usuarios
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public boolean existenOlivicultoresAsociadosUsuarios(Long idUsu) throws InfrastructureException {
+		List olivicultors;
+		try {
+			logger.debug("existenOlivicultoresAsociadosUsuarios ini");
+			String q = "select count(oli.id) from Olivicultor oli where oli.usuari.id = " + idUsu + " ";
+			olivicultors = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		if (olivicultors != null && olivicultors.size()> 0 && ((Long)olivicultors.get(0)).intValue() > 0) {
+			logger.debug("existenOlivicultoresAsociadosUsuarios fin");
+			return true;
+		}
+		logger.debug("existenOlivicultoresAsociadosUsuarios fin");
+		return false;
+	}
+
+
+	/**
+	 * Actualiza un registro
+	 * @param Olivicultor
+	 * @throws InfrastructureException
+	 */
+	public void makePersistent(Olivicultor olivicultor) throws InfrastructureException {
+		try {
+			logger.debug("makePersistent ini");
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			if(olivicultor.getId()!= null){
+				getHibernateTemplate().evict(this.getById(olivicultor.getId()));
+				getHibernateTemplate().update(olivicultor);
+			}else{
+				getHibernateTemplate().save(olivicultor);
+			}
+			
+			// Informamos el idOriginal
+			if (olivicultor.getIdOriginal() == null) {
+				olivicultor.setIdOriginal(olivicultor.getId());
+			}
+			getHibernateTemplate().flush();
+			logger.debug("makePersistent fin");
+		} catch (HibernateException ex) {
+			logger.error("makePersistent failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+
+	/**
+	 * Actualiza un registro
+	 * @param Olivicultor
+	 * @throws InfrastructureException
+	 */
+	public void makePersistent(Olivicultor olivicultor, Session session) throws InfrastructureException {
+		try {
+			logger.debug("makePersistent ini");
+			session.setFlushMode(FlushMode.ALWAYS);
+			session.saveOrUpdate(olivicultor);
+			session.flush();
+			logger.debug("makePersistent fin");
+		} catch (HibernateException ex) {
+			logger.error("makePersistent failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+
+	/**
+	 * Borra un registro
+	 * @param olivicultor
+	 * @throws InfrastructureException
+	 */
+	public void makeTransient(Olivicultor olivicultor)
+	throws InfrastructureException {
+		try {
+			logger.debug("makeTransient ini");
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			getHibernateTemplate().delete(olivicultor);
+			getHibernateTemplate().flush();
+			logger.debug("makeTransient fin");
+		} catch (HibernateException ex) {
+			logger.error("makeTransient failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+
+	/**
+	 * Devuelve un olivicultor de la BBDD a partir de su campanya ,nif y nombre
+	 * @params nif
+	 * @params nombre 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Long getNifName(Long campanyaId, String nif, String name) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("getNombreNif ini");
+			String q = "select oli.id from Olivicultor as oli where oli.campanya.id = "+campanyaId+" and oli.nif = '"+nif+"' and oli.nom = '"+name+"'";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				logger.debug("getNombreNif fin");
+				return (Long) olivicultores.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("getNombreNif failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getNombreNif fin");
+		return null;
+	}
+
+
+	/**
+	 * Comprueba si existe un olivicultor con ese codiDO
+	 * @params codiDO 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Long existeCodiDO(Long campanyaId, String codiDO) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("existeCodiDO ini");
+			String q = "select oli.id from Olivicultor as oli where oli.campanya.id = " + campanyaId + " and oli.codiDO = '" + codiDO + "'";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				logger.debug("existeCodiDO fin");
+				return (Long) olivicultores.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("existeCodiDO failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("existeCodiDO fin");
+		return null;
+	}
+
+
+	/**
+	 * Comprueba si existe un olivicultor con ese codiDOExperimental
+	 * @params codiDOExperimental 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Long existeCodiDOExperimental(Long campanyaId, String codiDOExperimental) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("existeCodiDOExperimental ini");
+			String q = "select oli.id from Olivicultor as oli where oli.campanya.id = " + campanyaId + " and oli.codiDOExperimental = '" + codiDOExperimental + "'";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				logger.debug("existeCodiDOExperimental fin");
+				return (Long) olivicultores.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("existeCodiDOExperimental failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("existeCodiDOExperimental fin");
+		return null;
+	}
+
+
+	/**
+	 * Comprueba si existe un olibicultor con ese usuarioId
+	 * @params usuarioId 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Long usuarioAsignado(Long campanyaId, Long usuarioId) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("usuarioAsignado ini");
+			String q = "select oli.id from Olivicultor as oli where oli.campanya.id = "+campanyaId+" and oli.usuari.id = '"+usuarioId+"'";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				logger.debug("usuarioAsignado fin");
+				return (Long) olivicultores.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("Olivicultor - existeCodiUsuario failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("usuarioAsignado fin");
+		return null;
+	}
+
+
+	/**
+	 * Comprueba si el UID de una tarjeta se corresponde con un olivicultor de esta campaña y devuelve el Id
+	 * @params 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Long getCodigoOlivicultorFromUidTarjeta(String uid, Integer camp) throws InfrastructureException {
+		List olivicultores;
+		try {
+			logger.debug("getCodigoOlivicultorFromUidTarjeta ini");
+			String q = "select oli.id from Olivicultor as oli where oli.campanya.id = "+camp+" and oli.uidRfid = '"+uid+"'";
+			olivicultores = getHibernateTemplate().find(q);
+			if (olivicultores.size() > 0) {
+				logger.debug("getCodigoOlivicultorFromUidTarjeta fin");
+				return (Long) olivicultores.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("getCodigoOlivicultorFromUidTarjeta", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getCodigoOlivicultorFromUidTarjeta fin");
+		return new Long(0);
+
+	}
+
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 *
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+	/**
+	 * Codi corresponent a la do.
+	 * 
+	 * @return
+	 */
+	public String getNextCodiDo() throws InfrastructureException {
+		try {
+			String q = "select max(to_number(oli.codiDO, '999999')) from Olivicultor oli where oli.codiDO is not null";
+			List<BigDecimal> codisDo = getHibernateTemplate().find(q);
+			if (codisDo.size() > 0) {
+				Integer noucodi = codisDo.get(0).intValue() + 1; 
+				return noucodi.toString();
+			}
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		return null;
+	}
+
+	/**
+	 * Codi experimental corresponent a la do.
+	 * 
+	 * @return
+	 */
+	public String getNextCodiDoExperimental() throws InfrastructureException {
+		try {
+			String q = "select max(to_number(oli.codiDOExperimental, '999999')) from Olivicultor oli where oli.codiDOExperimental is not null";
+			List<BigDecimal> codisDo = getHibernateTemplate().find(q);
+			if (codisDo.size() > 0) {
+				Integer noucodi = codisDo.get(0).intValue() + 1; 
+				return noucodi.toString();
+			}
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		return null;
+	}
+	
+	/**
+	 * Codi experimental corresponent a la do.
+	 * 
+	 * @return
+	 */
+	public String getNextCodiDopOliva() throws InfrastructureException {
+		try {
+			String q = "select max(to_number(oli.codiDOPOliva, '999999')) from Olivicultor oli where oli.codiDOPOliva is not null";
+			List<BigDecimal> codisDo = getHibernateTemplate().find(q);
+			if (codisDo.size() > 0) {
+				Integer noucodi = 1;
+				if (codisDo.get(0)!=null) noucodi = codisDo.get(0).intValue() + 1; 
+				return noucodi.toString();
+			}
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		return null;
+	}
+
+	/**
+	 * Id de l'olivicultor que té la id de rfid indicada.
+	 * 
+	 * @return
+	 */
+	public Long findByRfid(String rfid) {
+		try {
+			String q = "select id from Olivicultor where uidRfid = '" + rfid + "' ";
+			List<Long> ids = getHibernateTemplate().find(q);
+			if (ids.size() > 0) {
+				return ids.get(0);
+			}
+			return null;
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+
+	/**
+	 * Olivicultor que té el dni, la id de rfid, o la id indicada.
+	 * 
+	 * @return
+	 */
+	public Olivicultor findByValue(String valor) {
+		try {
+			Long id = null;
+			String condicio = "";
+			try {
+				id = Long.parseLong(valor);
+				condicio = "	or id = '" + valor + "' ";
+			} catch (Exception e) {
+				condicio = "";
+			}
+			String q =	"from Olivicultor " +
+						"where (" +
+						"	nif = '" + valor + "' " +
+						"	or uidRfid = '" + valor + "' " +
+						condicio +
+						") and dataBaixa is null";
+			List<Olivicultor> olivicultors = getHibernateTemplate().find(q);
+			if (olivicultors.size() > 0) {
+				return olivicultors.get(0);
+			}
+			return null;
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+
+	/**
+	 * Olivicultor que té el dni, la id de rfid, o la id indicada.
+	 * 
+	 * @return
+	 */
+	public Olivicultor findByNif(String nif) {
+		try {
+			Long id = null;
+			String condicio = "";
+			String q =	"from Olivicultor " +
+						"where (nif = '" + nif + "') and dataBaixa is null";
+			List<Olivicultor> olivicultors = getHibernateTemplate().find(q);
+			if (olivicultors.size() > 0) {
+				return olivicultors.get(0);
+			}
+			return null;
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+}

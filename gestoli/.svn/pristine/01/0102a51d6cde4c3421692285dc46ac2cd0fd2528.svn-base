@@ -1,0 +1,210 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="/WEB-INF/c-rt.tld"%>
+<%@ taglib prefix="fmt" uri="/WEB-INF/fmt-rt.tld"%>
+<%@ taglib prefix="display" uri="/WEB-INF/displaytag-el.tld"%>
+<%@ page import="es.caib.gestoli.front.util.*"%>
+<%@ page import="java.util.ResourceBundle"%>
+<%@ page import="java.util.Locale"%>
+<%@ page buffer="64kb"%>
+<%@ page autoFlush="true"%>
+<%
+	String lang = Idioma.getLang(request);
+	request.setAttribute("lang",lang);
+%>
+
+<html>
+<head>
+<title><fmt:message key="consulta.oliElaborat.titol" /></title>
+
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<script type="text/javascript" src="js/calendar/calendar-setup.js"></script>
+<%	if(lang.equalsIgnoreCase("ca")){ %>
+<script type="text/javascript" src="js/calendar/lang/calendar-ca.js"></script>
+<script type="text/javascript" src="js/calendar/lang/calendar-es.js"></script>
+<%	}else{ %>
+<script type="text/javascript" src="js/calendar/lang/calendar-es.js"></script>
+<%	} %>
+<link href="js/calendar/calendar-viti.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript" src="js/form.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+	function canviTipus(num) {
+		var formulari = document.getElementById('formulario');
+		if (num > 0) {
+			formulari.submit();
+		} else {
+			document.getElementById('listadoOpcions').style.display = 'none';
+		}
+	}
+
+	function actualitzaUrl(){
+		var elems = document.getElementsByName("tipus7");
+
+		for(i=0; i<elems.length; i++){
+			var url = elems[i].href.substring(0,elems[i].href.indexOf("data="));
+			url += "data=" + document.getElementById('data').value;
+			elems[i].href = url;
+		}	
+	}
+
+//]]>
+</script>
+</head>
+<body>
+<form id="formulario" action="CercaTrazabilitatLlistat.html" method="post" class="extended seguit">
+	<fieldset>
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="hidden" />
+			<c:param name="path" value="formData.fromEstabliment" />
+			<c:param name="camp" value="fromEstabliment" />
+		</c:import> 
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="hidden" />
+			<c:param name="path" value="formData.idEstabliment" />
+			<c:param name="camp" value="idEstabliment" />
+		</c:import>
+		<div class="campoFormTresCuartos ">
+			<label for="tipus"><fmt:message key="consulta.cerca.tipus"/></label>
+			<select name="tipus" id="tipus" onchange='javascript:canviTipus(this.value);'>
+				<option value="0" <c:if test="${formData.tipus == 0}">selected="selected"</c:if>>- - - - - - -</option>
+				<option value="1" <c:if test="${formData.tipus == 1}">selected="selected"</c:if>><fmt:message key="consulta.cerca.marca" /></option>
+				<option value="2" <c:if test="${formData.tipus == 2}">selected="selected"</c:if>><fmt:message key="consulta.cerca.lot.botelles.buides" /></option>
+				<option value="3" <c:if test="${formData.tipus == 3}">selected="selected"</c:if>><fmt:message key="consulta.cerca.lot.botelles.plenes" /></option>
+				<option value="4" <c:if test="${formData.tipus == 4}">selected="selected"</c:if>><fmt:message key="consulta.cerca.contraetiquetes" /></option>
+				<option value="5" <c:if test="${formData.tipus == 5}">selected="selected"</c:if>><fmt:message key="consulta.cerca.lot.talc" /></option>
+				<option value="6" <c:if test="${formData.tipus == 6}">selected="selected"</c:if>><fmt:message key="consulta.cerca.entrada.dia" /></option>
+				<option value="7" <c:if test="${formData.tipus == 7}">selected="selected"</c:if>><fmt:message key="consulta.cerca.diposits.data" /></option>
+				<%--option value="8"><fmt:message key="consulta.cerca.diposit.mobil" /></option>
+				<option value="9"><fmt:message key="consulta.cerca.lot.taps" /></option>
+				<option value="10"><fmt:message key="consulta.cerca.zona" /></option--%>
+			</select>
+		</div>
+
+		<div class="separadorH"></div>
+		
+		<div id="divdata"  <c:if test="${formData.tipus != 7}">style="display:none;"</c:if>>
+			<c:import url="comu/CampFormulari.jsp">
+				<c:param name="tipus" value="calendar" />
+				<c:param name="path" value="formData.data" />
+				<c:param name="required" value="required" />
+				<c:param name="title"><fmt:message key="consulta.camp.dataInici" /></c:param>
+				<c:param name="camp" value="data" />
+				<c:param name="maxlength" value="10" />
+				<c:param name="aclaracio">
+					<fmt:message key="consulta.aclaracio.formatData" />
+				</c:param>
+				<c:param name="clase" value="conMargen campoForm165 " />
+				<c:param name="onchange" value="actualitzaUrl()" />
+			</c:import> 
+			
+			<div class="separadorH"></div>
+		</div>
+		
+		<c:if test="${not empty llistat_opcions}">
+			<span class="filtres">
+				<fmt:message key="manteniment.filtra.resultats" />: <input type="text" id="filtre" value="" />
+			</span>
+		</c:if>
+		
+		<div class="separadorH"></div>
+		
+		<c:if test="${llistat_opcions != null && not empty llistat_opcions}">
+			<div id="listadoOpcions"><%-- Tabla de resultados --%>
+				<div class="layoutSombraTabla ancho">
+					<div class="rellenoInf"></div>
+					<div class="rellenoIzq"></div>
+					<div class="rellenoDer"></div>
+					<div class="supDer"></div>
+					<div class="supIzq"></div>
+					<div class="infIzq"></div>
+					<div class="infDer"></div>
+	
+					<display:table name="llistat_opcions" requestURI="" id="opcions" sort="list" cellpadding="0" cellspacing="0" class="listadoEstrecho selectable" export="true">
+						<c:choose>
+							<c:when test="${formData.tipus == 1}">
+								<display:column titleKey="marca.camp.nom" headerClass="final" sortable="true">
+									<a href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions.id}"/>"><c:out value="${opcions.nom}"/></a>
+								</display:column>
+							</c:when>
+							<c:when test="${formData.tipus == 2}">
+								<display:column titleKey="lot.camp.numeroLot" headerClass="final" sortable="true">
+									<a href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions}"/>"><c:out value="${opcions}"/></a>
+								</display:column>
+							</c:when>
+							<c:when test="${formData.tipus == 3}">
+								<display:column titleKey="lot.camp.nomLot" sortable="true">
+									<a href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions.id}"/>"><c:out value="${opcions.codiAssignat}"/></a>
+								</display:column>
+								<display:column property="producte.nom" titleKey="lot.camp.producte" headerClass="ancho120" sortable="true"/>
+								<display:column property="data" titleKey="lot.camp.data" format="{0,date,dd/MM/yyyy}" headerClass="ancho75 final" sortable="true"/>
+							</c:when>
+							<c:when test="${formData.tipus == 4}">
+								<display:column titleKey="consulta.etiquetes.lot" headerClass="ancho150" sortable="true" sortProperty="lot.id" group="1" >
+									<a href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions.id}"/>"><c:out value="${opcions.lot.codiAssignat}"/></a>
+								</display:column>
+								<display:column property="etiquetaLletra" titleKey="consulta.etiquetes.camp.lletra" headerClass="ancho50" sortable="true" sortProperty="data"/>
+								<display:column property="etiquetaInici" titleKey="consulta.etiquetes.camp.inici" headerClass="ancho100" sortable="true"/>
+								<display:column property="etiquetaFi" titleKey="consulta.etiquetes.camp.fi" headerClass="ancho100" sortable="true"/>
+								<display:column property="capacitat" titleKey="consulta.etiquetes.camp.capacitat" headerClass="ancho100 final" sortable="true"/>
+							</c:when>
+							<c:when test="${formData.tipus == 5}">
+								<display:column titleKey="proces.elaboracioOli.camp.talcLot" headerClass="final" sortable="true">
+									<a href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions}"/>"><c:out value="${opcions}"/></a>
+								</display:column>
+							</c:when>
+							<c:when test="${formData.tipus == 6}">
+								<display:column titleKey="consulta.entradaOliva.camp.dataEntrada" headerClass="ancho75" sortable="true" sortProperty="data" group="1">
+									<a href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions.id}"/>"><c:out value="${opcions.dataFormat}"/></a>
+								</display:column>
+								<display:column property="numeroEntrada" titleKey="consulta.entradaOliva.camp.numeroEntrada" headerClass="ancho50" sortable="true" sortProperty="data"/>
+								<display:column property="olivicultor.nom" titleKey="consulta.entradaOliva.camp.olivicultor" sortable="true"/>
+								<display:column property="totalKilos" titleKey="consulta.entradaOliva.camp.quilosTotals" headerClass="ancho120 final" sortable="true" format="{0,number,#,##0.00} kg."/>
+							</c:when>
+							<c:when test="${formData.tipus == 7}">
+								<display:column titleKey="diposit.camp.codi" sortable="true" sortProperty="id">
+									<a name="tipus7" href="CercaTrazabilitat.html?idEstabliment=<c:out value="${formData.idEstabliment}"/>&amp;tipus=<c:out value="${formData.tipus}"/>&amp;id=<c:out value="${opcions.id}"/>&amp;data=<c:out value="${formData.data}"/>"><c:out value="${opcions.codiAssignat}"/></a>
+								</display:column>
+								<display:column property="capacitat" titleKey="diposit.camp.capacitat" headerClass="ancho100" sortable="true"/>
+								<display:column property="materialDiposit.nom" titleKey="diposit.camp.material" headerClass="ancho120 final" sortable="true" format="{0,number,#,##0.00} kg."/>
+							</c:when>
+						</c:choose>
+						<display:setProperty name="export.xml" value="false" />
+				   		<display:setProperty name="export.csv" value="false" />
+				   		<display:setProperty name="export.rtf" value="false" />
+				   		<display:setProperty name="export.pdf" value="false" />
+				   		<display:setProperty name="export.excel.include_header" value="true" />
+				   		<display:setProperty name="export.excel.filename" value="opcions.xls" />
+				   		<display:setProperty name="export.decorated" value="true" />
+					</display:table>
+				</div>
+			</div>
+
+			<div class="separadorH"></div>
+			
+		</c:if>
+
+		<c:if test="${llistat_opcions != null && empty llistat_opcions && formData.tipus > 0}">
+			<div class="separadorH"></div>
+			<div class="mensajeErrorConsulta">
+				<c:import url="comu/MissatgesIErrors.jsp">
+					<c:param name="listError"><fmt:message key="consulta.entradaOliva.noRegs" /></c:param>
+				</c:import>
+			</div>
+		</c:if>
+	</fieldset>
+</form>
+
+<%-- Colores en tablas --%>
+<script type="text/javascript">
+	$(document).ready(function(){
+		setEstilosTabla();
+		$("#filtre").keyFilter("opcions");
+		actualitzaUrl();
+	})
+</script>
+
+</body>
+</html>

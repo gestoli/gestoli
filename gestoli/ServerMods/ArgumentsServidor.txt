@@ -1,0 +1,1 @@
+-Djavax.xml.stream.XMLInputFactory=com.bea.xml.stream.MXParserFactory -Djavax.xml.stream.XMLEventFactory=com.bea.xml.stream.EventFactory -Djavax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase

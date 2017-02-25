@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatNoConformitatAccio" table="qua_noConformitat_accio" schema="public">
+  		<comment>Qualitat - No Conformitat - Accio</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="nca_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="codi" type="java.lang.Long">
+			<column name="nca_codi" not-null="true"><comment>Codi de laccio dins la No Conformitat</comment></column>
+		</property>
+		<property name="accio" type="java.lang.String">
+			<column name="nca_accio" length="255" not-null="true"><comment>Accio</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableAccio" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="noc_responsableAccio" 
+			not-null="false"/>
+		<property name="dataFiPrevista" type="java.util.Date">
+			<column name="noc_dataFiPrevista" not-null="false"><comment>Data Finalitzacio Prevista</comment></column>
+		</property>
+		<property name="dataTancament" type="java.util.Date">
+			<column name="noc_dataTancament" not-null="false"><comment>Data Tancament No Conformitat</comment></column>
+		</property>
+		<many-to-one 
+			name="noConformitat" 
+			class="es.caib.gestoli.logic.model.QualitatNoConformitat"
+			column="nca_noConformitat" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

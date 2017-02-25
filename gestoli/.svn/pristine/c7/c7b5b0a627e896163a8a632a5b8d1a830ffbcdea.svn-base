@@ -1,0 +1,15 @@
+#displaytag_es.properties
+basic.msg.empty_list=<div class\="noDatos"><div class\="mensajeKo"><div class\="capa1"></div><div class\="capa2"></div><div class\="capa3"></div><div class\="capa4"></div><div class\="capa5"><div class\="capa6"><p>No se ha encontrado nada para mostrar</p></div></div></div></div>
+export.banner=<div class\="exportlinks">Opciones de exportaci\u00F3n\: {0}</div>
+locale.resolver=org.displaytag.localization.I18nSpringAdapter
+paging.banner.all_items_found=<span class\="pagebanner">Se han encontrado {0} registros de tipo {1}, se muestran todos.</span>
+paging.banner.first=<div class\="navegadorMultipagina"><span class\="pagelinks"><a class\="anteriorOff" href\="\#"></a> {0} <a href\="{3}" class\="siguiente"></a></span></div>
+paging.banner.full=<div class\="navegadorMultipagina"><span class\="pagelinks"><a class\="anterior" href\="{2}"></a> {0} <a href\="{3}" class\="siguiente"></a></span></div>
+paging.banner.last=<div class\="navegadorMultipagina"><span class\="pagelinks"><a class\="anterior" href\="{2}"></a> {0} <a href\="\#" class\="siguienteOff"></a></span></div>
+paging.banner.no_items_found=<span class\="pagebanner">No se ha encontrado ning\u00FAn registro de tipo {0}.</span>
+paging.banner.one_item_found=<span class\="pagebanner">Se ha encontrado un registro de tipo {0}.</span>
+paging.banner.onepage=<div class\="navegadorMultipagina"><span class\="pagelinks"></span></div>
+paging.banner.page.link=<a href\="{1}" title\="Ir a la p\u00E1gina {0}">{0}</a>
+paging.banner.some_items_found=<span class\="pagebanner">Se han encontrado {0} registros de tipo {1}, se muestran desde el {2} hasta el {3}.</span>
+
+export.excel.class=es.caib.gestoli.front.spring.views.ExcelHssfView

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 30-nov-2009 17:09:51 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.EntradaDiposit" table="oli_entrada_diposit"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Entrades a disposits</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="edi_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="establiment"
+			class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="edi_codest" not-null="true">
+				<comment>Codi de establiment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza"
+			fetch="select">
+			<column name="edi_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="diposit" class="es.caib.gestoli.logic.model.Diposit"
+			fetch="select">
+			<column name="edi_coddip" not-null="true">
+				<comment>Codi de diposit</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="categoriaOli"
+			class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+			<column name="edi_codcao" not-null="true">
+				<comment>Codi de categoria de oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="partidaOli"
+			class="es.caib.gestoli.logic.model.PartidaOli" fetch="select">
+			<column name="edi_codpar" not-null="true">
+				<comment>Codi de partida de oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="categoriaOriginalPartida"
+			class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+			<column name="edi_codcaopar" not-null="false">
+				<comment>Codi de categoria de oli que tenia originalment la partida</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="elaboracio" class="es.caib.gestoli.logic.model.Elaboracio"
+			fetch="select">
+			<column name="edi_codela">
+				<comment>Codi de elaboracio de oli</comment>
+			</column>
+		</many-to-one>
+		<property name="data" type="timestamp">
+			<column name="edi_data" length="29" not-null="true">
+				<comment>Data</comment>
+			</column>
+		</property>
+		<property name="litres" type="java.lang.Double">
+			<column name="edi_litres" precision="17" scale="17" not-null="true">
+				<comment>Litres</comment>
+			</column>
+		</property>
+		<property name="acidesa" type="java.lang.Double">
+			<column name="edi_acides" precision="17" scale="17">
+				<comment>Acidesa</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="edi_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="valid" type="java.lang.Boolean" insert="false">
+			<column name="edi_valid" not-null="true">
+				<comment>Proces valid</comment>
+			</column>
+		</property>
+		<many-to-one name="olivicultor" class="es.caib.gestoli.logic.model.Olivicultor" fetch="select">
+			<column name="edi_codoli" not-null="false">
+				<comment>Codi olivicultor</comment>
+			</column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

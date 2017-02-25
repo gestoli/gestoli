@@ -1,0 +1,28 @@
+#########################################################
+## JNDI
+#########################################################
+
+jndi.application=gestoli
+
+#########################################################
+## DATA SOURCE
+#########################################################
+
+ds.registry.name=java:/GestoliDS
+
+#########################################################
+#  CONTEXTS
+#########################################################
+front.context=gestoliva
+
+##########################################
+#lang utilitzat per fer de missatges_end_avant.properties -> missatges_end_avant_es.properties
+#Ha de ser el mateix que default_lang de Constants.java
+##########################################
+app.defaultLocale=es
+
+application.name=gestoli
+
+component.logic=logic
+component.front=front
+

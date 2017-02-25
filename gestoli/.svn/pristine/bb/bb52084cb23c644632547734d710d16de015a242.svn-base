@@ -1,0 +1,70 @@
+#introduccionMicroweb {
+	background: #F4D23D
+		url(../../img/general/microweb/fondoIntroduccionMicroweb.jpg) top left
+		repeat-x;
+}
+
+#introduccionMicroweb .contenidoIntroduccion {
+	padding: 0 19px 0 19px;
+	clear: left;
+}
+
+#introduccionMicroweb .contenidoIntroduccion img {
+	float: left;
+	margin-right: 18px;
+}
+
+#introduccionMicroweb .contenidoIntroduccion p { /* clear: left; */
+	text-align: justify;
+	margin-bottom: 17px;
+}
+
+p.parrafoSinMargen {
+	margin-bottom: 0px !important;
+}
+
+#introduccionMicroweb .bottomIntroduccion {
+	width: 842px;
+	height: 70px;
+	background:
+		url(../../img/general/microweb/bottomIntroduccionMicroweb.jpg) bottom
+		left no-repeat;
+	position: relative;
+}
+
+#introduccionMicroweb .bottomIntroduccion .enlaceSiguiente {
+	width: 220px;
+	height: 25px;
+	position: absolute;
+	bottom: 0px;
+	right: 5px !important;
+	right: 10px;
+	text-align: left;
+}
+
+#introduccionMicroweb .bottomIntroduccion .enlaceSiguiente div {
+	float: left;
+	font-size: 12px;
+	margin-left: 5px;
+}
+
+#introduccionMicroweb .bottomIntroduccion .enlaceSiguiente div a {
+	color: #000;
+	position: relative;
+}
+
+#introduccionMicroweb .bottomIntroduccion .enlaceSiguiente div a span {
+	background: url(../../img/general/siguiente.png) top right no-repeat
+		!important;
+	width: 25px;
+	height: 16px;
+	display: block;
+	position: absolute;
+	right: -25px !important;
+	right: -30px;
+	top: 0px;
+	cursor: pointer;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/siguiente.png', sizingMethod = 'crop' );
+}

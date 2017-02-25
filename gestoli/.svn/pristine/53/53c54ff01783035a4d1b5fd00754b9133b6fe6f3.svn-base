@@ -1,0 +1,476 @@
+package es.caib.gestoli.front.spring;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.BaseCommandController;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import es.caib.gestoli.logic.interfaces.OliConsultaEjb;
+import es.caib.gestoli.logic.interfaces.OliFrontOfficeEjb;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.model.Elaboracio;
+
+/**
+ * <p>Controlador para las acciones de dar de alta o editar un
+ * registro de tipos de información.</p>
+ * <p>Los parámetros de la petición HTTP relevantes para este
+ * controlador son:
+ * <ul>
+ *   <li><code>id</code>
+ *    - Identificador del registro. Este parámetro es el que
+ *      determina si se ha de mostrar la página de creación o la
+ *      página de edición.</li>
+ * </ul></p>
+ * <p>No hay información para la vista:
+ * <p>Este controlador distingue entre las peticiones del tipo
+ * GET y las de tipo POST. Si la petición es de tipo POST
+ * se ejecuta la acción de creación o de edición. Si la petición es de
+ * tipo GET solo se muestra la página.
+ *
+ * @author Raul Morales
+ */
+public class GenerarPdfController extends SimpleFormController {
+
+    private static Logger logger = Logger.getLogger(GenerarPdfController.class);
+
+    /*
+     * Servicio para acceder a las funcionalidades de la aplicación.
+     */
+    private OliConsultaEjb oliConsultaEjb;
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+	private OliFrontOfficeEjb oliFrontOfficeEjb;
+
+	private HibernateTemplate hibernateTemplate;
+//    private String rolAdmin;
+
+	public ModelAndView onSubmit(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object command,
+            BindException errors)
+    throws ServletException {
+    	ConsultaPdfCommand consulta = (ConsultaPdfCommand)command;
+    	Map myModel = new HashMap();
+    	try {
+
+    		int tipus = consulta.getTipus().intValue();
+    		if (request.getParameter("tipus")!=null){
+    			tipus=Integer.parseInt(request.getParameter("tipus"));
+    		}
+    		
+    		Collection llistat = new HashSet();
+    		switch (tipus) {
+    		case 1: // Generacion desde crear campaña
+    			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    			llistat = oliInfraestructuraEjb.findOlivicultorsAltaDOenCampanyaActual();
+    			setSuccessView("generarPdfFactura");
+    			break;
+    		case 2: // Generacion desde menu de prefacturas
+
+    			boolean boolTotsOlivicultorsPrefactura=false;
+    			
+    			if (request.getParameter("totsOlivicultorsPrefactura")!=null){
+    				if(request.getParameter("totsOlivicultorsPrefactura").equals("S")){
+    					boolTotsOlivicultorsPrefactura=true;
+    				}
+    			}
+    			
+    			if (boolTotsOlivicultorsPrefactura){
+    				logger.info("Demandada accion: Prefacturas a todos los olivicultores.");
+    				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    				llistat = oliInfraestructuraEjb.findOlivicultorsAltaDOSinCartillaNoSubvencionadosEnCampanyaActual();
+    				setSuccessView("generarPdfFactura");
+    			} else {
+    				List listaOlivicultores = new ArrayList();
+    				String nomParam;
+    				Enumeration params = request.getParameterNames();
+    				while (params.hasMoreElements()){
+    					nomParam=(String)params.nextElement();
+    					String splitParam[]=nomParam.split("_");
+    					if (splitParam.length==2){
+    						if (splitParam[0].equals("olivicultorsSeleccionats")){
+    							oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    							listaOlivicultores.add(oliInfraestructuraEjb.olivicultorAmbId(new Long(Integer.parseInt(splitParam[1]))));
+    						}
+    					}
+    				}
+    				if (!listaOlivicultores.isEmpty()){
+    					llistat = listaOlivicultores;
+    					setSuccessView("generarPdfFactura");
+        				logger.info("Demandada accion: Prefacturas a algunos olivicultores");    					
+    				} else {
+    					setSuccessView("redirect:Prefactura.html");
+        				logger.info("Demandada accion: Prefacturas a algunos olivicultores =>> No se han seleccionado olivicultores");    						
+    				}
+    			}			    			
+    			break;
+    		case 3:  // Generacion de cartilla de produccion de olivicultor
+    			Long idOlivicultor = new Long(request.getParameter("id"));
+    			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    			llistat.add(oliInfraestructuraEjb.olivicultorAmbId(idOlivicultor));
+    			setSuccessView("generarPdfCartilla");
+    			logger.info("Generar PDF cartilla");
+    			break;
+    		case 4: // Generacion de factura para 1 olivicultor o consulta si esta hecha
+    			Long oliId= new Long (request.getParameter("id"));
+    			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    			llistat.add(oliInfraestructuraEjb.olivicultorAmbId(oliId));
+				setSuccessView("generarPdfFactura");
+				logger.info("Demandada accion: Factura a un olivicultor");  
+    			break;
+    		case 5: // El olivicultor consulta el pdf de su factura si ha sido creada. Sino se le dice que no hay datos para mostrar
+    			Long oliviId= new Long (request.getParameter("id"));
+    			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    			if (oliInfraestructuraEjb.facturaExisteByOliId(oliviId)){
+    				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    				llistat.add(oliInfraestructuraEjb.facturaCercaOliId(oliviId).getOlivicultor());
+    				logger.info("Demandada accion: Olivicultor consulta factura: La factura existe.");
+    			}else{
+    				logger.info("Demandada accion: Olivicultor consulta factura: No existe factura para este olivicultor.");
+    			}
+				setSuccessView("generarPdfFactura");   			
+    			break;
+    		case 6: // Es consulta de un libro
+
+    			int tipusLlibre = Integer.parseInt(request.getParameter("tipusLlibre"));
+
+    			switch(tipusLlibre){
+    			case 1:
+    				setSuccessView("generarPdfLlibreControlEntrada");
+    				logger.info("generarPdfLlibreControlEntrada");
+    				break;
+    			case 2:
+    				setSuccessView("generarPdfLlibreElaboracioOli");
+    				logger.info("generarPdfLlibreElaboracioOli");
+    				break;
+	  			case 3:
+					setSuccessView("generarPdfLlibreExistenciesOli");
+					logger.info("generarPdfLlibreExistenciesOli");
+					break;
+	  			case 4:
+					setSuccessView("generarPdfLlibreEmbotellat");
+					logger.info("generarPdfLlibreEmbotellat");
+					break;
+    			
+    			}
+    			
+    			llistat=null;
+    			
+    			break;
+    			
+    		case 7: // Es pdf de analitica
+    			
+				setSuccessView("generarPdfAnalitica");
+				logger.info("generarPdfAnalitica");
+    			llistat=null;
+    			
+    			break;
+    			
+    		case 8: // Es pdf document de rendiment (elaboració oli)
+    			Long idElaboracio = Long.parseLong(request.getParameter("idElaboracio"));
+    			Elaboracio elaboracio = oliInfraestructuraEjb.elaboracioAmbId(idElaboracio, true);
+    			
+    			oliInfraestructuraEjb.elaboracioModificarImpresions(elaboracio.getId(),elaboracio.getNumPrintsDocRendiment() + 1);
+    			
+    			setSuccessView("generarPdfDocRendiment");
+				logger.info("generarPdfDocRendiment");
+    			llistat=null;
+    			
+    			break;
+    			
+    		case 9: // MO08
+    			setSuccessView("generarPdfMO08");
+				logger.info("generarPdfMO08");
+    			llistat=null;
+    			break;
+    			
+    		case 10: // MO09
+    			setSuccessView("generarPdfMO09");
+				logger.info("generarPdfMO09");
+    			llistat=null;
+    			break;
+    			
+    		case 11: // MO15
+    			setSuccessView("generarPdfMO15");
+				logger.info("generarPdfMO15");
+    			llistat=null;
+    			break;
+        		
+    		case 12:	// Genera el document a partir de les dades de la taula d'històric.
+    			setSuccessView("generarPdfFactura");
+    			break;
+
+    		case 13: // Generacion d'etiquetes
+    			boolean boolTotsOlivicultors=false;
+    			
+    			if (request.getParameter("totsOlivicultors")!=null){
+    				if(request.getParameter("totsOlivicultors").equals("S")){
+    					boolTotsOlivicultors=true;
+    				}
+    			}
+    			if (boolTotsOlivicultors){
+    				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    	        	llistat = oliInfraestructuraEjb.findAllOlivicultorsEnCampanyaActualOrderedByNom();
+    	        	setSuccessView("generarPdfEtiquetes");
+    			} else {
+					List listaOlivicultores = new ArrayList();
+					String nomParam;
+					Enumeration params = request.getParameterNames();
+					while (params.hasMoreElements()){
+						nomParam=(String)params.nextElement();
+						String splitParam[]=nomParam.split("_");
+						if (splitParam.length==2){
+							if (splitParam[0].equals("olivicultorsSeleccionats")){
+								oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+								listaOlivicultores.add(oliInfraestructuraEjb.olivicultorAmbId(new Long(Integer.parseInt(splitParam[1]))));
+							}
+						}
+					}
+					if (!listaOlivicultores.isEmpty()){
+						llistat = listaOlivicultores;
+						setSuccessView("generarPdfEtiquetes");
+	    				logger.info("Demandada acció: Etiquetes d'olivicultores");    					
+					} else {
+						setSuccessView("redirect:EtiquetesOlivicultors.html");
+	    				logger.info("Demandada acció: Etiquetes d'olivicultores =>> No s'han seleccionat olivicultors");    						
+					}
+    			}
+    			break;
+    		case 14: // Volant
+    			if (request.getParameter("sentit")!=null){
+    				myModel.put("sentit", request.getParameter("sentit"));
+    			}
+    			setSuccessView("generarPdfVolant");
+				logger.info("generarPdfVolant");
+    			llistat=null;
+    			break;
+    		
+	    	case 15: // Declaracio Mensual
+				setSuccessView("generarPdfDeclaracioMensual");
+				logger.info("generarPdfDeclaracioMensual");
+				llistat=null;
+				break;
+    		
+	    	case 16: // Agencia oli - Declaracio Mensual
+				setSuccessView("generarPdfAgenciaOliDeclaracioMensual");
+				logger.info("generarPdfAgenciaOliDeclaracioMensual");
+				llistat=null;
+				break;
+
+	    	case 17: // Qualitat - Pla Formacio
+				setSuccessView("generarPdfQualitatPlaFormacio");
+				logger.info("generarPdfQualitatPlaFormacio");
+				llistat=null;
+				break;
+	    	case 18: // Qualitat - Pla Formacio - Evaluacio Formacio
+				setSuccessView("generarPdfQualitatFormacioEvaluacio");
+				logger.info("generarPdfQualitatFormacioEvaluacio");
+				llistat=null;
+				break;
+	    	case 19: // Qualitat - Pla Manteniment
+				setSuccessView("generarPdfQualitatPlaManteniment");
+				logger.info("generarPdfQualitatPlaManteniment");
+				llistat=null;
+				break;
+	    	case 20: // Qualitat - No Conformitat
+				setSuccessView("generarPdfQualitatNoConformitat");
+				logger.info("generarPdfQualitatNoConformitat");
+				llistat=null;
+				break;
+	    	case 21: // Qualitat - APPCC - Etapes
+				setSuccessView("generarPdfQualitatAPPCCEtapes");
+				logger.info("generarPdfQualitatAPPCCEtapes");
+				llistat=null;
+				break;
+	    	case 22: // Es pdf de analitica (per FrontOffice)
+    			
+				setSuccessView("generarPdfAnaliticaWeb");
+				logger.info("generarPdfAnaliticaWeb");
+    			llistat=null;
+    			
+    			break;
+	    	case 23: // Es pdf document de rendiment (elaboració oli) (per FrontOffice)
+    			Long idElaboracioWeb = Long.parseLong(request.getParameter("idElaboracio"));
+    			Elaboracio elaboracioWeb = oliFrontOfficeEjb.elaboracioAmbId(idElaboracioWeb, true);
+    			
+    			oliFrontOfficeEjb.elaboracioModificarImpresions(elaboracioWeb.getId(),elaboracioWeb.getNumPrintsDocRendiment() + 1);
+    			
+    			setSuccessView("generarPdfDocRendimentWeb");
+				logger.info("generarPdfDocRendimentWeb");
+    			llistat=null;
+    			
+    			break;
+	    	case 24: // Es pdf de document d'acompanyament d'oliva
+    			
+				setSuccessView("generarPdfAcompanyamentOliva");
+				logger.info("generarPdfAcompanyamentOliva");
+    			llistat=null;
+    			
+    			break;
+	    	case 25: // Es pdf de document d'acompanyament de fonoll
+    			
+				setSuccessView("generarPdfAcompanyamentFonoll");
+				logger.info("generarPdfAcompanyamentFonoll");
+    			llistat=null;
+    			
+    			break;
+	    	case 26: // Declaracio Mensual Oliva taula
+				setSuccessView("generarPdfDeclaracioMensualOlivaTaula");
+				logger.info("generarPdfDeclaracioMensualOlivaTaula");
+				llistat=null;
+				break;
+			}
+    		
+    		
+	    	myModel.put("llistat", llistat);
+//	    	myModel.put("documentTipus", infraestructuraEjb.documentTipus());
+//	    	if (bodegaId==null) bodegaId = consultaEjb.dameBodegaId();
+//	    	myModel.put("bodegaNom", infraestructuraEjb.bodegaAmbId(bodegaId).getNom());
+		} catch (Exception ex) {
+			logger.error("EXCEPTION", ex);
+			throw new ServletException(ex);
+//			ControllerUtils.saveMessageError(request, missatge("usuari.missatge.crear.no"));
+		}
+
+		return new ModelAndView(getSuccessView(), myModel);
+    }
+
+
+    /**
+     * Retorna todos los datos del modelo necesarios para mostrar
+     * el formulario de inserción (LOVs y cosas de esas) si no hay.
+     * @see SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest, java.lang.Object, org.springframework.validation.Errors)
+     */
+    protected Map referenceData(
+            HttpServletRequest request,
+            Object command,
+            Errors errors) throws Exception {
+        Map myModel = new HashMap();
+//        Collection bodegues = infraestructuraEjb.bodegaLlistat();
+//        myModel.put("bodegues", bodegues);
+//        if (request.isUserInRole(rolAdmin)) {
+//        	myModel.put("categories", infraestructuraEjb.categoriaLlistatActiusAmbBodega((Bodega)bodegues.iterator().next()));
+//        } else myModel.put("categories", infraestructuraEjb.categoriaLlistatBodegaActius());
+//        Collection consultes=new ArrayList();
+//        Integer clave = new Integer(1);
+//        String valor = getMessageSourceAccessor().getMessage("consulta.entradaraim.titol");
+//        Object[] consulta = new Object[] {clave, valor};
+//        consultes.add(consulta);
+//        clave = new Integer(2);
+//        valor = getMessageSourceAccessor().getMessage("consulta.registre.entradavi");
+//        consulta = new Object[] {clave, valor};
+//        consultes.add(consulta); 
+//        clave = new Integer(3);
+//        valor = getMessageSourceAccessor().getMessage("consulta.registre.productes");
+//        consulta = new Object[] {clave, valor};
+//        consultes.add(consulta);
+//        clave = new Integer(4);
+//        valor = getMessageSourceAccessor().getMessage("consulta.registre.proces");
+//        consulta = new Object[] {clave, valor};
+//        consultes.add(consulta);
+//        clave = new Integer(5);
+//        valor = getMessageSourceAccessor().getMessage("consulta.registre.practica");
+//        consulta = new Object[] {clave, valor};
+//        consultes.add(consulta);
+//        clave = new Integer(6);
+//        valor = getMessageSourceAccessor().getMessage("consulta.registre.embotellat");
+//        consulta = new Object[] {clave, valor};
+//        consultes.add(consulta);   
+//        myModel.put("consultes", consultes);
+        return myModel;
+    }
+    
+    /**
+     * Configuración del <i>binder</i>. Si hay campos en el <i>command</i>
+     * con tipos que no sean <i>String</i> se ha de configurar su
+     * correspondiente binder aquí.
+     * @see BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest, org.springframework.web.bind.ServletRequestDataBinder)
+     */
+    protected void initBinder(
+            HttpServletRequest request,
+            ServletRequestDataBinder binder)
+    throws Exception {
+    	SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+        CustomDateEditor dateEditor = new CustomDateEditor(sdf, true);
+        binder.registerCustomEditor(java.util.Date.class, dateEditor);
+    }
+    
+//    /**
+//     * Inyección de la dependencia consultaEjb
+//     *
+//     * @param consultaEjb La clase a inyectar.
+//     */
+//    public void setConsultaEjb(ConsultaEjb consultaEjb) {
+//        this.consultaEjb = consultaEjb;
+//    }
+//    
+//    public void setRolAdmin(String rolAdmin) {
+//		this.rolAdmin = rolAdmin;
+//	}
+
+
+    /**
+     * Inyección de la dependencia oliInfraestructuraEjb
+     * @param oliInfraestructuraEjb La clase a inyectar.
+     */
+    public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+        this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+    }
+
+
+    /**
+     * Inyección de la dependencia oliConsultaEjb
+     * @param oliConsultaEjb La clase a inyectar.
+     */
+	public void setOliConsultaEjb(OliConsultaEjb oliConsultaEjb) {
+		this.oliConsultaEjb = oliConsultaEjb;
+	}
+    
+    
+	 /**
+     * Inyección de la dependencia oliFrontOfficeEjb
+     * @param oliFrontOfficeEjb La clase a inyectar.
+     */
+	public void setOliFrontOfficeEjb(OliFrontOfficeEjb oliFrontOfficeEjb) {
+		this.oliFrontOfficeEjb = oliFrontOfficeEjb;
+	}
+    
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+	
+}

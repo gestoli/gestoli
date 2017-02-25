@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatDescripcioEquip" table="qua_desequip" schema="public">
+  		<comment>Qualitat - Descripcio Equip</comment>
+		<id name="codi" type="java.lang.Long">
+			<column name="deq_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="codiUsuari" type="java.lang.String">
+			<column name="deq_codiUsuari" length="10" not-null="true"><comment>Codi definit per Usuari</comment></column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="deq_nom" length="15" not-null="true"><comment>Nom</comment></column>
+		</property>
+	    <many-to-one 
+			name="ubicacio" 
+			class="es.caib.gestoli.logic.model.Zona"
+			column="deq_ubicacio" 
+			not-null="false"  />
+		<property name="marca" type="java.lang.String">
+			<column name="deq_marca" not-null="false"><comment>Marca</comment></column>
+		</property>
+		<property name="dataCompra" type="java.util.Date">
+			<column name="deq_dataCompra" not-null="false"><comment>Data de compra</comment></column>
+		</property>
+		<property name="numSerie" type="java.lang.String">
+			<column name="deq_numSerie" not-null="false"><comment>Numero de serie o matricula</comment></column>
+		</property>
+		<property name="esVehicle" type="java.lang.Boolean">
+			<column name="deq_esVehicle" not-null="false"><comment>Es un vehicle</comment></column>
+		</property>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="deq_codest" 
+			not-null="true"  />
+	</class>
+</hibernate-mapping>

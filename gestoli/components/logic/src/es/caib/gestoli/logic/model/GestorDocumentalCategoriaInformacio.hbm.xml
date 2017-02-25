@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.GestorDocumentalCategoriaInformacio" table="qua_categoria_informacio" schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Categories de informacions</comment>
+		<id name="id" type="java.lang.Integer">
+			<column name="cai_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="cai_nom" length="128" not-null="true" unique="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="descripcio" type="java.lang.String">
+			<column name="cai_descripcio">
+				<comment>Descripcio</comment>
+			</column>
+		</property>
+		<set name="informacions" inverse="true">
+			<key>
+				<column name="inf_codcai" not-null="true">
+					<comment>Codi de categoria de informacio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.GestorDocumentalInformacio" />
+		</set>
+	</class>
+</hibernate-mapping>

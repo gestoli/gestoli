@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 30-nov-2009 17:09:51 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Bota" table="oli_bota" schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve el tipo
+			del icono de deposito */ public Long getTipo() { Long tipo = null;
+			String nom = ""; if
+			(this.materialDiposit != null) { tipo = this.materialDiposit.getIcona(); } return tipo; }
+			/** * Devuelve el aceite disponible en kilos */ public Double
+			getDisponibleOliQuilos() { Double cantidad = null; if
+			(this.getVolumActual() != null) { //PASAMOS A KG cantidad =
+			Double.valueOf(String.valueOf((Double.valueOf("0.916").doubleValue()
+			* this.getVolumActual().doubleValue()))); } return cantidad; }</meta>
+		<comment>Diposits</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="bot_codi" />
+			<generator class="native"></generator>
+		</id>
+		<!--<many-to-one name="categoriaOli"
+			class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+			<column name="bot_codcao">
+				<comment>Codi de categoria de oli</comment>
+			</column>
+		</many-to-one>-->
+		<many-to-one name="zona" class="es.caib.gestoli.logic.model.Zona"
+			fetch="select">
+			<column name="bot_codzon" not-null="false">
+				<comment>Codi de zona</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="establiment"
+			class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="bot_codest" not-null="true">
+				<comment>Codi de establiment de creacio inicial</comment>
+			</column>
+		</many-to-one>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="bot_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<property name="tipusOlivaTaula" type="java.lang.Integer">
+			<column name="bot_tipot">
+				<comment>Tipus d oliva</comment>
+			</column>
+		</property>
+		<property name="identificador" type="java.lang.String">
+			<column name="bot_ident" length="128" not-null="true">
+				<comment>Codi de bota assignat</comment>
+			</column>
+		</property>
+		<property name="kgOliva" type="java.lang.Double">
+			<column name="bot_kgoliv" precision="17" scale="17">
+				<comment>Kg oliva</comment>
+			</column>
+		</property>
+		<property name="kgOlivaRestant" type="java.lang.Double">
+			<column name="bot_kgolres" precision="17" scale="17">
+				<comment>Kg oliva restant</comment>
+			</column>
+		</property>
+		<property name="concentracioSalmorra" type="java.lang.Double">
+			<column name="bot_consal" precision="17" scale="17">
+				<comment>Concentracio salmorra</comment>
+			</column>
+		</property>
+		<property name="lotSal" type="java.lang.String">
+			<column name="bot_lotsal" length="128" not-null="true">
+				<comment>Lot sal</comment>
+			</column>
+		</property>
+		<property name="gFonoll" type="java.lang.Double">
+			<column name="bot_fonoll" precision="17" scale="17">
+				<comment>Quantitat de fonoll</comment>
+			</column>
+		</property>
+		<property name="lotFonoll" type="java.lang.String">
+			<column name="bot_lotfon" length="128">
+				<comment>Lot fonoll</comment>
+			</column>
+		</property>
+		<many-to-one name="partidaFonoll"
+			class="es.caib.gestoli.logic.model.PartidaFonoll" fetch="select">
+			<column name="bot_parfon" not-null="false">
+				<comment>Partida fonoll</comment>
+			</column>
+		</many-to-one>
+		<property name="gPebre" type="java.lang.Double">
+			<column name="bot_pebre" precision="17" scale="17">
+				<comment>Quantitat de pebre de banyeta</comment>
+			</column>
+		</property>
+		<property name="lotPebre" type="java.lang.String">
+			<column name="bot_lotpeb" length="128">
+				<comment>Lot pebre de banyeta</comment>
+			</column>
+		</property>
+		<property name="posicioX" type="java.lang.Integer">
+			<column name="bot_posx">
+				<comment>Posicio X</comment>
+			</column>
+		</property>
+		<property name="posicioY" type="java.lang.Integer">
+			<column name="bot_posy">
+				<comment>Posicio Y</comment>
+			</column>
+		</property>
+		<many-to-one name="elaboracio"
+			class="es.caib.gestoli.logic.model.ElaboracioOliva" fetch="select">
+			<column name="bot_codelo" not-null="true">
+				<comment>Codi elaboracio oliva</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza" fetch="select">
+            <column name="bot_codtra" not-null="true">
+                <comment>Codi de traza</comment>
+            </column>
+        </many-to-one>
+	</class>
+</hibernate-mapping>

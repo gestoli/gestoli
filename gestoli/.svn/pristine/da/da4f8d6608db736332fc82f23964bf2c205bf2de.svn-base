@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="components/logic/src"/>
+	<classpathentry kind="src" path="components/test/src"/>
+	<classpathentry kind="src" path="components/front/src"/>
+	<classpathentry excluding="es/" kind="src" path="components/hibernateTools/src"/>
+	<classpathentry kind="lib" path="lib/spring/spring.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-webmvc.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="lib/specs/ejb-2_1-api.jar"/>
+	<classpathentry kind="lib" path="lib/specs/servlet-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/jboss-hibernate.jar"/>
+	<classpathentry kind="lib" path="lib/classes12.jar"/>
+	<classpathentry kind="lib" path="lib/jboss.jar"/>
+	<classpathentry kind="lib" path="lib/iText-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/RXTXcomm.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/hibernate-tools.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-3.5.3.jar"/>
+	<classpathentry kind="lib" path="output/modules/gestoli.jar" sourcepath="components/logic/src/es/caib/gestoli/logic/ejb"/>
+	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="components/test/lib/junit.jar"/>
+	<classpathentry kind="lib" path="components/test/lib/selenium-java-client-driver.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/tools.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-modules-validation.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-orm.jar"/>
+	<classpathentry kind="lib" path="lib/persistence.jar"/>
+	<classpathentry kind="lib" path="lib/asm-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/aspectjweaver.jar"/>
+	<classpathentry kind="lib" path="lib/spring/common-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/displaytag-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/cxf-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-stax-api_1.0_spec-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-annotation_1.0_spec-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-jaxws_2.1_spec-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-ws-metadata_2.0_spec-1.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl-2.1.12.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/displaytag-export-poi-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-schemas-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/poi-scratchpad-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

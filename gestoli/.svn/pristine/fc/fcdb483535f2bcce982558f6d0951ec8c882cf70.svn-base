@@ -1,0 +1,27 @@
+	<!-- Filtro asignar el encoding a todas las peticiones -->
+<filter>
+	<filter-name>CharacterEncoding</filter-name>
+	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	<init-param>
+		<param-name>encoding</param-name>
+		<param-value>utf-8</param-value>
+	</init-param>
+	<init-param>
+		<param-name>forceEncoding</param-name>
+		<param-value>true</param-value>
+	</init-param>
+</filter>
+<!-- Filtro para mantener la session de hibernate -->
+<filter>
+	<filter-name>hibernateFilter</filter-name>
+	<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+	<init-param>
+		<param-name>flushModeName</param-name>
+		<param-value>FLUSH_ALWAYS</param-value>
+	</init-param>
+</filter>
+<!-- Configuració de sitemesh -->
+<filter>
+	<filter-name>sitemesh</filter-name>
+	<filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+</filter>

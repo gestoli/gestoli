@@ -1,0 +1,5 @@
+# Opciones de compilación.
+javac.debug=on
+javac.optimize=off
+javac.deprecation=on
+javac.encoding=UTF-8

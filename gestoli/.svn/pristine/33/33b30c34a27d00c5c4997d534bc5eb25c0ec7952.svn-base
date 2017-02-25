@@ -1,0 +1,478 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.AutocontrolOliva" table="oli_autocontrol"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les clases Model de Gest Oli </meta>
+		<meta attribute="class-code" inherit="false"></meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Autocontrol</comment>
+		
+		<id name="id" type="java.lang.Long">
+			<column name="aut_codi" />
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="data" type="date">
+			<column name="aut_data" length="13" not-null="true">
+				<comment>Data</comment>
+			</column>
+		</property>
+		<property name="hora" type="java.lang.String">
+            <column name="aut_hora" length="5" not-null="true">
+                <comment>Hora (format hh:mm)</comment>
+            </column>
+        </property>
+		<property name="responsable" type="java.lang.String">
+			<column name="aut_respon" length="64" not-null="true">
+				<comment>Usuari introductor de lanalitica</comment>
+			</column>
+		</property>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza" fetch="select">
+			<column name="aut_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="lot" class="es.caib.gestoli.logic.model.Lot" fetch="select">
+			<column name="aut_codlot" not-null="true">
+				<comment>Codi del lot</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="establiment" class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="aut_codest" not-null="true">
+				<comment>Codi destabliment</comment>
+			</column>
+		</many-to-one>
+		<property name="apta" type="java.lang.Boolean">
+			<column name="aut_apta" not-null="true">
+				<comment>Resultats del analisi valids o no</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="OKcolorCorrecte" type="java.lang.Boolean">
+			<column name="aut_col_ok" not-null="false">
+				<comment>colorCorrecte</comment>
+			</column>
+		</property>
+		<property name="colorGroc" type="java.lang.Boolean">
+			<column name="aut_colgro" not-null="false">
+				<comment>colorGroc</comment>
+			</column>
+		</property>
+		<property name="colorVerdGroc" type="java.lang.Boolean">
+			<column name="aut_colveg" not-null="false">
+				<comment>colorVerdGroc</comment>
+			</column>
+		</property>
+		<property name="colorVerd" type="java.lang.Boolean">
+			<column name="aut_colver" not-null="false">
+				<comment>colorVerd</comment>
+			</column>
+		</property>
+		<property name="colorMarro" type="java.lang.Boolean">
+			<column name="aut_colmar" not-null="false">
+				<comment>colorMarro</comment>
+			</column>
+		</property>
+		<property name="colorMarroObscur" type="java.lang.Boolean">
+			<column name="aut_colmao" not-null="false">
+				<comment>colorMarroObscur</comment>
+			</column>
+		</property>
+		<property name="colorNegre" type="java.lang.Boolean">
+			<column name="aut_colneg" not-null="false">
+				<comment>colorNegre</comment>
+			</column>
+		</property>
+		<property name="colorAltres" type="java.lang.String">
+			<column name="aut_colalt" not-null="false">
+				<comment>colorAltres</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="OKaromaCorrecte" type="java.lang.Boolean">
+			<column name="aut_aro_ok" not-null="false">
+				<comment>aromaCorrecte</comment>
+			</column>
+		</property>
+		<property name="aromaVegetal" type="java.lang.Boolean">
+			<column name="aut_aroveg" not-null="false">
+				<comment>aromaVegetal</comment>
+			</column>
+		</property>
+		<property name="aromaMineral" type="java.lang.Boolean">
+			<column name="aut_aromin" not-null="false">
+				<comment>aromaMineral</comment>
+			</column>
+		</property>
+		<property name="aromaFonoll" type="java.lang.Boolean">
+			<column name="aut_arofon" not-null="false">
+				<comment>aromaFonoll</comment>
+			</column>
+		</property>
+		<property name="aromaPebre" type="java.lang.Boolean">
+			<column name="aut_aropeb" not-null="false">
+				<comment>aromaPebre</comment>
+			</column>
+		</property>
+		<property name="aromaTerra" type="java.lang.Boolean">
+			<column name="aut_aroter" not-null="false">
+				<comment>aromaTerra</comment>
+			</column>
+		</property>
+		<property name="aromaAltres" type="java.lang.String">
+			<column name="aut_aroalt" not-null="false">
+				<comment>aromaAltres</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="texturaFermesa1" type="java.lang.Boolean">
+			<column name="aut_texfer1">
+				<comment>texturaFermesa1</comment>
+			</column>
+		</property>
+		<property name="texturaFermesa2" type="java.lang.Boolean">
+			<column name="aut_texfer2">
+				<comment>texturaFermesa2</comment>
+			</column>
+		</property>
+		<property name="texturaFermesa3" type="java.lang.Boolean">
+			<column name="aut_texfer3">
+				<comment>texturaFermesa3</comment>
+			</column>
+		</property>
+		<property name="texturaFermesa4" type="java.lang.Boolean">
+			<column name="aut_texfer4">
+				<comment>texturaFermesa4</comment>
+			</column>
+		</property>
+		<property name="texturaFermesa5" type="java.lang.Boolean">
+			<column name="aut_texfer5">
+				<comment>texturaFermesa5</comment>
+			</column>
+		</property>
+		
+		<property name="texturaDeformabilitat1" type="java.lang.Boolean">
+			<column name="aut_texdef1">
+				<comment>texturaDeformabilitat1</comment>
+			</column>
+		</property>
+		<property name="texturaDeformabilitat2" type="java.lang.Boolean">
+			<column name="aut_texdef2">
+				<comment>texturaDeformabilitat2</comment>
+			</column>
+		</property>
+		<property name="texturaDeformabilitat3" type="java.lang.Boolean">
+			<column name="aut_texdef3">
+				<comment>texturaDeformabilitat3</comment>
+			</column>
+		</property>
+		<property name="texturaDeformabilitat4" type="java.lang.Boolean">
+			<column name="aut_texdef4">
+				<comment>texturaDeformabilitat4</comment>
+			</column>
+		</property>
+		<property name="texturaDeformabilitat5" type="java.lang.Boolean">
+			<column name="aut_texdef5">
+				<comment>texturaDeformabilitat5</comment>
+			</column>
+		</property>
+		
+		<property name="texturaElasticitat1" type="java.lang.Boolean">
+			<column name="aut_texela1">
+				<comment>texturaElasticitat1</comment>
+			</column>
+		</property>
+		<property name="texturaElasticitat2" type="java.lang.Boolean">
+			<column name="aut_texela2">
+				<comment>texturaElasticitat2</comment>
+			</column>
+		</property>
+		<property name="texturaElasticitat3" type="java.lang.Boolean">
+			<column name="aut_texela3">
+				<comment>texturaElasticitat3</comment>
+			</column>
+		</property>
+		<property name="texturaElasticitat4" type="java.lang.Boolean">
+			<column name="aut_texela4">
+				<comment>texturaElasticitat4</comment>
+			</column>
+		</property>
+		<property name="texturaElasticitat5" type="java.lang.Boolean">
+			<column name="aut_texela5">
+				<comment>texturaElasticitat5</comment>
+			</column>
+		</property>
+		
+		<property name="texturaSuavitat1" type="java.lang.Boolean">
+			<column name="aut_texsua1">
+				<comment>texturaSuavitat1</comment>
+			</column>
+		</property>
+		<property name="texturaSuavitat2" type="java.lang.Boolean">
+			<column name="aut_texsua2">
+				<comment>texturaSuavitat2</comment>
+			</column>
+		</property>
+		<property name="texturaSuavitat3" type="java.lang.Boolean">
+			<column name="aut_texsua3">
+				<comment>texturaSuavitat3</comment>
+			</column>
+		</property>
+		<property name="texturaSuavitat4" type="java.lang.Boolean">
+			<column name="aut_texsua4">
+				<comment>texturaSuavitat4</comment>
+			</column>
+		</property>
+		<property name="texturaSuavitat5" type="java.lang.Boolean">
+			<column name="aut_texsua5">
+				<comment>texturaSuavitat5</comment>
+			</column>
+		</property>
+		
+		<property name="texturabocaFermesaEnBoca1" type="java.lang.Boolean">
+			<column name="aut_texfeb1">
+				<comment>texturaFermesaEnBoca1</comment>
+			</column>
+		</property>
+		<property name="texturabocaFermesaEnBoca2" type="java.lang.Boolean">
+			<column name="aut_texfeb2">
+				<comment>texturaFermesaEnBoca2</comment>
+			</column>
+		</property>
+		<property name="texturabocaFermesaEnBoca3" type="java.lang.Boolean">
+			<column name="aut_texfeb3">
+				<comment>texturaFermesaEnBoca3</comment>
+			</column>
+		</property>
+		<property name="texturabocaFermesaEnBoca4" type="java.lang.Boolean">
+			<column name="aut_texfeb4">
+				<comment>texturaFermesaEnBoca4</comment>
+			</column>
+		</property>
+		<property name="texturabocaFermesaEnBoca5" type="java.lang.Boolean">
+			<column name="aut_texfeb5">
+				<comment>texturaFermesaEnBoca5</comment>
+			</column>
+		</property>
+		
+		<property name="texturaFriabilitat1" type="java.lang.Boolean">
+			<column name="aut_texfri1">
+				<comment>texturaFriabilitat1</comment>
+			</column>
+		</property>
+		<property name="texturaFriabilitat2" type="java.lang.Boolean">
+			<column name="aut_texfri2">
+				<comment>texturaFriabilitat2</comment>
+			</column>
+		</property>
+		<property name="texturaFriabilitat3" type="java.lang.Boolean">
+			<column name="aut_texfri3">
+				<comment>texturaFriabilitat3</comment>
+			</column>
+		</property>
+		<property name="texturaFriabilitat4" type="java.lang.Boolean">
+			<column name="aut_texfri4">
+				<comment>texturaFriabilitat4</comment>
+			</column>
+		</property>
+		<property name="texturaFriabilitat5" type="java.lang.Boolean">
+			<column name="aut_texfri5">
+				<comment>texturaFriabilitat5</comment>
+			</column>
+		</property>
+		
+		<property name="texturaCohesio1" type="java.lang.Boolean">
+			<column name="aut_texcoh1">
+				<comment>texturaCohesio1</comment>
+			</column>
+		</property>
+		<property name="texturaCohesio2" type="java.lang.Boolean">
+			<column name="aut_texcoh2">
+				<comment>texturaCohesio2</comment>
+			</column>
+		</property>
+		<property name="texturaCohesio3" type="java.lang.Boolean">
+			<column name="aut_texcoh3">
+				<comment>texturaCohesio3</comment>
+			</column>
+		</property>
+		<property name="texturaCohesio4" type="java.lang.Boolean">
+			<column name="aut_texcoh4">
+				<comment>texturaCohesio4</comment>
+			</column>
+		</property>
+		<property name="texturaCohesio5" type="java.lang.Boolean">
+			<column name="aut_texcoh5">
+				<comment>texturaCohesio5</comment>
+			</column>
+		</property>
+		
+		<property name="texturaUntuositat1" type="java.lang.Boolean">
+			<column name="aut_texunt1">
+				<comment>texturaUntuositat1</comment>
+			</column>
+		</property>
+		<property name="texturaUntuositat2" type="java.lang.Boolean">
+			<column name="aut_texunt2">
+				<comment>texturaUntuositat2</comment>
+			</column>
+		</property>
+		<property name="texturaUntuositat3" type="java.lang.Boolean">
+			<column name="aut_texunt3">
+				<comment>texturaUntuositat3</comment>
+			</column>
+		</property>
+		<property name="texturaUntuositat4" type="java.lang.Boolean">
+			<column name="aut_texunt4">
+				<comment>texturaUntuositat4</comment>
+			</column>
+		</property>
+		<property name="texturaUntuositat5" type="java.lang.Boolean">
+			<column name="aut_texunt5">
+				<comment>texturaUntuositat5</comment>
+			</column>
+		</property>
+		
+		<property name="OKtexturaFermesaCorrecte" type="java.lang.Boolean">
+			<column name="aut_texfer_ok" not-null="false">
+				<comment>texturaFermesaCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturaDeformabilitatCorrecte" type="java.lang.Boolean">
+			<column name="aut_texdef_ok" not-null="false">
+				<comment>texturaDeformabilitatCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturaElasticitatCorrecte" type="java.lang.Boolean">
+			<column name="aut_texela_ok" not-null="false">
+				<comment>texturaElasticitatCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturaSuavitatCorrecte" type="java.lang.Boolean">
+			<column name="aut_texsua_ok" not-null="false">
+				<comment>texturaSuavitatCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturabocaFermesaEnBocaCorrecte" type="java.lang.Boolean">
+			<column name="aut_texfeb_ok" not-null="false">
+				<comment>texturaFermesaEnBocaCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturaFriabilitatCorrecte" type="java.lang.Boolean">
+			<column name="aut_texfri_ok" not-null="false">
+				<comment>texturaFriabilitatCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturaCohesioCorrecte" type="java.lang.Boolean">
+			<column name="aut_texcoh_ok" not-null="false">
+				<comment>texturaCohesioCorrecte</comment>
+			</column>
+		</property>
+		<property name="OKtexturaUntuositatCorrecte" type="java.lang.Boolean">
+			<column name="aut_texunt_ok" not-null="false">
+				<comment>texturaUntuositatCorrecte</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="OKsaborCorrecte" type="java.lang.Boolean">
+			<column name="aut_sab_ok" not-null="false">
+				<comment>saborCorrecte</comment>
+			</column>
+		</property>
+		<property name="saborAcid" type="java.lang.Boolean">
+			<column name="aut_sabaci" not-null="false">
+				<comment>saborAcid</comment>
+			</column>
+		</property>
+		<property name="saborSalat" type="java.lang.Boolean">
+			<column name="aut_sabsal" not-null="false">
+				<comment>saborSalat</comment>
+			</column>
+		</property>
+		<property name="saborAmarg" type="java.lang.Boolean">
+			<column name="aut_sabama" not-null="false">
+				<comment>saborAmarg</comment>
+			</column>
+		</property>
+		<property name="saborAltres" type="java.lang.String">
+			<column name="aut_sabalt" not-null="false">
+				<comment>saborAltres</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="OKsensacioCorrecte" type="java.lang.Boolean">
+			<column name="aut_sen_ok" not-null="false">
+				<comment>sensacioCorrecte</comment>
+			</column>
+		</property>
+		<property name="sensacioAstringent" type="java.lang.Boolean">
+			<column name="aut_senast" not-null="false">
+				<comment>sensacioAstringent</comment>
+			</column>
+		</property>
+		<property name="sensacioPicant" type="java.lang.Boolean">
+			<column name="aut_senpic" not-null="false">
+				<comment>sensacioPicant</comment>
+			</column>
+		</property>
+		<property name="sensacioAltres" type="java.lang.String">
+			<column name="aut_senalt" not-null="false">
+				<comment>sensacioAltres</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="OKregustCorrecte" type="java.lang.Boolean">
+			<column name="aut_reg_ok" not-null="false">
+				<comment>regustCorrecte</comment>
+			</column>
+		</property>
+		<property name="regustBaix" type="java.lang.Boolean">
+			<column name="aut_regbai" not-null="false">
+				<comment>regustBaix</comment>
+			</column>
+		</property>
+		<property name="regustMitja" type="java.lang.Boolean">
+			<column name="aut_regmit" not-null="false">
+				<comment>regustMitja</comment>
+			</column>
+		</property>
+		<property name="regustProlongat" type="java.lang.Boolean">
+			<column name="aut_regpro" not-null="false">
+				<comment>regustProlongat</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="verificacioMesuresCorrectores" type="java.lang.Boolean">
+			<column name="aut_vermesures" not-null="false">
+				<comment>Verificacio de mesures correctores</comment>
+			</column>
+		</property>
+		<property name="mesuresCorrectores" type="java.lang.String">
+			<column name="aut_mesures" length="255" not-null="false">
+				<comment>Mesures correctores</comment>
+			</column>
+		</property>
+		
+		<property name="valid" type="java.lang.Boolean">
+			<column name="aut_valid" not-null="true"></column>
+		</property>
+
+	</class>
+</hibernate-mapping>

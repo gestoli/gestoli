@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.Pais" table="oli_pais" schema="public">
+  		<comment>Pais</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pai_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nomcas" type="java.lang.String">
+			<column name="pai_nomcas" length="255" not-null="true"><comment>Nom del pais en castellà</comment></column>
+		</property>
+		<property name="nomcat" type="java.lang.String">
+			<column name="pai_nomcat" length="255" not-null="true"><comment>Nom del pais en català</comment></column>
+		</property>
+		<property name="ue" type="java.lang.Boolean">
+			<column name="pai_ue" length="255"><comment>El pais pertany a la UE</comment></column>
+		</property>
+		<property name="iso" type="java.lang.String">
+			<column name="pai_iso" length="255"><comment>Codi iso del pais</comment></column>
+		</property>
+		<set name="provincies" inverse="true">
+			<key>
+				<column name="pai_provincia"><comment>Provincia</comment></column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Provincia" />
+		</set>
+	</class>
+</hibernate-mapping>

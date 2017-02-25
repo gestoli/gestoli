@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass name="es.caib.gestoli.logic.model.QualitatPlaControlTransport" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_platra" schema="public">
+  		<comment>Qualitat - Control Transport - Verificacio</comment>
+		<key column="ptr_id"/>
+		<property name="estibaCorrecta" type="java.lang.Boolean">
+			<column name="ptr_estibaCorrecta" not-null="false"><comment> La estiba és correcta </comment></column>
+		</property>
+		<property name="netejaCorrecta" type="java.lang.Boolean">
+			<column name="ptr_netejaCorrecta" not-null="false"><comment> La neteja és correcta </comment></column>
+		</property>
+		<many-to-one 
+			name="vehicle" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioEquip"
+			column="ptr_vehicle" 
+			not-null="false"/>
+		<many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="ptr_codest" 
+			not-null="true"/>
+	</joined-subclass>
+</hibernate-mapping>

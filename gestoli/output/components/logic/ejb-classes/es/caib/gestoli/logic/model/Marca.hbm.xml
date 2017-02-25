@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Marca" table="oli_marca"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf = new
+			SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.getData()); }</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Marques</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="mar_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="mar_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="mar_nom" length="64" not-null="true" unique="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="denominacioOrigen" type="java.lang.Boolean">
+			<column name="mar_denori" not-null="true">
+				<comment>Denominacio de origen</comment>
+			</column>
+		</property>
+		<property name="olivaTaula" type="java.lang.Boolean">
+			<column name="mar_olitau" not-null="false">
+				<comment>Oliva de taula</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="mar_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<set name="etiquetatges" inverse="true">
+			<key>
+				<column name="eti_codmar" not-null="true">
+					<comment>Codi de marca</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Etiquetatge" />
+		</set>
+		<set name="establiments" inverse="false" table="oli_estmar">
+			<key>
+				<column name="ema_codmar" not-null="true">
+					<comment>Codi de marca</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Establiment">
+				<column name="ema_codest" not-null="true">
+					<comment>Codi de establiment</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<property name="dataAlta" type="date">
+			<column name="mar_datalta" length="13">
+				<comment>Data de alta</comment>
+			</column>
+		</property>
+		<property name="dataBaixa" type="date">
+			<column name="mar_datbaixa" length="13">
+				<comment>Data de baixa</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

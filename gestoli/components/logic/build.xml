@@ -1,0 +1,81 @@
+<project name="gestoli.logic" default="common" basedir=".">
+
+   <property name="component" value="${component.logic}"/>
+   <property file="../../versions.properties"/>
+   <import file="../../build.common.xml" />
+   <import file="../../properties.common.xml"/>
+	
+	<path id="component.class.path">
+		<pathelement location="${lib}/commons/${commons-collections}.jar"/>
+		<pathelement location="${lib}/commons/${commons-logging}.jar"/>
+		<pathelement location="${lib}/specs/${ejb_spec}.jar"/>
+		<pathelement location="${lib}/specs/${servlet_spec}.jar"/>
+		<pathelement location="${lib}/${log4j}.jar"/>
+		<pathelement location="${lib}/spring/spring.jar"/>
+		<pathelement location="${lib}/spring/spring-modules-validation.jar"/>
+		<pathelement location="${lib}/hibernate/${hibernate}.jar"/>
+		<pathelement location="${lib}/mail.jar"/>
+		<pathelement location="${lib}/activation.jar"/>
+		<pathelement location="${lib}/${jasperreports}.jar"/>
+		<pathelement location="${lib}/${jdt-compiler}.jar"/>
+		<pathelement location="${lib}/persistence.jar"/>
+	</path>
+
+	<target name="ejb.prepare">
+		<ejb.prepare />
+	</target>
+	
+	<target name="ejb.generate" unless="ejbdoclet.uptodate">
+		 <ejb.generate>
+			 <packageSubstitution>
+				 <packageSubstitution packages="ejb" substituteWith="interfaces"/>
+			 </packageSubstitution>
+		 </ejb.generate>
+	</target>
+	
+	<target name="ejb.compile">
+		<ejb.compile />
+		<ejb.client >
+			<includes>
+				<include name="**/dao/**/*.class"/>
+				<include name="**/ejb**/*.class"/>
+				<include name="**/interfaces/**/*.class"/>
+				<include name="**/exception/**/*.class"/>
+				<include name="**/hibernate/**/*.class"/>
+				<include name="**/model/**/*.class"/>
+				<include name="**/util/**/*.class"/>
+			</includes>
+		</ejb.client>
+	</target>
+	
+   <target name="ejb.customized.jar" unless="jar.uptodate">
+	  <ejb.customize />
+	  <ejb.jar />
+	  <!--model.har /-->
+   </target>
+
+   <target name="common">
+	  <echo>
+	  ====================================
+	  LOGIC
+	  ====================================
+	  </echo>
+	  <antcall target="prepare"/>
+	  <antcall target="generate"/>
+	  <antcall target="compile"/>
+	  <def.jar.uptodate />
+	  <!--def.har.uptodate /-->
+	  <antcall target="ejb.customized.jar"/>
+   </target>
+
+	<target name="prepare">
+		<antcall target="ejb.prepare" />
+	</target>
+	<target name="generate">
+		<def.ejbdoclet.uptodate />
+		<antcall target="ejb.generate" />
+	</target>
+	<target name="compile">
+		<antcall target="ejb.compile" />
+	</target>
+</project>

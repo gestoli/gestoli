@@ -1,0 +1,688 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="/WEB-INF/c-rt.tld"%>
+<%@ taglib prefix="fmt" uri="/WEB-INF/fmt-rt.tld"%>
+<%@ taglib prefix="spring" uri="/WEB-INF/spring.tld"%>
+<%@ page import="es.caib.gestoli.front.util.*"%>
+<%@ page import="java.util.ResourceBundle"%>
+<%@ page import="java.util.Locale"%>
+<%
+	String lang = Idioma.getLang(request);
+	request.setAttribute("lang", lang);
+%>
+<% String establiment = request.getParameter("establimentId"); %>
+<html>
+<head>
+<title><fmt:message key="proces.elaboracioOli.titol" /><if test="${esEco}"> <fmt:message key="proces.elaboracioOliva.camp.ecologic" /></if></title>
+<script type="text/javascript" src="dwr/interface/contenidorService.js"></script>
+<script type="text/javascript" src="dwr/interface/processosService.js"></script>
+<script type="text/javascript" src="dwr/engine.js"></script>
+<script type="text/javascript" src="dwr/util.js"> </script>
+
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<script type="text/javascript" src="js/calendar/calendar-setup.js"></script>
+<%
+	if (lang.equalsIgnoreCase("ca")) {
+%>
+<script type="text/javascript" src="js/calendar/lang/calendar-ca.js"></script>
+<script type="text/javascript" src="js/calendar/lang/calendar-es.js"></script>
+<%
+	} else {
+%>
+<script type="text/javascript" src="js/calendar/lang/calendar-es.js"></script>
+<%
+	}
+%>
+<link href="js/calendar/calendar-viti.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/form.js"></script>
+<script type="text/javascript" src="js/funciones.js"></script>
+
+<script>
+    var avis = avis || {}; // play well with other jsps on the page
+    avis = {
+        noDO: "<fmt:message key="proces.elaboracioOli.avis.noDo"/>",
+        noPendent: "<fmt:message key="proces.elaboracioOli.avis.noPendent"/>"
+    };
+    var msg = msg || {};
+    msg = {
+		noDO: "<fmt:message key="consulta.general.camp.categoriaOli.1"/>",
+		pendent: "<fmt:message key="consulta.general.camp.categoriaOli.2"/>",
+		DO: "<fmt:message key="consulta.general.camp.categoriaOli.3"/>"
+    };
+</script>
+
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+    var winClose;
+	function litrosKilos(num) {
+		var litros = document.getElementById('litres_'+num).value;
+		var kilos = litros * 0.916;
+		document.getElementById('kilos_'+num).value = kilos.toFixed(3);
+	}
+	
+	function kilosLitros(num) {
+		var kilos = document.getElementById('kilos_'+num).value;
+		var litros = kilos / 0.916;
+		document.getElementById('litres_'+num).value = litros.toFixed(3);
+	}
+	
+	function litrosKilosRetirats(id) {
+		var litros = document.getElementById('campo_litresRetirats_'+id).value;
+		var kilos = litros * 0.916;
+		document.getElementById('campo_kilosRetirats_'+id).value = kilos.toFixed(3);
+	}
+	
+	function kilosLitrosRetirats(id) {
+		var kilos = document.getElementById('campo_kilosRetirats_'+id).value;
+		var litros = kilos / 0.916;
+		document.getElementById('campo_litresRetirats_'+id).value = litros.toFixed(3);
+	}
+	function actualitzarPartidesOli(win) {
+		var regex = new RegExp("[\\?&]establimentId=([^&#]*)");
+		var results = regex.exec( window.location.href );
+		var establiment = results[1];
+	    processosService.partidesOliByEstablimentExceptDO(establiment, carregarPartidesOli);
+	    winClose = win;
+	    setTimeout("winClose.close()", 1000);
+	}
+	function carregarPartidesOli(datos) {
+		var value = document.getElementById("idPartidaOli").value;
+		DWRUtil.removeAllOptions("idPartidaOli");
+		DWRUtil.addOptions("idPartidaOli", [{id:"",nom:"- - - - -"}], 'id', 'nom');
+    	DWRUtil.addOptions("idPartidaOli", datos, 'id', 'nom');
+    	document.getElementById("idPartidaOli").value = value;
+	}
+	function comprovarPartidaOliCategoria() {
+		var partidaOli = document.getElementById("idPartidaOli");
+		var categoria = document.getElementById("idCategoriaOli");
+		if (partidaOli.value != "" && categoria.value == "1"){ // Varietat NoDO
+			processosService.tipusPartidaOli(partidaOli.value, avisNoDO);
+		} else if (partidaOli.value != "" && categoria.value == "2"){ // Varietat Pendent			
+			processosService.tipusPartidaOli(partidaOli.value, avisNoPendent);
+		} else if (partidaOli.value != ""){
+			processosService.tipusPartidaOli(partidaOli.value, nomCategoria);
+		} else {
+			document.getElementById('nomCategoriaOli').value = "";
+		}
+	}
+	function avisNoDO(value){
+		if (value == "Pendent"){
+			alert(avis.noDO);
+			document.getElementById('avis_NoDO').style.display = (value == "Pendent") ? "" : "none";
+		}
+		document.getElementById('avis_NoPendent').style.display = "none";
+		var categoria = document.getElementById('nomCategoriaOli');
+		if (value == "No DO"){
+			categoria.value = msg.noDO;
+		} else {
+			categoria.value = msg.pendent;
+		}
+	}
+	function avisNoPendent(value){
+		var categoria = document.getElementById('nomCategoriaOli');
+		document.getElementById('avis_NoDO').style.display = "none";
+		if (value == "No DO"){
+			document.getElementById('avis_NoPendent').style.display = (value == "No DO") ? "" : "none";
+			alert(avis.noPendent);
+			categoria.value = msg.noDO;
+		} else {
+			categoria.value = msg.pendent;
+		}
+	}
+	function nomCategoria(value){
+		var categoria = document.getElementById('nomCategoriaOli');
+		if (value == "No DO"){
+			categoria.value = msg.noDO;
+		} else {
+			categoria.value = msg.pendent;
+		}
+	}
+// ]]>
+</script>
+
+</head>
+<body>
+	<div id="avis_NoDO" style="display:none;">
+		<div class="contenedorMensaje">
+		<div class="mensajeAvis">
+		<div class="capa1"></div>
+		<div class="capa2"></div>
+		<div class="capa3"></div>
+		<div class="capa4"></div>
+		<div class="capa5">
+			<div class="capa6">
+				<p><fmt:message key="proces.elaboracioOli.avis.noDo" /></p>
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class="separadorH"></div>
+	</div>
+	<div id="avis_NoPendent" style="display:none;">
+		<div class="contenedorMensaje">
+		<div class="mensajeAvis">
+		<div class="capa1"></div>
+		<div class="capa2"></div>
+		<div class="capa3"></div>
+		<div class="capa4"></div>
+		<div class="capa5">
+			<div class="capa6">
+				<p><fmt:message key="proces.elaboracioOli.avis.noPendent" /></p>
+			</div>
+		</div>
+		</div>	
+		</div>
+		<div class="separadorH"></div>
+	</div>
+
+	<form 	id="formulario" name="procesElaboracioOliForm" action="ProcesElaboracioOliForm.html" 
+			method="post" class="extended seguit" onsubmit="">
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="calendar" />
+			<c:param name="path" value="formData.data" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.dataElaboracio" />
+			</c:param>
+			<c:param name="camp" value="campo_dataElaboracio" />
+			<c:param name="name" value="data" />
+			<c:param name="maxlength" value="10" />
+			<c:param name="required" value="required" />
+			<c:param name="aclaracio">
+				<fmt:message key="proces.aclaracio.formatdata" />
+			</c:param>
+			<c:param name="clase" value="conMargen campoForm165" />
+		</c:import>
+
+		<div class="separadorH"></div>
+
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="text" />
+			<c:param name="path" value="formData.responsable" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.nomResponsable" />
+			</c:param>
+			<c:param name="camp" value="campo_nomResponsable" />
+			<c:param name="name" value="responsable" />
+			<c:param name="required" value="required" />
+			<c:param name="maxlength" value="128" />
+			<c:param name="clase" value="campoFormGrande" />
+		</c:import>
+		
+
+		<div class="separadorH"></div>
+
+		<c:if test="${not empty desti}">
+				
+			<c:set var="crearPartida">
+				<a href="PartidaOliPopupForm.html" rel="external(720,380)"> 
+					<fmt:message key="proces.elaboracioOli.camp.crearPartidaNova" /> 
+				</a>
+			</c:set> 
+			
+			<c:import url="comu/CampFormulari.jsp">
+				<c:param name="tipus" value="select" />
+				<c:param name="path" value="formData.idPartidaOli" />
+				<c:param name="required" value="required" />
+				<c:param name="title">
+					<fmt:message key="proces.elaboracioOli.camp.nomPartida" />
+				</c:param>
+				<c:param name="camp" value="idPartidaOli" />
+				<c:param name="name" value="idPartidaOli" />
+				<c:param name="selectItems" value="partidesOli" />
+				<c:param name="selectItemsId" value="id" />
+				<c:param name="selectItemsValue" value="nom" />
+				<c:param name="selectSelectedValue" value="${formData.idPartidaOli}"/>
+				<c:param name="clase" value="campoFormGrande conMargen" />
+				<c:param name="onchange" value="comprovarPartidaOliCategoria();" />
+				<c:param name="aclaracio" value="${crearPartida}"/>
+				<c:param name="value" value="${formData.idPartidaOli}"/>
+			</c:import>
+			<c:import url="comu/CampFormulari.jsp">
+				<c:param name="tipus" value="text" />
+				<c:param name="path" value="formData.nomCategoriaOli" />
+				<c:param name="title">
+					<fmt:message key="proces.elaboracioOli.camp.categoriaOli" />
+				</c:param>
+				<c:param name="camp" value="nomCategoriaOli" />
+				<c:param name="name" value="nomCategoriaOli" />
+				<c:param name="required" value="required" />
+				<c:param name="maxlength" value="128" />
+				<c:param name="clase" value="campoFormGrande readOnly" />
+				<c:param name="readonly" value="true" />
+			</c:import>
+
+			<div class="separadorH"></div>
+		
+		</c:if>
+
+		<div class=" bloqueTablas">
+			<c:forEach var="partida" items="${origen}" varStatus="status">
+				<div class="cajaTabla">
+				<div class="layoutSombraTabla">
+				<div class="rellenoInf"></div>
+				<div class="rellenoIzq"></div>
+				<div class="rellenoDer"></div>
+				<div class="supDer"></div>
+				<div class="supIzq"></div>
+				<div class="infIzq"></div>
+				<div class="infDer"></div>
+				<table cellpadding="0" cellspacing="0" class="listadoEstrecho noRoll">
+					<thead>
+						<tr>
+							<th colspan="2" class="unicoHead">
+								<fmt:message key="proces.elaboracioOli.partida"/><c:out value="${status.count}: ${partida.olivicultor.nom}"/>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="ancho200"><fmt:message
+								key="proces.elaboracioOli.camp.dataPartida" /></td>
+							<td class="boldtd"><c:out value="${partida.dataFormat}" /></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="proces.elaboracioOli.camp.hora" /></td>
+							<td class="boldtd"><c:out value="${partida.hora}" /></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="proces.elaboracioOli.camp.numeroEntrada" /></td>
+							<td class="boldtd"><c:out value="${partida.numeroEntrada}" /></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="proces.elaboracioOli.camp.quantitatTotal" /></td>
+							<td class="boldtd"><c:out value="${partida.totalQuilos}" />
+							Kgs.</td>
+						</tr>
+						<tr>
+							<td><fmt:message key="proces.elaboracioOli.camp.descomposicio" /></td>
+							<td class="boldtd"><c:out value="${partida.varietatsQuilos}"
+								escapeXml="false" /><if test="${partida.esEcologic}"> <fmt:message key="proces.elaboracioOliva.camp.ecologic" /></if></td>
+						</tr>
+			
+					</tbody>
+				</table>
+				<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="hidden" />
+					<c:param name="path" value="formData.partides[${status.count - 1}].id" />
+					<c:param name="camp" value="partida_${partides.id}" />
+					<c:param name="name" value="partides[${status.count - 1}].id" />
+					<c:param name="value" value="${partida.id}" />
+				</c:import></div>
+				</div>
+				<div class="separadorH"></div>
+			</c:forEach>
+	
+			<div class="separadorH"></div>
+	
+			<c:if test="${establiment.unitatMesura == 'l'}">
+				<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="text" />
+					<c:param name="path" value="formData.totalLitrosOli" />
+					<c:param name="title">
+						<fmt:message key="proces.elaboracioOli.camp.totalLitrosOli" />
+					</c:param>
+					<c:param name="camp" value="litres_total" />
+					<c:param name="name" value="totalLitrosOli" />
+					<c:param name="required" value="required" />
+					<c:param name="clase" value="campoFormGrande conMargen" />
+					<c:param name="onkeyup" value="litrosKilos('total')" />
+				</c:import>
+				<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="text" />
+					<c:param name="path" value="formData.totalKilosOli" />
+					<c:param name="title">
+						<fmt:message key="proces.elaboracioOli.camp.totalKilosOli" />
+					</c:param>
+					<c:param name="camp" value="kilos_total" />
+					<c:param name="name" value="totalKilosOli" />
+					<c:param name="required" value="required" />
+					<c:param name="clase" value="campoFormGrande conMargen readOnly" />
+					<c:param name="readonly" value="true" />
+				</c:import>
+			</c:if>
+			<c:if test="${establiment.unitatMesura == 'k'}">
+				<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="text" />
+					<c:param name="path" value="formData.totalKilosOli" />
+					<c:param name="title">
+						<fmt:message key="proces.elaboracioOli.camp.totalKilosOli" />
+					</c:param>
+					<c:param name="camp" value="kilos_total" />
+					<c:param name="name" value="totalKilosOli" />
+					<c:param name="required" value="required" />
+					<c:param name="clase" value="campoFormGrande conMargen" />
+					<c:param name="onkeyup" value="kilosLitros('total')" />
+				</c:import>
+				<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="text" />
+					<c:param name="path" value="formData.totalLitrosOli" />
+					<c:param name="title">
+						<fmt:message key="proces.elaboracioOli.camp.totalLitrosOli" />
+					</c:param>
+					<c:param name="camp" value="litres_total" />
+					<c:param name="name" value="totalLitrosOli" />
+					<c:param name="required" value="required" />
+					<c:param name="clase" value="campoFormGrande conMargen readOnly" />
+					<c:param name="readonly" value="true" />
+				</c:import>
+			</c:if>
+			
+			<div class="separadorH"></div>
+		
+			<c:forEach var="diposit" items="${desti}" varStatus="status">
+			
+				<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="hidden" />
+					<c:param name="path" value="formData.diposits[${status.count - 1}].id" />
+					<c:param name="camp" value="diposit_${diposit.id}" />
+					<c:param name="name" value="diposits[${status.count - 1}].id" />
+					<c:param name="value" value="${diposit.id}" />
+				</c:import>
+			
+				<div class="cajaTabla">
+				<div class="layoutSombraTabla">
+				<div class="rellenoInf"></div>
+				<div class="rellenoIzq"></div>
+				<div class="rellenoDer"></div>
+				<div class="supDer"></div>
+				<div class="supIzq"></div>
+				<div class="infIzq"></div>
+				<div class="infDer"></div>
+				<table cellpadding="0" cellspacing="0" class="listadoEstrecho noRoll">
+					<thead>
+						<tr>
+							<th class="unicoHead"><c:out value=" ${diposit.codiAssignat}" />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="conversor">
+							<fieldset>
+								<c:if test="${diposit.establiment.unitatMesura == 'l'}">
+								<div class="conv"><c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.litros[${status.count - 1}]" />
+									<c:param name="required" value="required" />
+									<c:param name="title">
+										<fmt:message key="proces.elaboracioOli.camp.litres" />
+									</c:param>
+									<c:param name="camp" value="litres_${diposit.id}" />
+									<c:param name="name" value="litros[${status.count - 1}]" />
+									<c:param name="clase" value="campoFormMediano conMargen" />
+									<c:param name="onkeyup" value="litrosKilos(${diposit.id})" />
+								</c:import></div>
+								<div class="conv"><c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.kilos[${status.count - 1}]" />
+									<c:param name="title">
+										<fmt:message key="proces.elaboracioOli.camp.kilos" />
+									</c:param>
+									<c:param name="camp" value="kilos_${diposit.id}" />
+									<c:param name="name" value="kilos[${status.count - 1}]" />
+									<c:param name="clase" value="campoFormMediano readOnly" />
+									<c:param name="readonly" value="true" />
+								</c:import></div>
+							</c:if> <c:if test="${diposit.establiment.unitatMesura == 'k'}">
+								<div class="conv"><c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.kilos[${status.count - 1}]" />
+									<c:param name="required" value="required" />
+									<%--c:param name="maxlength" value="10"/--%>
+									<c:param name="title">
+										<fmt:message key="proces.elaboracioOli.camp.kilos" />
+									</c:param>
+									<c:param name="camp" value="kilos_${diposit.id}" />
+									<c:param name="name" value="kilos[${status.count - 1}]" />
+									<%--c:param name="aclaracio"><fmt:message key="proces.aclaracio.kilos"/></c:param--%>
+									<c:param name="clase" value="campoFormMediano conMargen" />
+									<c:param name="onkeyup" value="kilosLitros(${diposit.id})" />
+								</c:import></div>
+								<div class="conv"><c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.litros[${status.count - 1}]" />
+									<%--c:param name="required" value="required"/--%>
+									<%--c:param name="maxlength" value="10"/--%>
+									<c:param name="title">
+										<fmt:message key="proces.elaboracioOli.camp.litres" />
+									</c:param>
+									<c:param name="camp" value="litres_${diposit.id}" />
+									<c:param name="name" value="litros[${status.count - 1}]" />
+									<%--c:param name="aclaracio"><fmt:message key="proces.aclaracio.litres"/></c:param--%>
+									<c:param name="clase" value="campoFormMediano readOnly" />
+									<c:param name="readonly" value="true" />
+								</c:import></div>
+							</c:if></fieldset>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				</div>
+				<div class="separadorH"></div>
+			</c:forEach>
+		</div>
+	
+		<div class="separadorH"></div>
+	
+		<c:if test="${not empty desti}">
+			<c:import url="comu/CampFormulari.jsp">
+				<c:param name="tipus" value="select" />
+				<c:param name="path" value="formData.idCategoriaOli" />
+				<c:param name="required" value="required" />
+				<c:param name="title">
+					<fmt:message key="proces.elaboracioOli.camp.tipusOli" />
+				</c:param>
+				<c:param name="camp" value="idCategoriaOli" />
+				<c:param name="name" value="idCategoriaOli" />
+				<c:param name="selectItems" value="categories" />
+				<c:param name="selectItemsId" value="id" />
+				<c:param name="selectItemsValue" value="nom" />
+				<c:param name="selectSelectedValue" value="${formData.idCategoriaOli}" />
+				<c:param name="clase" value="campoFormMediano conMargen" />
+				<c:param name="onchange" value="comprovarPartidaOliCategoria();" />
+			</c:import> 
+		</c:if>
+		
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="text" />
+			<c:param name="path" value="formData.acidesa" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.acidesa" />
+			</c:param>
+			<c:param name="camp" value="campo_acidesa" />
+			<c:param name="name" value="acidesa" />
+			<c:param name="required" value="required" />
+			<%--c:param name="maxlength" value="10"/--%>
+			<c:param name="clase" value="campoFormMediano conMargen" />
+		</c:import> 
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="text" />
+			<c:param name="path" value="formData.temperatura" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.temperatura" />
+			</c:param>
+			<c:param name="camp" value="campo_temperatura" />
+			<c:param name="name" value="temperatura" />
+			<c:param name="required" value="required" />
+			<%--c:param name="maxlength" value="10"/--%>
+			<c:param name="clase" value="campoFormMediano" />
+		</c:import>
+		
+		<div class="separadorH"></div>
+	
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="text" />
+			<c:param name="path" value="formData.talcQuantitat" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.talcQuantitat" />
+			</c:param>
+			<c:param name="camp" value="campo_talcQuantitat" />
+			<c:param name="name" value="talcQuantitat" />
+			<c:param name="required" value="required" />
+			<%--c:param name="maxlength" value="10"/--%>
+			<c:param name="clase" value="campoFormMediano conMargen" />
+		</c:import> 
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="text" />
+			<c:param name="path" value="formData.talcMarcaComercial" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.talcMarca" />
+			</c:param>
+			<c:param name="camp" value="campo_talcMarca" />
+			<c:param name="name" value="talcMarcaComercial" />
+			<c:param name="required" value="required" />
+			<c:param name="maxlength" value="128" />
+			<c:param name="clase" value="campoFormMediano conMargen" />
+		</c:import> 
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="text" />
+			<c:param name="path" value="formData.talcLot" />
+			<c:param name="title">
+				<fmt:message key="proces.elaboracioOli.camp.talcLot" />
+			</c:param>
+			<c:param name="camp" value="campo_talcLot" />
+			<c:param name="name" value="talcLot" />
+			<c:param name="required" value="required" />
+			<c:param name="maxlength" value="128" />
+			<c:param name="clase" value="campoFormMediano" />
+		</c:import>
+		
+		<div class="separadorH"></div>
+
+		<c:forEach items="${formData.idOlivicultors}" var="idOlivicultor" varStatus="status">
+			<c:import url="comu/CampFormulari.jsp">
+					<c:param name="tipus" value="hidden" />
+					<c:param name="path" value="formData.idOlivicultors[${status.index}]" />
+					<c:param name="camp" value="idOlivicultors_${status.index}" />
+					<c:param name="name" value="idOlivicultors[${status.index}]" />
+					<c:param name="value" value="${idOlivicultor}" />
+			</c:import>
+			
+			<fieldset style="border: solid 1px #000000;">
+				<legend style="border: solid 1px #000000; padding: 3px; margin: 10px 0 0 0; background-color:#FFFFFF;">
+				<fmt:message key="proces.elaboracioOli.camp.oliRetirat" />:&nbsp;<strong>${formData.nomOlivicultors[status.index]}</strong>
+				</legend>
+				<c:if test="${establiment.unitatMesura == 'l'}">
+					<c:import url="comu/CampFormulari.jsp">
+						<c:param name="tipus" value="text" />
+						<c:param name="path" value="formData.litrosRetirats[${status.index}]" />
+						<c:param name="title">
+							<fmt:message key="proces.elaboracioOli.camp.litres" />
+						</c:param>
+						<c:param name="camp" value="campo_litresRetirats_${status.index}" />
+						<c:param name="name" value="litrosRetirats[${status.index}]" />
+						<%--c:param name="required" value="required"/--%>
+						<%--c:param name="maxlength" value="10"/--%>
+						<c:param name="clase" value="campoFormMediano conMargen" />
+						<c:param name="onkeyup" value="litrosKilosRetirats(${status.index})" />
+					</c:import>
+					<c:import url="comu/CampFormulari.jsp">
+						<c:param name="tipus" value="text" />
+						<c:param name="path" value="formData.kilosRetirats[${status.index}]" />
+						<c:param name="title">
+							<fmt:message key="proces.elaboracioOli.camp.kilos" />
+						</c:param>
+						<c:param name="camp" value="campo_kilosRetirats_${status.index}" />
+						<c:param name="name" value="kilosRetirats[${status.index}]" />
+						<%--c:param name="required" value="required"/--%>
+						<c:param name="maxlength" value="100" />
+						<c:param name="clase" value="campoFormMediano readOnly" />
+						<c:param name="readonly" value="true" />
+					</c:import>
+				</c:if>
+				<c:if test="${establiment.unitatMesura == 'k'}">
+					<c:import url="comu/CampFormulari.jsp">
+						<c:param name="tipus" value="text" />
+						<c:param name="path" value="formData.kilosRetirats[${status.index}]" />
+						<c:param name="title">
+							<fmt:message key="proces.elaboracioOli.camp.kilos" />
+						</c:param>
+						<c:param name="camp" value="campo_kilosRetirats_${status.index}" />
+						<c:param name="name" value="kilosRetirats[${status.index}]" />
+						<%--c:param name="required" value="required"/--%>
+						<c:param name="maxlength" value="100" />
+						<c:param name="clase" value="campoFormMediano conMargen" />
+						<c:param name="onkeyup" value="kilosLitrosRetirats(${status.index})" />
+					</c:import>
+					<c:import url="comu/CampFormulari.jsp">
+						<c:param name="tipus" value="text" />
+						<c:param name="path" value="formData.litrosRetirats[${status.index}]" />
+						<c:param name="title">
+							<fmt:message key="proces.elaboracioOli.camp.litres" />
+						</c:param>
+						<c:param name="camp" value="campo_litresRetirats_${status.index}" />
+						<c:param name="name" value="litrosRetirats[${status.index}]" />
+						<%--c:param name="required" value="required"/--%>
+						<%--c:param name="maxlength" value="10"/--%>
+						<c:param name="clase" value="campoFormMediano readOnly" />
+						<c:param name="readonly" value="true" />
+					</c:import>
+				</c:if>
+			</fieldset>
+		</c:forEach>
+		<div class="separadorH"></div>
+
+		<div id="observacionesForm" class="campoForm">
+			<c:import
+				url="comu/CampFormulari.jsp">
+				<c:param name="tipus" value="textarea" />
+				<c:param name="path" value="formData.observacions" />
+				<c:param name="title">
+					<fmt:message key="proces.elaboracioOli.camp.observacions" />
+				</c:param>
+				<c:param name="camp" value="observacions" />
+			</c:import>
+		</div>
+		<c:import url="comu/CampFormulari.jsp">
+			<c:param name="tipus" value="hidden" />
+			<c:param name="path" value="formData.errorObservaciones" />
+			<c:param name="camp" value="errorObservaciones" />
+			<c:param name="estilo" value="clear:left;overflow:hidden;" />
+		</c:import>
+		
+		<div class="separadorH"></div>
+
+		<div class="botonesForm">
+			<div id="guardarForm" class="btnCorto"
+				onclick="if(confirm('<fmt:message key="manteniment.confirmar"/>')){submitForm('formulario')}"
+				onmouseover="underline('enlaceGuardarForm')"
+				onmouseout="underline('enlaceGuardarForm')">
+				<a id="enlaceGuardarForm" href="javascript:void(0);">
+					<fmt:message key="manteniment.aceptar" />
+				</a>
+			</div>
+			<div class="btnCorto" onclick="submitForm('tornarForm')"
+				onmouseover="underline('enlaceTornarForm')"
+				onmouseout="underline('enlaceTornarForm')">
+				<a id="enlaceTornarForm" href="javascript:void(0);">
+					<fmt:message key="proces.tornar" />
+				</a>
+			</div>
+			<div id="cancelarForm" class="btnCorto"
+				onmouseover="underline('enlaceCancelarForm')"
+				onmouseout="underline('enlaceCancelarForm')"
+				onclick="document.location ='ProcesInici.html';">
+				<a id="enlaceCancelarForm" href="javascript:void(0);">
+					<fmt:message key="proces.cancelar" />
+				</a>
+			</div>
+		</div>
+	</form>
+
+	<form id="tornarForm" action="ProcesInici.html" class="seguit">
+		<input type="hidden" id="tipusProces" name="tipusProces" value="2"> 
+		<input type="hidden" id="pas" name="pas" value="1">
+	</form>
+
+	<!-- Colores en tablas -->
+	<script type="text/javascript">
+			jQuery(document).ready(function(){
+				setEstilosTabla(true);
+				redibujarError();
+			})
+	</script>
+
+</body>
+</html>

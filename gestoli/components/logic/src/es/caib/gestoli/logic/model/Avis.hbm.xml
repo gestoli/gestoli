@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.Avis" table="oli_avis" schema="public">
+  		<comment>Avis</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="avi_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="tipus" type="java.lang.String">
+			<column name="avi_tipus" not-null="true"><comment>Avis</comment></column>
+		</property>
+		<property name="descripcio" type="java.lang.String">
+			<column name="avi_descripcio" length="500"><comment>Descripcio</comment></column>
+		</property>
+		<property name="frecuencia" type="java.lang.String">
+			<column name="avi_frecuencia" not-null="true"><comment>Frecuencia (tri (Trimestral), sem (Semestral), anu (Anual))</comment></column>
+		</property>
+		<property name="dataSeguent" type="java.util.Date">
+			<column name="avi_dataSeguent" not-null="false"><comment>Propera data de activacio</comment></column>
+		</property>
+		
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="avi_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

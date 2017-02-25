@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Informacio" table="oli_informacio"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve true si
+			tiene documentos */ public boolean getTeDocuments() { return
+			documents.size() &gt; 0; }</meta>
+        <comment>Informacions</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="inf_codi" />
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="categoriaInformacio" class="es.caib.gestoli.logic.model.CategoriaInformacio" fetch="select">
+            <column name="inf_codcai" not-null="true">
+                <comment>Codi de categoria de informacio</comment>
+            </column>
+        </many-to-one>
+        <property name="data" type="date">
+            <column name="inf_data" length="13" not-null="true">
+                <comment>Data</comment>
+            </column>
+        </property>
+        <property name="titol" type="java.lang.String">
+            <column name="inf_titol" length="128" not-null="true">
+                <comment>Titol</comment>
+            </column>
+        </property>
+        <property name="texte" type="java.lang.String">
+            <column name="inf_texte">
+                <comment>Texte</comment>
+            </column>
+        </property>
+        <set name="documents" inverse="true">
+            <key>
+                <column name="doc_codinf" not-null="true">
+                    <comment>Codi de informacio</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.Document" />
+        </set>
+        <set name="establiments" inverse="false" table="oli_estinf">
+            <key>
+                <column name="ein_codinf" not-null="true">
+                    <comment>Codi de informacio</comment>
+                </column>
+            </key>
+            <many-to-many entity-name="es.caib.gestoli.logic.model.Establiment">
+                <column name="ein_codest" not-null="true">
+                    <comment>Codi de establiment</comment>
+                </column>
+            </many-to-many>
+        </set>
+        <set name="olivicultors" inverse="false" table="oli_oliinf">
+            <key>
+                <column name="oin_codinf" not-null="true">
+                    <comment>Codi de informacio</comment>
+                </column>
+            </key>
+            <many-to-many entity-name="es.caib.gestoli.logic.model.Olivicultor">
+                <column name="oin_codoli" not-null="true">
+                    <comment>Codi de olivicultor</comment>
+                </column>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+	<!-- Spring DispatcherServlet mapping -->
+<servlet-mapping>
+	<servlet-name>app</servlet-name>
+	<url-pattern>*.html</url-pattern>
+</servlet-mapping>
+	<!-- DWR DwrSpringServlet mapping -->
+<servlet-mapping>
+	<servlet-name>dwr-invoker</servlet-name>
+	<url-pattern>/dwr/*</url-pattern>
+</servlet-mapping>
+	<!-- Web service mapping -->
+<servlet-mapping>
+	<servlet-name>CXFServlet</servlet-name>
+	<url-pattern>/ws/*</url-pattern>
+</servlet-mapping>

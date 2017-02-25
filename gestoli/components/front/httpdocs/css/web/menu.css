@@ -1,0 +1,227 @@
+div.menuBar,div.menuBar a.menuButton,div.menu,div.menu a.menuItem {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-style: normal;
+	font-weight: normal;
+	color: #000000;
+}
+
+/* Iframe IE */
+#menuSuperior iframe {
+	padding-bottom: 20px;
+}
+
+div.menuBar {
+	background: url(../../img/web/menu/fondoMenu.gif) top center repeat-x;
+	text-align: left;
+	height: 27px;
+	margin-left: 1px;
+	float: left;
+}
+
+div.menuBar a.menuButton {
+	font: normal 15px Arial, Helvetica, sans-serif;
+	background: url(../../img/web/menu/separadorMenu.gif) top right no-repeat;
+	background-color: transparent;
+	color: #fff;
+	cursor: pointer;
+	left: 0px;
+	/*padding: 4px 15px 7px 11px;*/
+	padding: 4px 15px 7px 11px;
+	position: relative;
+	text-decoration: none;
+	top: -1px;
+	z-index: 100;
+	float: left;
+}
+
+div.menuBar a.menuButton:hover {
+	background-color: #fff;
+	color: #616161;
+	font: normal 15px Arial, Helvetica, sans-serif;
+	cursor: pointer;
+}
+
+div.menuBar a.menuButtonActive,div.menuBar a.menuButtonActive:hover {
+	background-color: #fff;
+	color: #000000;
+}
+
+/* menu idioma */
+div.menuBar #botonMenuIdioma_es,div.menuBar #botonMenuIdioma_ca {
+	padding-left: 28px;
+	width: 70px;
+	background: url(../../img/web/menu/banderaEsp.gif) top left no-repeat;
+}
+
+div.menuBar #botonMenuIdioma_ca {
+	background: url(../../img/web/menu/banderaCat.gif) top left no-repeat;
+}
+
+div.menuBar #botonMenuIdioma_es :hover,div.menuBar #botonMenuIdioma_ca
+	:hover,div.menuBar #botonMenuIdioma_es.menuButtonActive,div.menuBar #botonMenuIdioma_ca.menuButtonActive
+	{
+	padding-left: 28px;
+	width: 70px;
+	background: url(../../img/web/menu/banderaEspHover.gif) top left no-repeat;
+	color: #000000;
+}
+
+div.menuBar #botonMenuIdioma_ca :hover,div.menuBar #botonMenuIdioma_ca.menuButtonActive
+	{
+	background: url(../../img/web/menu/banderaCatHover.gif) top left no-repeat;
+}
+
+/* DESPLEGABLES MENU */
+div.menu {
+	left: 0px;
+	padding: 0px 1px 1px 0px;
+	position: absolute;
+	top: 0px;
+	visibility: hidden;
+	z-index: 101;
+	margin-top: 0px;
+}
+
+.separadorMenuItems {
+	height: 1px;
+	background: url(../../img/web/menu/separadorMenuitems.gif) top left repeat-x;
+	width: 80px;
+}
+
+div.menu .contenidoDesplegable {
+	position: relative;
+	background-color: #fff;
+	padding: 0;
+	margin-top: 20px !important;
+	margin-top: 18px;
+}
+
+div.menu .contenidoDesplegable .bordeIzq {
+	width: 14px;
+	height: 100px;
+	position: absolute;
+	left: -14px;
+	top: -20px;
+	background: url(../../img/web/menu/borde_izq.png) top left repeat-y !important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../../img/web/menu/borde_izq.png', sizingMethod = 'scale' );
+}
+
+div.menu .contenidoDesplegable .bordeDer {
+	width: 14px;
+	height: 100px;
+	position: absolute;
+	right: -14px;
+	top: 0px;
+	background: url(../../img/web/menu/borde_der.png) top left repeat-y !important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../../img/web/menu/borde_der.png', sizingMethod = 'scale' );
+}
+
+div.menu .contenidoDesplegable .infIzq {
+	background: url(../../img/web/menu/inf_izq.png) bottom left no-repeat
+		!important;
+	position: absolute;
+	bottom: -40px !important;
+	bottom: -18px;
+	left: -14px;
+	height: 40px;
+	width: 40px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../../img/web/menu/inf_izq.png', sizingMethod = 'crop' );
+}
+
+div.menu .contenidoDesplegable .infDer {
+	background: url(../../img/web/menu/inf_der.png) bottom right no-repeat
+		!important;
+	position: absolute;
+	bottom: -40px !important;
+	bottom: -18px;
+	right: -14px !important;
+	right: -13px;
+	height: 40px;
+	width: 40px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../../img/web/menu/inf_der.png', sizingMethod = 'crop' );
+}
+
+div.menu .contenidoDesplegable .supDer {
+	background: url(../../img/web/menu/sup_der.png) top right no-repeat !important;
+	position: absolute;
+	top: -20px;
+	right: -14px;
+	height: 20px;
+	width: 40px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../../img/web/menu/sup_der.png', sizingMethod = 'crop' );
+}
+
+div.menu .contenidoDesplegable .rellenoSup {
+	background-color: #fff;
+	position: absolute;
+	top: -20px;
+	left: 0px;
+	height: 20px;
+	width: 10px;
+}
+
+div.menu .contenidoDesplegable .rellenoInf {
+	background: url(../../img/web/menu/rellenoInf.png) top center repeat-x
+		!important;
+	position: absolute;
+	height: 40px;
+	bottom: -40px !important;
+	bottom: -18px;
+	left: 26px;
+	width: 10px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'../../img/web/menu/rellenoInf.png', sizingMethod = 'scale' );
+}
+
+div.menu .contenidoDesplegable #idiomaActivo {
+	color: #000;
+	background: url(../../img/web/menu/idiomaActual.gif) 128px 5px no-repeat;
+}
+
+/* Botones menu */
+div.menu a.menuItem {
+	color: #616161;
+	cursor: default;
+	display: block;
+	padding: 3px 4em 3px 14px;
+	text-decoration: none;
+	white-space: nowrap;
+	font: normal 14px Arial, Helvetica, sans-serif;
+	cursor: pointer;
+	margin: 4px 1px 4px 1px;
+}
+
+div.menu a.menuItem:hover,div.menu a.menuItemHighlight {
+	background-color: #797979;
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+	margin-left: 1px;
+	margin-right: 1px;
+}
+
+div.menu a.menuItem span.menuItemText {
+	
+}
+
+div.menu a.menuItem span.menuItemArrow {
+	margin-right: -.75em;
+}
+
+div.menu div.menuItemSep {
+	border-top: 1px solid #909090;
+	border-bottom: 1px solid #f0f0f0;
+	margin: 4px 2px;
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.AnaliticaParametre" table="oli_analitica_param" schema="public">
+		<meta attribute="class-description" inherit="false"></meta>
+		<meta attribute="class-code" inherit="false"></meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Analitiques Parametres Tipus</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="anap_codi" />
+			<generator class="native"></generator>
+		</id>
+		<property name="operador" type="java.lang.Integer">
+			<column name="anap_operador" not-null="true">
+				<comment>Operacio</comment>
+			</column>
+		</property>
+		<property name="valor" type="java.lang.String">
+			<column name="anap_valor" length="128" not-null="true">
+				<comment>Nom tipus parametre</comment>
+			</column>
+		</property>
+		<property name="obligatori" type="java.lang.Boolean">
+            <column name="anap_obligatori" not-null="true">
+                <comment>Obligatori</comment>
+            </column>
+        </property>
+		<many-to-one name="varietatOli"
+			class="es.caib.gestoli.logic.model.VarietatOli" fetch="select">
+			<column name="anap_codvar" not-null="true">
+				<comment>Codi de varietat</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="analiticaParametreTipus"
+			class="es.caib.gestoli.logic.model.AnaliticaParametreTipus" fetch="select">
+			<column name="anap_codpt" not-null="true">
+				<comment>Codi del tipus de parametre</comment>
+			</column>
+		</many-to-one>
+		
+	</class>
+</hibernate-mapping>

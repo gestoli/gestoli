@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatControlPlagues" table="qua_control_plagues" schema="public">
+  		<comment>Qualitat - Control Plagues</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="cpl_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="ubicacio" type="java.lang.String">
+			<column name="cpl_ubicacio" length="50" not-null="true"><comment>Ubicació</comment></column>
+		</property>
+		<property name="elementControl" type="java.lang.String">
+			<column name="cpl_elementControl" length="50" not-null="true"><comment>Element de control</comment></column>
+		</property>
+		<property name="frecuencia" type="java.lang.String">
+			<column name="cpl_frecuencia" not-null="false"><comment>Frecuencia (dia->diario, sem->semanal, qui->quincenal, men->mensual, tri->trimestral, seme->semestral, anu->anual, bia->bianual, tria->trianual )</comment></column>
+		</property>
+		<property name="isResponsableIntern" type="java.lang.Boolean">
+			<column name="cpl_isResponsableIntern" not-null="false"><comment> True -> responsableIntern // False -> responsableExtern</comment></column>
+		</property>
+		<many-to-one 
+			name="responsableIntern" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="cpl_responsableIntern" 
+			not-null="false"/>
+		<property name="empresaExterna" type="java.lang.String">
+			<column name="cpl_empresaExterna" length="50" not-null="false"><comment>Empresa externa</comment></column>
+		</property>
+		<property name="iniciContracte" type="java.util.Date">
+			<column name="cpl_iniciContracte" not-null="false"><comment>Data inici Contracte</comment></column>
+		</property>
+		<property name="fiContracte" type="java.util.Date">
+			<column name="cpl_fiContracte" not-null="false"><comment>Data fi Contracte</comment></column>
+		</property>
+		<property name="plagaObjectiu" type="java.lang.String">
+			<column name="cpl_plagaObjectiu" not-null="false"><comment>Plaga Objectiu (roe->roedors, nov->insectes no voladors, siv->insectes voladors)</comment></column>
+		</property>
+		<property name="frecSeguiment" type="java.lang.String">
+			<column name="cpl_frecSeguiment" not-null="false"><comment>Frecuencia Seguiment (men->mensual, bim->bimensual, tri->trimestral, seme->semestral, anu->anual)</comment></column>
+		</property>
+	    <many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="cpl_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

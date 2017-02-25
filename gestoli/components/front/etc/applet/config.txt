@@ -1,0 +1,29 @@
+
+1.- S'han d'instalar els drivers del lector RFID. A windows recordo que dins del CD hi han els drivers del conversor USB-RS232. A Linux crec recordar que no feia falta rés
+2.- Instalar el jre con versión mínima 1.6.0_13
+3.- Copiar las librerias dependiendo del sistema operativo, como indica RXTX (http://rxtx.org/):
+
+	Windows
+		RXTXcomm.jar goes in \jre\lib\ext (under java)
+		rxtxSerial.dll goes in \jre\bin
+
+	Linux (only x86, x86_64, ia64 here but more in the ToyBox)
+		RXTXcomm.jar goes in /jre/lib/ext (under java)
+		librxtxSerial.so goes in /jre/lib/[machine type] (i386 for instance)
+		Make sure the user is in group lock or uucp so lockfiles work.
+
+	Mac OS X (x86 and ppc) (there is an Installer with the source)
+		RXTXcomm.jar goes in  /Library/Java/Extensions
+		librxtxSerial.jnilib goes in /Library/Java/Extensions
+		Run fixperm.sh thats in the directory.  Fix perms is in the Mac_OS_X subdirectory.
+
+	Solaris (sparc only so far)
+		RXTXcomm.jar goes in /jre/lib/ext (under java)
+		librxtxSerial.so goes in /jre/lib/[machine type]
+		Make sure the user is in group uucp so lockfiles work.
+
+4.- En el achivo java.policy del jre (lib\security) poner:
+		grant codeBase "http://XXXXXX/-" {
+			permission java.security.AllPermission;
+		};
+	donde XXXXXX es el dominio de la aplicación

@@ -1,0 +1,35 @@
+#creditosMicroweb {
+	padding: 0 20px 30px 20px;
+	background: url(../../../img/web/general/microweb/fondoCreditos.jpg) 0 20px
+		no-repeat;
+	min-height: 460px;
+	height: auto !important;
+	height: 460px;
+	font-size: 13px;
+}
+
+#creditosMicroweb h3.microweb {
+	margin-bottom: 16px !important;
+	margin: 0;
+}
+
+#creditosMicroweb .intro {
+	clear: left;
+	padding-bottom: 27px;
+	font-size: 15px;
+}
+
+#creditosMicroweb ul {
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+
+#creditosMicroweb ul li {
+	margin: 0;
+	padding: 0 0 4px 0;
+}
+
+#creditosMicroweb a {
+	color: #000000;
+	text-decoration: underline;
+}

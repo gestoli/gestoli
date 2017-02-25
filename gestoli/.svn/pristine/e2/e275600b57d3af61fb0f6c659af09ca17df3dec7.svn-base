@@ -1,0 +1,4 @@
+/* Estilos INTERNET EXPLORER */
+fieldset.descomposicion {
+	margin-bottom: 15px;
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatAPPCCControl" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_appcc_control" schema="public">
+  		<comment>Qualitat - APPCC - Control</comment>
+		<key column="aco_id" />
+		<property name="p1" type="java.lang.Boolean">
+			<column name="aco_p1" not-null="false"><comment>Pregunta 1</comment></column>
+		</property>
+		<property name="p2" type="java.lang.Boolean">
+			<column name="aco_p2" not-null="false"><comment>Pregunta 2</comment></column>
+		</property>
+		<property name="p3" type="java.lang.Boolean">
+			<column name="aco_p3" not-null="false"><comment>Pregunta 3</comment></column>
+		</property>
+		<property name="p4" type="java.lang.Boolean">
+			<column name="aco_p4" not-null="false"><comment>Pregunta 4</comment></column>
+		</property>
+		<property name="p5" type="java.lang.Boolean">
+			<column name="aco_p5" not-null="false"><comment>Pregunta 5</comment></column>
+		</property>
+		<property name="puntControl" type="java.lang.String">
+			<column name="aco_puntControl" not-null="false"><comment>Punt de Control</comment></column>
+		</property>
+		<property name="perillControlat" type="java.lang.String">
+			<column name="aco_perillControlat" not-null="false"><comment>Perill Controlat</comment></column>
+		</property>
+		<many-to-one
+			name="perill"
+			class="es.caib.gestoli.logic.model.QualitatAPPCCEtapaPerill"
+			column="aco_perill"
+			not-null="true"/>
+		<many-to-one
+			name="etapa"
+			class="es.caib.gestoli.logic.model.QualitatAPPCCEtapa"
+			column="aco_etapa"
+			not-null="true"/>
+	</joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.MaterialTipusEnvas"
+		table="oli_material_tipus_envas" schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Materials de tipus de envasos</comment>
+		<id name="id" type="java.lang.Integer">
+			<column name="men_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="men_nom" length="64" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="icona" type="java.lang.Long">
+			<column name="men_icona" not-null="true">
+				<comment>Codi de icona</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="men_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<set name="tipusEnvases" inverse="true">
+			<key>
+				<column name="ten_codmat" not-null="true">
+					<comment>Codi de material</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.TipusEnvas" />
+		</set>
+	</class>
+</hibernate-mapping>

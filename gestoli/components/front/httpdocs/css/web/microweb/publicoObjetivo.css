@@ -1,0 +1,65 @@
+#publicoMicroweb {
+	background: url(../../../img/web/general/microweb/fondoPublico.jpg) top left
+		no-repeat;
+	min-height: 731px;
+	height: auto !important;
+	height: 731px;
+	padding: 0 20px;
+	position: relative;
+}
+
+#publicoMicroweb h3.microweb {
+	margin-bottom: 10px;
+}
+
+#publicoMicroweb h5 {
+	font: normal 15px Arial, Helvetica, sans-serif;
+	margin-bottom: 10px;
+}
+
+#publicoMicroweb h4 {
+	font: normal 18px Arial, Helvetica, sans-serif;
+	margin-top: 15px;
+}
+
+#publicoMicroweb p {
+	text-align: justify;
+	margin-bottom: 15px;
+	font: normal 15px Arial, Helvetica, sans-serif;
+}
+
+#publicoMicroweb .segundoRecuadro {
+	margin-top: 60px;
+}
+
+#publicoMicroweb .enlaceAnterior {
+	position: absolute;
+	left: 37px !important;
+	left: 34px;
+	bottom: 42px;
+}
+
+#publicoMicroweb .enlaceAnterior div {
+	float: left;
+	font: normal 12px Arial, Helvetica, sans-serif;
+	margin-left: 5px;
+	position: relative;
+}
+
+#publicoMicroweb .enlaceAnterior div a {
+	color: #000;
+}
+
+#publicoMicroweb .enlaceAnterior div span {
+	background: url(../../../img/web/general/anterior.png) top left no-repeat
+		!important;
+	width: 25px;
+	height: 16px;
+	display: block;
+	position: absolute;
+	left: -21px;
+	top: 0px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/web/general/siguiente.png', sizingMethod = 'crop' );
+}

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 02-dic-2009 9:12:42 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+ <class name="es.caib.gestoli.logic.model.Trasllat" schema="public" table="oli_trasllat_diposit">
+  <meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+  <meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf =
+			new
+			SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.getData()); }</meta>
+  <meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+  <comment>Trasllats de diposits</comment>
+  <id name="id" type="java.lang.Long">
+   <column name="tdi_codi"/>
+   <generator class="identity"/>
+  </id>
+  <many-to-one class="es.caib.gestoli.logic.model.Establiment"
+   fetch="select" name="establimentByTdiCodede">
+   <column name="tdi_codede" not-null="true">
+    <comment>Codi de establiment desti</comment>
+   </column>
+  </many-to-one>
+  <many-to-one class="es.caib.gestoli.logic.model.Traza" fetch="select"
+   lazy="proxy" name="traza">
+   <column name="tdi_codtra" not-null="true">
+    <comment>Codi de traza</comment>
+   </column>
+  </many-to-one>
+  <many-to-one class="es.caib.gestoli.logic.model.Establiment"
+   fetch="select" name="establimentByTdiCodeor">
+   <column name="tdi_codeor" not-null="true">
+    <comment>Codi de establiment origen</comment>
+   </column>
+  </many-to-one>
+  <property generated="never" lazy="false" name="data" type="date">
+   <column length="13" name="tdi_data" not-null="true">
+    <comment>Data prevista del trasllat</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="acceptatTrasllat" type="java.lang.Boolean">
+   <column name="tdi_acctra">
+    <comment>Trasllat amb volant de circulacio acceptat</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false"
+   name="retornatEstablimentOrigen" type="java.lang.Boolean">
+   <column name="tdi_retorn" not-null="true">
+    <comment>Retornat al establiment origen</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="traslladant" type="java.lang.Boolean">
+   <column name="tdi_trasll" not-null="true">
+    <comment>Indica si els diposits estan en cami</comment>
+   </column>
+  </property>
+  <property generated="never" insert="false" lazy="false" name="valid" type="java.lang.Boolean">
+   <column name="tdi_valid" not-null="true">
+    <comment>Proces valid</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="esDiposit" type="java.lang.Boolean">
+   <column name="tdi_esdip" not-null="true">
+    <comment>Indica si el trasllat es un diposit o no</comment>
+   </column>
+  </property>
+  <property generated="never" insert="false" lazy="false"
+   name="dataAlta" type="date">
+   <column length="13" name="tdi_dataalta" not-null="true">
+    <comment>Data de alta de la accio</comment>
+   </column>
+  </property>
+  <property generated="never" insert="false" lazy="false"
+   name="dataAcceptarEnviament" type="date">
+   <column length="13" name="tdi_dataenviament" not-null="false">
+    <comment>Data enviament</comment>
+   </column>
+  </property>
+  <property generated="never" insert="false" lazy="false"
+   name="dataAcceptarRetorn" type="date">
+   <column length="13" name="tdi_dataretorn" not-null="false">
+    <comment>Data retorn</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="quantitatEnviament" type="java.lang.Double">
+   <column name="dip_quantenviament" not-null="false" precision="17" scale="17">
+    <comment>Quantitat enviament (litres)</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="quantitatRetorn" type="java.lang.Double">
+   <column name="dip_quantretorn" not-null="false" precision="17" scale="17">
+    <comment>Quantitat retorn (litres)</comment>
+   </column>
+  </property>
+  <!-- 
+		<property name="idPartida" type="java.lang.Long">
+			<column name="tdi_idpart" not-null="false">
+				<comment>Partida original del trasllat</comment>
+			</column>
+		</property>
+		 -->
+  <set name="diposits" sort="unsorted" table="oli_diptdi">
+   <key>
+    <column name="dtd_codtdi" not-null="true">
+     <comment>Codi de trasllat de diposit</comment>
+    </column>
+   </key>
+   <many-to-many entity-name="es.caib.gestoli.logic.model.Diposit" unique="false">
+    <column name="dtd_coddip" not-null="true">
+     <comment>Codi de diposit</comment>
+    </column>
+   </many-to-many>
+  </set>
+ </class>
+</hibernate-mapping>

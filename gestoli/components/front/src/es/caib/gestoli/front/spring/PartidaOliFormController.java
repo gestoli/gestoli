@@ -1,0 +1,263 @@
+package es.caib.gestoli.front.spring;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.propertyeditors.CustomBooleanEditor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractFormController;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import es.caib.gestoli.front.util.BasicData;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.model.Establiment;
+import es.caib.gestoli.logic.model.PartidaOli;
+
+public class PartidaOliFormController extends SimpleFormController {
+
+	private final Logger logger = Logger.getLogger(getClass());
+	private String establimentSessionKey;
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+	private HibernateTemplate hibernateTemplate;
+	private Boolean esPopup;
+	
+	/**
+	 * FunciÃƒÂ³ cridada pel metode POST del formulari PartidaOliForm.html
+	 * Llistat de Partides d'oli.
+	 * 
+	 * @param request
+	 * @param command
+	 * @param myModel
+	 * @return
+	 * @throws ServletException
+	 */
+	public ModelAndView onSubmit(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			Object command,
+			BindException errors)
+	throws ServletException {
+		
+		PartidaOliCommand partidaOli = (PartidaOliCommand)command;
+		String nom = partidaOli.getNom();
+		Integer categoria = partidaOli.getCategoriaId();
+		
+		Boolean actiu = Boolean.valueOf(true);
+		if (partidaOli.getEsActiu() == null){
+			actiu = Boolean.valueOf(false);
+		}
+		Boolean esVisualitza = Boolean.valueOf(true);
+		if (partidaOli.getEsVisualitza() == null){
+			esVisualitza = Boolean.valueOf(false);
+		}
+		
+		Boolean olivicultorEsPropietari = Boolean.valueOf(true);
+		if(partidaOli.getOlivicultorEsPropietari() == null || (partidaOli.getOlivicultorEsPropietari() != null && partidaOli.getOlivicultorEsPropietari() == false)){
+			olivicultorEsPropietari = Boolean.valueOf(false);
+		}
+		Boolean ecologica = Boolean.valueOf(true);
+		if(partidaOli.getEsEcologic()==null){
+			ecologica = Boolean.valueOf(false);
+		}
+		
+		
+		HttpSession session = request.getSession();
+		Establiment establiment = (Establiment)session.getAttribute(establimentSessionKey);
+		
+		Map myModel = new HashMap();
+		Long id = null;
+		try {
+			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+			if (isCreate(request)) {
+				logger.info("Creant nova partida");
+				id = oliInfraestructuraEjb.creaPartidaOli(
+						nom, 
+						categoria,
+						actiu, 
+						establiment,
+						new Boolean(true),
+						olivicultorEsPropietari,
+						ecologica);
+				ControllerUtils.saveMessageInfo(request, missatge("partidaOli.missatge.crear.ok"));
+				myModel.put("ok", "ok");
+			} else {
+				id = new Long(Long.parseLong(request.getParameter("id")));
+				logger.info("Modificant la partida " + id);
+				oliInfraestructuraEjb.modificaPartidaOli(
+						id,
+						nom, 
+						categoria,
+						actiu,
+						olivicultorEsPropietari,
+						esVisualitza,
+						ecologica);
+				ControllerUtils.saveMessageInfo(request, missatge("partidaOli.missatge.modificar.ok"));
+			}
+		} catch (Exception ex) {
+			if (isCreate(request)) {
+				logger.error("Error creant la partida d'oli", ex);
+				ControllerUtils.saveMessageError(request, missatge("partidaOli.missatge.crear.no"));
+			} else {
+				logger.error("Error modioficant la partida d'oli", ex);
+				ControllerUtils.saveMessageError(request, missatge("partidaOli.missatge.modificar.no"));
+			}
+		}
+		
+		String forward = getSuccessView()+ "?id=" + id;
+		return new ModelAndView(forward, myModel);
+	}
+
+	
+	/**
+	 * Retorna todos los datos del modelo necesarios para mostrar
+	 * el formulario de insercion (LOVs y cosas de esas) si no hay.
+	 * @see SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest, java.lang.Object, org.springframework.validation.Errors)
+	 */
+	protected Map referenceData(
+			HttpServletRequest request,
+			Object command,
+			Errors errors) throws Exception {
+		
+		Map myModel = new HashMap();
+
+//		PartidaOliCommand partidaOli = (PartidaOliCommand)command;
+//		if (partidaOli == null){
+//			partidaOli = new PartidaOliCommand();
+//		}
+		HttpSession session = request.getSession();
+		Establiment establiment = (Establiment)session.getAttribute(establimentSessionKey);
+		if (establiment.getId() != null){
+//			partidaOli.setEstablimentId(establiment.getId());
+			myModel.put("establimentId", establiment.getId());
+		}
+
+		if (isCreate(request)) {
+			myModel.put("path", "crear_partidaOli");
+		}else{
+			myModel.put("path", "modificar_partidaOli");
+		}
+
+//		oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+//    	Collection categoriesOli = oliInfraestructuraEjb.categoriaOliCercaTots();
+    	Collection categoriesOli = new ArrayList();
+    	categoriesOli.add(new BasicData("1", missatge("consulta.general.camp.varietat.no.do")));
+    	categoriesOli.add(new BasicData("2", missatge("consulta.general.camp.varietat.pendent")));
+    	
+    	String catDO = (String)request.getParameter("catDO");
+    	if(esPopup == null || !esPopup || (catDO != null && catDO.equals("true")))
+    		categoriesOli.add(new BasicData("3", missatge("consulta.general.camp.varietat.do")));
+    	
+		myModel.put("categoriesOli", categoriesOli);
+		
+		return myModel;
+	}
+
+	/**
+	 * Funcio cridada pel metode GET del formulari PartidaOliForm.html
+	 * Llistat de Partides d'oli.
+	 * 
+	 * @param request
+	 * @param command
+	 * @param myModel
+	 * @return
+	 * @throws ServletException
+	 */
+	/**
+	 * En caso de que sea una edicion retorna el objeto rellenado con
+	 * los datos actuales del registro. En caso de que sea una creacion
+	 * retorna el objeto vacio.
+	 * @see AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 */
+	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+		PartidaOliCommand partidaOli= new PartidaOliCommand();
+		if ((!isFormSubmission(request)) && (!isCreate(request))) {
+			try {
+				Long codi = new Long(Long.parseLong(request.getParameter("id")));
+				logger.info("Obtenint dades per a la modificacio de la partida " + codi);
+				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+				PartidaOli p = oliInfraestructuraEjb.getPartidaOliById(codi);
+				partidaOli.fromPartidaOli(p);
+			} catch (Exception ex) {
+				logger.error("Error obtenint la informacio de la partida d'oli", ex);
+//				saveMessageError(request, getMessage("categoriaOli.llistat.no"));
+				throw new ServletException("Error cridant l'EJB", ex);
+			}
+		}
+		if (isCreate(request)){
+			partidaOli.setEsActiu(new Boolean(true));
+		}
+		return partidaOli;
+	}
+
+	protected void initBinder(
+			HttpServletRequest request,
+			ServletRequestDataBinder binder)
+	throws Exception {
+		binder.registerCustomEditor(
+	    		Date.class,
+	    		new CustomDateEditor(new SimpleDateFormat("dd/MM/yyyy"), true));
+		binder.registerCustomEditor(
+				Integer.class,
+	    		new CustomNumberEditor(Integer.class, true));
+		binder.registerCustomEditor(
+	    		Long.class,
+	    		new CustomNumberEditor(Long.class, true));
+		binder.registerCustomEditor(
+	    		Float.class,
+	    		new CustomNumberEditor(Float.class, true));
+		binder.registerCustomEditor(
+	    		Boolean.class,
+	    		new CustomBooleanEditor("S", "N", true));
+	}
+	
+	/**
+	 * Indica si la petición es de creación o no.
+	 * @param request
+	 * @return true si es una petición.
+	 */
+	private boolean isCreate(HttpServletRequest request) {
+		return (request.getParameter("id") == null);
+	}
+	
+	public void setEstablimentSessionKey(String establimentSessionKey) {
+		this.establimentSessionKey = establimentSessionKey;
+	}
+
+	public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+		this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+	
+	private String missatge(String clave){
+		String valor = getMessageSourceAccessor().getMessage(clave);
+		return valor;
+	}
+
+	public void setEsPopup(Boolean esPopup) {
+		this.esPopup = esPopup;
+	}
+	
+}

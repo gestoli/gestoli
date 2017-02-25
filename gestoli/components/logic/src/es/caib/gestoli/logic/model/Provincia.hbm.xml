@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.Provincia" table="oli_provincia" schema="public">
+  		<comment>Provincia</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="prov_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="prov_nom" length="255" not-null="true"><comment>Nom de la provincia</comment></column>
+		</property>
+		<set name="municipis" inverse="true">
+			<key>
+				<column name="prov_municipi"><comment>Municipi</comment></column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Municipi" />
+		</set>
+	</class>
+</hibernate-mapping>

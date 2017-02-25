@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatControlPlaguesVerificacio" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_control_plagues_verif" schema="public">
+  		<comment>Qualitat - Control Plagues - Verificacio</comment>
+		<key column="cpv_id"/>
+		<many-to-one 
+			name="controlPlaga" 
+			class="es.caib.gestoli.logic.model.QualitatControlPlagues"
+			column="cpv_controlPlaga" 
+			not-null="false"/>
+	</joined-subclass>
+</hibernate-mapping>

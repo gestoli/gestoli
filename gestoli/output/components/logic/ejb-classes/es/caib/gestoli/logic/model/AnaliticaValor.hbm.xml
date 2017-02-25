@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.AnaliticaValor" table="oli_analitica_valor" schema="public">
+		<meta attribute="class-description" inherit="false"></meta>
+		<meta attribute="class-code" inherit="false"></meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Analitiques Valors</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="anav_codi" />
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="nom" type="java.lang.String">
+			<column name="anav_nom" length="128" not-null="true">
+				<comment>Nom catala</comment>
+			</column>
+		</property>
+		<property name="nomCast" type="java.lang.String">
+			<column name="anav_nomCast" length="128" not-null="true">
+				<comment>Nom castella</comment>
+			</column>
+		</property>
+		<property name="valor" type="java.lang.String">
+			<column name="anav_valor" length="128" not-null="true">
+				<comment>Nom tipus parametre</comment>
+			</column>
+		</property>
+				<property name="ordre" type="java.lang.Integer">
+			<column name="anav_ordre" not-null="true">
+				<comment>Ordre</comment>
+			</column>
+		</property>
+		<property name="tipus" type="java.lang.Integer">
+			<column name="anav_tipus" not-null="true">
+				<comment>Tipus de parametre</comment>
+			</column>
+		</property>
+		<property name="tipusControl" type="java.lang.Integer">
+			<column name="anav_tipusControl" not-null="true">
+				<comment>Tipus de control</comment>
+			</column>
+		</property>
+		<many-to-one name="analitica" class="es.caib.gestoli.logic.model.Analitica" fetch="select">
+			<column name="anav_codana" not-null="true">
+				<comment>Analitica</comment>
+			</column>
+		</many-to-one>
+		
+	</class>
+</hibernate-mapping>

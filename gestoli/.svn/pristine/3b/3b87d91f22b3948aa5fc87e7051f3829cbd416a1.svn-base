@@ -1,0 +1,21 @@
+Per a evitar que els directoris sense index s'indexin s'ha de modificar el fitxer:
+
+	<jboss_dir>\server\default\deploy\jbossweb-tomcat50.sar\conf\web.xml
+	
+on hem de modificar el paràmetre listings, i posar-lo a false:
+
+	<servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>
+          org.apache.catalina.servlets.DefaultServlet
+        </servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>

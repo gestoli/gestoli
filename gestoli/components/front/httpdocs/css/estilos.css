@@ -1,0 +1,32 @@
+@charset "utf-8";
+/**************************************************************************
+ESTILOS PARA LA VENTANA POPUP 20090323@JCP
+***************************************************************************/
+#capaPopUp {
+	background-color:#000;  	/* Le damos la el color de la opacidad. */ 
+	opacity:0.65; 				/* Este valor mostrará la intensidad de la opacidad. */
+	position:absolute; 			/* La posición tendrá que ser absoluta. */
+	z-index:9001; 				/* Esta propidad es para añadir la capa superpuesta al nivel 9001. */
+	top:0; 						/* Para que posicione la capa al punto '0' del top de la página. */
+	left:0; 					/* Para que posicione la capa al punto '0' a la izquieda de la página. */
+	width:100%; 				/* El valor por defecto que tendrá que expandirse. */
+	height:100%; 				/* El valor por defecto que tendrá que expandirse. */
+	display:none;				/* Por defecto estará desactiva */
+}
+#popUpDiv {
+	position:absolute; 			/* La posición tendrá que ser absoluta. */
+	z-index:9002; 				/* Esta propidad es para añadir la capa superpuesta al nivel 9002 (antes que la capa 'capaPopUp'). */	
+	overflow:auto;				/* Esta propiedad la indicamos por si el contenido es más grande que la capa que por defecto salga el 'scroll'. */
+	left:50%; 					/* Para posicionar horizontalmente la capa al centro de la página */
+	display:none; 				/* Por defecto estará desactiva */
+	top:50%; 					/* Para posicionar verticalmente la capa al centro de la página */
+}
+/**************************************************************************
+ESTILOS PROPIOS DEL POPUP 20090323@JCP
+***************************************************************************/
+#capaContent {
+	display:block;
+	width:400px; 				/* Necesario para que el script centre la capa horizontalmente en la página */
+	height:200px;				/* Necesario para que el script centre la capa verticalmente en la página */
+	background-color:#FFF;
+}

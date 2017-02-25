@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Taxa" table="oli_taxa"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Taxes unitaries</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="tax_codcam" />
+			<generator class="assigned" />
+		</id>
+		<property name="taxaPlantacioMajorIgual75" type="java.lang.Double">
+			<column name="tax_majigu" precision="17" scale="17" not-null="true">
+				<comment>Taxa plantaci&#243; amb 75 o m&#233;s anys: euros/hectarea</comment>
+            </column>
+        </property>
+        <property name="taxaPlantacioMenor75" type="java.lang.Double">
+            <column name="tax_menor" precision="17" scale="17" not-null="true">
+                <comment>Taxa plantacio amb menys de 75 anys: euros/hectarea</comment>
+            </column>
+        </property>
+        <property name="taxaVolumEnvasar" type="java.lang.Double">
+            <column name="tax_volum" precision="17" scale="17" not-null="true">
+                <comment>Taxa volum a envasar: euros/litro</comment>
+            </column>
+        </property>
+        <property name="taxaContraEtiqueta" type="java.lang.Double">
+            <column name="tax_coneti" precision="17" scale="17" not-null="true">
+                <comment>Taxa contraetiqueta: euros/contraetiqueta</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

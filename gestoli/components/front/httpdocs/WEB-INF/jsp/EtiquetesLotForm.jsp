@@ -1,0 +1,200 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="/WEB-INF/c-rt.tld"%>
+<%@ taglib prefix="fmt" uri="/WEB-INF/fmt-rt.tld"%>
+<%@ taglib prefix="spring" uri="/WEB-INF/spring.tld"%>
+<%@ taglib prefix="display" uri="/WEB-INF/displaytag-el.tld"%>
+<%@ page buffer="64kb"%>
+<%@ page autoFlush="true"%>
+
+<%@ page import="es.caib.gestoli.front.util.*"%>
+<%@ page import="java.util.ResourceBundle"%>
+<%@ page import="java.util.Locale"%>
+
+<%
+	String lang = Idioma.getLang(request);
+	request.setAttribute("lang",lang);
+%>
+
+<html>
+	<head>
+		<title><fmt:message key="proces.etiquetar.titol" /></title>
+		<script type="text/javascript" src="js/form.js"></script>
+		
+		<script type="text/javascript">
+			// <![CDATA[
+			function actualitzaEtiquetaFi() {
+				var etiquetaFi = parseInt($("#etiquetaInici").val(), 10) + parseInt($("#quantitat").val(), 10) - 1;
+				if (!isNaN(etiquetaFi)) {
+					$("#etiquetaFi").val(etiquetaFi);
+				}
+			}
+			function actualitzaQuantitat() {
+				var quantitat = parseInt($("#etiquetaFi").val(), 10) - parseInt($("#etiquetaInici").val(), 10) + 1;
+				if (!isNaN(quantitat)) {
+					$("#quantitat").val(quantitat);
+				}
+			}
+			
+			function amagaMostraCamps(){
+				$("#divIdForetiquetaLletra").toggle();
+				$("#divIdForcapacitat").toggle();
+				
+			}
+			
+			// ]]>
+		</script>
+	</head>
+
+	<body>
+		
+		<form id="formulario" name="etiquetesLotForm" action="EtiquetesLotForm.html" method="post" class="extended seguit" style="width: auto;">
+
+			<input type="hidden" name="idEstabliment" value="${param.idEstabliment}"/>
+			<div class="cajaTabla">
+				<div class="layoutSombraTabla">
+					<div class="rellenoInf"></div>
+					<div class="rellenoIzq"></div>
+					<div class="rellenoDer"></div>
+					<div class="supDer"></div>
+					<div class="supIzq"></div>
+					<div class="infIzq"></div>
+					<div class="infDer"></div>
+					<table cellpadding="0" cellspacing="0" class="listado665 noRoll">
+						<thead>
+							<tr>
+								<th class="unicoHead">
+									<fmt:message key="etiquetar.camp.etiqueta" />
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								
+								<td>
+									<c:if test="${not empty estOlivaTaula}">
+										<c:import url="comu/CampFormulari.jsp">
+											<c:param name="tipus" value="text" />
+											<c:param name="path" value="formData.etiquetaLletra" />
+											<c:param name="required" value="required" />
+											<c:param name="maxlength" value="5" />
+											<c:param name="title"><fmt:message key="etiquetar.camp.etiqueta.lletra" /></c:param>
+											<c:param name="camp" value="etiquetaLletra" />
+											<c:param name="name" value="etiquetaLletra" />
+											<c:param name="clase" value="campoFormPequeno conMargen" />
+										</c:import>
+									</c:if>
+									<c:import url="comu/CampFormulari.jsp">
+										<c:param name="tipus" value="text" />
+										<c:param name="path" value="formData.etiquetaInici" />
+										<c:param name="required" value="required" />
+										<c:param name="maxlength" value="10" />
+										<c:param name="title"><fmt:message key="etiquetar.camp.etiqueta.inici" /></c:param>
+										<c:param name="camp" value="etiquetaInici" />
+										<c:param name="name" value="etiquetaInici" />
+										<c:param name="clase" value="campoFormMediano conMargen" />
+									</c:import>
+									<c:import url="comu/CampFormulari.jsp">
+										<c:param name="tipus" value="text" />
+										<c:param name="path" value="formData.quantitat" />
+										<c:param name="required" value="required" />
+										<c:param name="maxlength" value="10" />
+										<c:param name="title"><fmt:message key="etiquetar.camp.etiqueta.quantitat" /></c:param>
+										<c:param name="camp" value="quantitat" />
+										<c:param name="name" value="quantitat" />
+										<c:param name="clase" value="campoFormMediano conMargen" />
+										<c:param name="onchange" value="actualitzaEtiquetaFi();" />
+									</c:import>
+									<c:import url="comu/CampFormulari.jsp">
+										<c:param name="tipus" value="text" />
+										<c:param name="path" value="formData.etiquetaFi" />
+										<c:param name="required" value="required" />
+										<c:param name="maxlength" value="10" />
+										<c:param name="title"><fmt:message key="etiquetar.camp.etiqueta.fi" /></c:param>
+										<c:param name="camp" value="etiquetaFi" />
+										<c:param name="name" value="etiquetaFi" />
+										<c:param name="clase" value="campoFormMediano conMargen" />
+										<c:param name="onchange" value="actualitzaQuantitat();" />
+										<%--c:param name="readonly" value="readonly" /--%>
+									</c:import>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<c:import url="comu/CampFormulari.jsp">
+										<c:param name="tipus" value="text" />
+										<c:param name="path" value="formData.capacitat" />
+										<c:param name="required" value="required" />
+										<c:param name="maxlength" value="10" />
+										<c:param name="title"><fmt:message key="etiquetar.camp.etiqueta.capacitat" /></c:param>
+										<c:param name="camp" value="capacitat" />
+										<c:param name="name" value="capacitat" />
+										<c:param name="clase" value="campoFormMediano conMargen" />
+									</c:import>
+									<c:if test="${not empty estOlivaTaula}">
+										<div class="etiqueta etiquetaEnLinea <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+											<c:import url="comu/CampFormulari.jsp">
+												<c:param name="tipus" value="checkbox" />
+												<c:param name="path" value="formData.olivaTaula" />
+												<c:param name="title">
+													<fmt:message key="marca.camp.olivaTaula" />
+												</c:param>
+												<c:param name="camp" value="olivaTaula" />
+											</c:import>
+										</div>
+									</c:if>
+									<div class="etiqueta etiquetaEnLinea <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+											<c:import url="comu/CampFormulari.jsp">
+												<c:param name="tipus" value="checkbox" />
+												<c:param name="path" value="formData.esEcologic" />
+												<c:param name="title">
+													<fmt:message key="marca.camp.esEcologic" />
+												</c:param>
+												<c:param name="camp" value="esEcologic" />
+												<c:param name="name" value="esEcologic" />
+												<c:param name="onchange" value="amagaMostraCamps();" />
+											</c:import>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					
+					<div class="separadorH"></div><br/>
+					<br>
+					<br>
+					
+					<div class="botonesForm">
+						<div id="guardarForm" class="btnCorto"
+								onclick="if(confirm('<fmt:message key="manteniment.confirmar"/>')){submitForm('formulario')}"
+								onmouseover="underline('enlaceGuardarForm')"
+								onmouseout="underline('enlaceGuardarForm')">
+							<a id="enlaceGuardarForm" href="javascript:void(0);">
+								<fmt:message key="manteniment.aceptar" />
+							</a>
+						</div>
+
+						<div class="btnCorto" onclick="document.location ='EtiquetesLot.html'"
+								onmouseover="underline('enlaceTornarForm')"
+								onmouseout="underline('enlaceTornarForm')">
+							<a id="enlaceTornarForm" href="javascript:void(0);">
+								<fmt:message key="proces.tornar" />
+							</a>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+
+		</form>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				setEstilosTabla();
+			})
+		</script>
+
+	</body>
+</html>

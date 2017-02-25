@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatPlaNetejaRealitzacio" table="qua_planet_realitzacio" schema="public">
+  		<comment>Qualitat - Pla Neteja Realitzacio Control</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pnr_id" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one 
+			name="neteja" 
+			class="es.caib.gestoli.logic.model.QualitatPlaNeteja"
+			column="pnr_neteja" 
+			not-null="true"/>
+		<property name="dataRealitzacio" type="java.util.Date">
+			<column name="pnr_dataRealitzacio" not-null="false"><comment>Data realitzacio</comment></column>
+		</property>
+		<property name="dataAnterior" type="java.util.Date">
+			<column name="pnr_dataAnterior" not-null="false"><comment>Data anterior</comment></column>
+		</property>
+		<many-to-one 
+			name="responsable" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="pnr_responsable" 
+			not-null="false"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.InformeCampanya" table="oli_informe_campanya" schema="public">
+  		<comment>Informe Campanya</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="inc_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="dataAlta" type="java.util.Date">
+			<column name="inc_dataAlta" not-null="true"><comment>Data alta</comment></column>
+		</property>
+		<property name="tipus" type="java.lang.Boolean">
+			<column name="inc_tipus" not-null="false"><comment>Tipus Document (true->Campanya(producció), false->any(comercialitzacio))</comment></column>
+		</property>
+		<property name="campanya" type="java.lang.String">
+			<column name="inc_campanya" not-null="false"><comment>Campanya producció</comment></column>
+		</property>
+		<property name="any" type="java.lang.String">
+			<column name="inc_any" not-null="false"><comment>Any comercialització</comment></column>
+		</property>
+		<property name="document" type="java.lang.Long">
+			<column name="inc_document" not-null="false"><comment>Document</comment></column>
+		</property>		
+	</class>
+</hibernate-mapping>

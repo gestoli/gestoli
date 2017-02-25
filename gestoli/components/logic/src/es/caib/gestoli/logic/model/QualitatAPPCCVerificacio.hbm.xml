@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAPPCCVerificacio" table="qua_appcc_verificacio" schema="public">
+  		<comment>Qualitat - APPCC Verificació</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="din_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="sales" type="java.lang.Integer">
+			<column name="din_sales" not-null="false"><comment>Sales establiment</comment></column>
+		</property>
+		<property name="plantes" type="java.lang.Integer">
+			<column name="din_plantes" not-null="false"><comment>Plantes establiment</comment></column>
+		</property>
+		<property name="ample" type="java.lang.Integer">
+			<column name="din_ample" not-null="false"><comment>Ample establiment</comment></column>
+		</property>
+		<property name="llarg" type="java.lang.Integer">
+			<column name="din_llarg" not-null="false"><comment>Llarg establiment</comment></column>
+		</property>
+		<property name="vestuaris" type="java.lang.Integer">
+			<column name="din_vestuaris" not-null="false"><comment>Vestuaris establiment</comment></column>
+		</property>
+		<property name="banys" type="java.lang.Integer">
+			<column name="din_banys" not-null="false"><comment>Banys establiment</comment></column>
+		</property>
+		<property name="oficines" type="java.lang.Integer">
+			<column name="din_oficines" not-null="false"><comment>Oficines establiment</comment></column>
+		</property>
+		<many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="din_establiment" 
+			not-null="true"
+			unique="true" /> 
+			<!-- cascade="all"  --> 
+			
+		</class>
+</hibernate-mapping>

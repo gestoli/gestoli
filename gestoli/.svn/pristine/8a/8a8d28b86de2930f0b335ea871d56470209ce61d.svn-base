@@ -1,0 +1,1000 @@
+package es.caib.gestoli.logic.model;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class AutocontrolOliva implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	private Long id;
+	
+	private Date data;
+	private String hora;
+	private Lot lot;
+	private String responsable;
+	private Establiment establiment;
+	private Traza traza;
+	
+	private Boolean colorGroc;
+	private Boolean colorVerdGroc;
+	private Boolean colorVerd;
+	private Boolean colorMarro;
+	private Boolean colorMarroObscur;
+	private Boolean colorNegre;
+	private String colorAltres;
+	private Boolean OKcolorCorrecte;
+	
+	private Boolean aromaVegetal;
+	private Boolean aromaMineral;
+	private Boolean aromaFonoll;
+	private Boolean aromaPebre;
+	private Boolean aromaTerra;
+	private String aromaAltres;
+	private Boolean OKaromaCorrecte;
+	
+	private Boolean texturaFermesa1;
+	private Boolean texturaFermesa2;
+	private Boolean texturaFermesa3;
+	private Boolean texturaFermesa4;
+	private Boolean texturaFermesa5;
+	private Boolean OKtexturaFermesaCorrecte;
+	
+	private Boolean texturaDeformabilitat1;
+	private Boolean texturaDeformabilitat2;
+	private Boolean texturaDeformabilitat3;
+	private Boolean texturaDeformabilitat4;
+	private Boolean texturaDeformabilitat5;
+	private Boolean OKtexturaDeformabilitatCorrecte;
+	
+	private Boolean texturaElasticitat1;
+	private Boolean texturaElasticitat2;
+	private Boolean texturaElasticitat3;
+	private Boolean texturaElasticitat4;
+	private Boolean texturaElasticitat5;
+	private Boolean OKtexturaElasticitatCorrecte;
+	
+	private Boolean texturaSuavitat1;
+	private Boolean texturaSuavitat2;
+	private Boolean texturaSuavitat3;
+	private Boolean texturaSuavitat4;
+	private Boolean texturaSuavitat5;
+	private Boolean OKtexturaSuavitatCorrecte;
+	
+	private Boolean texturabocaFermesaEnBoca1;
+	private Boolean texturabocaFermesaEnBoca2;
+	private Boolean texturabocaFermesaEnBoca3;
+	private Boolean texturabocaFermesaEnBoca4;
+	private Boolean texturabocaFermesaEnBoca5;
+	private Boolean OKtexturabocaFermesaEnBocaCorrecte;
+	
+	private Boolean texturaFriabilitat1;
+	private Boolean texturaFriabilitat2;
+	private Boolean texturaFriabilitat3;
+	private Boolean texturaFriabilitat4;
+	private Boolean texturaFriabilitat5;
+	private Boolean OKtexturaFriabilitatCorrecte;
+	
+	private Boolean texturaCohesio1;
+	private Boolean texturaCohesio2;
+	private Boolean texturaCohesio3;
+	private Boolean texturaCohesio4;
+	private Boolean texturaCohesio5;
+	private Boolean OKtexturaCohesioCorrecte;
+	
+	private Boolean texturaUntuositat1;
+	private Boolean texturaUntuositat2;
+	private Boolean texturaUntuositat3;
+	private Boolean texturaUntuositat4;
+	private Boolean texturaUntuositat5;
+	private Boolean OKtexturaUntuositatCorrecte;
+	
+	private Boolean saborAcid;
+	private Boolean saborSalat;
+	private Boolean saborAmarg;
+	private String saborAltres;
+	private Boolean OKsaborCorrecte;
+	
+	private Boolean sensacioAstringent;
+	private Boolean sensacioPicant;
+	private String sensacioAltres;
+	private Boolean OKsensacioCorrecte;
+	
+	private Boolean regustBaix;
+	private Boolean regustMitja;
+	private Boolean regustProlongat;
+	private Boolean OKregustCorrecte;
+	
+	private Boolean apta;
+	
+	private String mesuresCorrectores;
+	
+	private Boolean verificacioMesuresCorrectores;
+	private Boolean valid;
+	
+	
+	public AutocontrolOliva() {
+		
+	}
+	
+	public AutocontrolOliva(
+			Date data,
+			String hora,
+			Lot lot,
+			String responsable,
+			Establiment establiment,
+			Traza traza,
+			Boolean colorGroc,
+			Boolean colorVerdGroc,
+			Boolean colorVerd,
+			Boolean colorMarro,
+			Boolean colorMarroObscur,
+			Boolean colorNegre,
+			String colorAltres,
+			Boolean OKcolorCorrecte,
+			Boolean aromaVegetal,
+			Boolean aromaMineral,
+			Boolean aromaFonoll,
+			Boolean aromaPebre,
+			Boolean aromaTerra,
+			String aromaAltres,
+			Boolean OKaromaCorrecte,
+			Boolean texturaFermesa1,
+			Boolean texturaFermesa2,
+			Boolean texturaFermesa3,
+			Boolean texturaFermesa4,
+			Boolean texturaFermesa5,
+			Boolean OKtexturaFermesaCorrecte,			
+			Boolean texturaDeformabilitat1,
+			Boolean texturaDeformabilitat2,
+			Boolean texturaDeformabilitat3,
+			Boolean texturaDeformabilitat4,
+			Boolean texturaDeformabilitat5,
+			Boolean OKtexturaDeformabilitatCorrecte,			
+			Boolean texturaElasticitat1,
+			Boolean texturaElasticitat2,
+			Boolean texturaElasticitat3,
+			Boolean texturaElasticitat4,
+			Boolean texturaElasticitat5,
+			Boolean OKtexturaElasticitatCorrecte,
+			Boolean texturaSuavitat1,
+			Boolean texturaSuavitat2,
+			Boolean texturaSuavitat3,
+			Boolean texturaSuavitat4,
+			Boolean texturaSuavitat5,
+			Boolean OKtexturaSuavitatCorrecte,			
+			Boolean texturabocaFermesaEnBoca1,
+			Boolean texturabocaFermesaEnBoca2,
+			Boolean texturabocaFermesaEnBoca3,
+			Boolean texturabocaFermesaEnBoca4,
+			Boolean texturabocaFermesaEnBoca5,
+			Boolean OKtexturabocaFermesaEnBocaCorrecte,			
+			Boolean texturaFriabilitat1,
+			Boolean texturaFriabilitat2,
+			Boolean texturaFriabilitat3,
+			Boolean texturaFriabilitat4,
+			Boolean texturaFriabilitat5,
+			Boolean OKtexturaFriabilitatCorrecte,			
+			Boolean texturaCohesio1,
+			Boolean texturaCohesio2,
+			Boolean texturaCohesio3,
+			Boolean texturaCohesio4,
+			Boolean texturaCohesio5,
+			Boolean OKtexturaCohesioCorrecte,			
+			Boolean texturaUntuositat1,
+			Boolean texturaUntuositat2,
+			Boolean texturaUntuositat3,
+			Boolean texturaUntuositat4,
+			Boolean texturaUntuositat5,
+			Boolean OKtexturaUntuositatCorrecte,
+			Boolean saborAcid,
+			Boolean saborSalat,
+			Boolean saborAmarg,
+			String saborAltres,
+			Boolean OKsaborCorrecte,
+			Boolean sensacioAstringent,
+			Boolean sensacioPicant,
+			String sensacioAltres,
+			Boolean OKsensacioCorrecte,
+			Boolean regustBaix,
+			Boolean regustMitja,
+			Boolean regustProlongat,
+			Boolean OKregustCorrecte,
+			Boolean apta,
+			String mesuresCorrectores,
+			Boolean verificacioMesuresCorrectores) {
+		this.data = data;
+		this.hora =  hora;
+		this.lot =  lot;
+		this.responsable =  responsable;
+		this.establiment =  establiment;
+		this.traza =  traza;
+		this.colorGroc =  colorGroc;
+		this.colorVerdGroc =  colorVerdGroc;
+		this.colorVerd =  colorVerd;
+		this.colorMarro =  colorMarro;
+		this.colorMarroObscur =  colorMarroObscur;
+		this.colorNegre =  colorNegre;
+		this.colorAltres =  colorAltres;
+		this.OKcolorCorrecte =  OKcolorCorrecte;
+		this.aromaVegetal =  aromaVegetal;
+		this.aromaMineral =  aromaMineral;
+		this.aromaFonoll =  aromaFonoll;
+		this.aromaPebre =  aromaPebre;
+		this.aromaTerra =  aromaTerra;
+		this.aromaAltres =  aromaAltres;
+		this.OKaromaCorrecte =  OKaromaCorrecte;
+		this.texturaFermesa1 = texturaFermesa1;
+		this.texturaFermesa2 = texturaFermesa2;
+		this.texturaFermesa3 = texturaFermesa3;
+		this.texturaFermesa4 = texturaFermesa4;
+		this.texturaFermesa5 = texturaFermesa5;
+		this.OKtexturaFermesaCorrecte = OKtexturaFermesaCorrecte;
+		this.texturaDeformabilitat1 = texturaDeformabilitat1;
+		this.texturaDeformabilitat2 = texturaDeformabilitat2;
+		this.texturaDeformabilitat3 = texturaDeformabilitat3;
+		this.texturaDeformabilitat4 = texturaDeformabilitat4;
+		this.texturaDeformabilitat5 = texturaDeformabilitat5;
+		this.OKtexturaDeformabilitatCorrecte = OKtexturaDeformabilitatCorrecte;
+		this.texturaElasticitat1 = texturaElasticitat1;
+		this.texturaElasticitat2 = texturaElasticitat2;
+		this.texturaElasticitat3 = texturaElasticitat3;
+		this.texturaElasticitat4 = texturaElasticitat4;
+		this.texturaElasticitat5 = texturaElasticitat5;
+		this.OKtexturaElasticitatCorrecte = OKtexturaElasticitatCorrecte;
+		this.texturaSuavitat1 = texturaSuavitat1;
+		this.texturaSuavitat2 = texturaSuavitat2;
+		this.texturaSuavitat3 = texturaSuavitat3;
+		this.texturaSuavitat4 = texturaSuavitat4;
+		this.texturaSuavitat5 = texturaSuavitat5;
+		this.OKtexturaSuavitatCorrecte = OKtexturaSuavitatCorrecte;
+		this.texturabocaFermesaEnBoca1 = texturabocaFermesaEnBoca1;
+		this.texturabocaFermesaEnBoca2 = texturabocaFermesaEnBoca2;
+		this.texturabocaFermesaEnBoca3 = texturabocaFermesaEnBoca3;
+		this.texturabocaFermesaEnBoca4 = texturabocaFermesaEnBoca4;
+		this.texturabocaFermesaEnBoca5 = texturabocaFermesaEnBoca5;
+		this.OKtexturabocaFermesaEnBocaCorrecte = OKtexturabocaFermesaEnBocaCorrecte;
+		this.texturaFriabilitat1 = texturaFriabilitat1;
+		this.texturaFriabilitat2 = texturaFriabilitat2;
+		this.texturaFriabilitat3 = texturaFriabilitat3;
+		this.texturaFriabilitat4 = texturaFriabilitat4;
+		this.texturaFriabilitat5 = texturaFriabilitat5;
+		this.OKtexturaFriabilitatCorrecte = OKtexturaFriabilitatCorrecte;
+		this.texturaCohesio1 = texturaCohesio1;
+		this.texturaCohesio2 = texturaCohesio2;
+		this.texturaCohesio3 = texturaCohesio3;
+		this.texturaCohesio4 = texturaCohesio4;
+		this.texturaCohesio5 = texturaCohesio5;
+		this.OKtexturaCohesioCorrecte = OKtexturaCohesioCorrecte;
+		this.texturaUntuositat1 = texturaUntuositat1;
+		this.texturaUntuositat2 = texturaUntuositat2;
+		this.texturaUntuositat3 = texturaUntuositat3;
+		this.texturaUntuositat4 = texturaUntuositat4;
+		this.texturaUntuositat5 = texturaUntuositat5;
+		this.OKtexturaUntuositatCorrecte = OKtexturaUntuositatCorrecte;
+		this.saborAcid =  saborAcid;
+		this.saborSalat =  saborSalat;
+		this.saborAmarg =  saborAmarg;
+		this.saborAltres =  saborAltres;
+		this.OKsaborCorrecte =  OKsaborCorrecte;
+		this.sensacioAstringent =  sensacioAstringent;
+		this.sensacioPicant =  sensacioPicant;
+		this.sensacioAltres =  sensacioAltres;
+		this.OKsensacioCorrecte =  OKsensacioCorrecte;
+		this.regustBaix =  regustBaix;
+		this.regustMitja =  regustMitja;
+		this.regustProlongat =  regustProlongat;
+		this.OKregustCorrecte =  OKregustCorrecte;
+		this.apta = apta;
+		this.mesuresCorrectores =  mesuresCorrectores;
+		this.verificacioMesuresCorrectores =  verificacioMesuresCorrectores;
+		this.valid = true;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	public Lot getLot() {
+		return lot;
+	}
+
+	public void setLot(Lot lot) {
+		this.lot = lot;
+	}
+
+	public Traza getTraza() {
+		return traza;
+	}
+
+	public void setTraza(Traza traza) {
+		this.traza = traza;
+	}
+
+	public String getResponsable() {
+		return responsable;
+	}
+
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
+	}
+
+	public Establiment getEstabliment() {
+		return establiment;
+	}
+
+	public void setEstabliment(Establiment establiment) {
+		this.establiment = establiment;
+	}
+
+	public Boolean getColorGroc() {
+		return colorGroc;
+	}
+
+	public void setColorGroc(Boolean colorGroc) {
+		this.colorGroc = colorGroc;
+	}
+
+	public Boolean getColorVerdGroc() {
+		return colorVerdGroc;
+	}
+
+	public void setColorVerdGroc(Boolean colorVerdGroc) {
+		this.colorVerdGroc = colorVerdGroc;
+	}
+
+	public Boolean getColorVerd() {
+		return colorVerd;
+	}
+
+	public void setColorVerd(Boolean colorVerd) {
+		this.colorVerd = colorVerd;
+	}
+
+	public Boolean getColorMarro() {
+		return colorMarro;
+	}
+
+	public void setColorMarro(Boolean colorMarro) {
+		this.colorMarro = colorMarro;
+	}
+
+	public Boolean getColorMarroObscur() {
+		return colorMarroObscur;
+	}
+
+	public void setColorMarroObscur(Boolean colorMarroObscur) {
+		this.colorMarroObscur = colorMarroObscur;
+	}
+
+	public Boolean getColorNegre() {
+		return colorNegre;
+	}
+
+	public void setColorNegre(Boolean colorNegre) {
+		this.colorNegre = colorNegre;
+	}
+
+	public String getColorAltres() {
+		return colorAltres;
+	}
+
+	public void setColorAltres(String colorAltres) {
+		this.colorAltres = colorAltres;
+	}
+
+	public Boolean getAromaVegetal() {
+		return aromaVegetal;
+	}
+
+	public void setAromaVegetal(Boolean aromaVegetal) {
+		this.aromaVegetal = aromaVegetal;
+	}
+
+	public Boolean getAromaMineral() {
+		return aromaMineral;
+	}
+
+	public void setAromaMineral(Boolean aromaMineral) {
+		this.aromaMineral = aromaMineral;
+	}
+
+	public Boolean getAromaFonoll() {
+		return aromaFonoll;
+	}
+
+	public void setAromaFonoll(Boolean aromaFonoll) {
+		this.aromaFonoll = aromaFonoll;
+	}
+
+	public Boolean getAromaPebre() {
+		return aromaPebre;
+	}
+
+	public void setAromaPebre(Boolean aromaPebre) {
+		this.aromaPebre = aromaPebre;
+	}
+
+	public Boolean getAromaTerra() {
+		return aromaTerra;
+	}
+
+	public void setAromaTerra(Boolean aromaTerra) {
+		this.aromaTerra = aromaTerra;
+	}
+
+	public String getAromaAltres() {
+		return aromaAltres;
+	}
+
+	public void setAromaAltres(String aromaAltres) {
+		this.aromaAltres = aromaAltres;
+	}
+
+	public Boolean getTexturaFermesa1() {
+		return texturaFermesa1;
+	}
+
+	public void setTexturaFermesa1(Boolean texturaFermesa1) {
+		this.texturaFermesa1 = texturaFermesa1;
+	}
+
+	public Boolean getTexturaFermesa2() {
+		return texturaFermesa2;
+	}
+
+	public void setTexturaFermesa2(Boolean texturaFermesa2) {
+		this.texturaFermesa2 = texturaFermesa2;
+	}
+
+	public Boolean getTexturaFermesa3() {
+		return texturaFermesa3;
+	}
+
+	public void setTexturaFermesa3(Boolean texturaFermesa3) {
+		this.texturaFermesa3 = texturaFermesa3;
+	}
+
+	public Boolean getTexturaFermesa4() {
+		return texturaFermesa4;
+	}
+
+	public void setTexturaFermesa4(Boolean texturaFermesa4) {
+		this.texturaFermesa4 = texturaFermesa4;
+	}
+
+	public Boolean getTexturaFermesa5() {
+		return texturaFermesa5;
+	}
+
+	public void setTexturaFermesa5(Boolean texturaFermesa5) {
+		this.texturaFermesa5 = texturaFermesa5;
+	}
+
+	public Boolean getTexturaDeformabilitat1() {
+		return texturaDeformabilitat1;
+	}
+
+	public void setTexturaDeformabilitat1(Boolean texturaDeformabilitat1) {
+		this.texturaDeformabilitat1 = texturaDeformabilitat1;
+	}
+
+	public Boolean getTexturaDeformabilitat2() {
+		return texturaDeformabilitat2;
+	}
+
+	public void setTexturaDeformabilitat2(Boolean texturaDeformabilitat2) {
+		this.texturaDeformabilitat2 = texturaDeformabilitat2;
+	}
+
+	public Boolean getTexturaDeformabilitat3() {
+		return texturaDeformabilitat3;
+	}
+
+	public void setTexturaDeformabilitat3(Boolean texturaDeformabilitat3) {
+		this.texturaDeformabilitat3 = texturaDeformabilitat3;
+	}
+
+	public Boolean getTexturaDeformabilitat4() {
+		return texturaDeformabilitat4;
+	}
+
+	public void setTexturaDeformabilitat4(Boolean texturaDeformabilitat4) {
+		this.texturaDeformabilitat4 = texturaDeformabilitat4;
+	}
+
+	public Boolean getTexturaDeformabilitat5() {
+		return texturaDeformabilitat5;
+	}
+
+	public void setTexturaDeformabilitat5(Boolean texturaDeformabilitat5) {
+		this.texturaDeformabilitat5 = texturaDeformabilitat5;
+	}
+
+	public Boolean getTexturaElasticitat1() {
+		return texturaElasticitat1;
+	}
+
+	public void setTexturaElasticitat1(Boolean texturaElasticitat1) {
+		this.texturaElasticitat1 = texturaElasticitat1;
+	}
+
+	public Boolean getTexturaElasticitat2() {
+		return texturaElasticitat2;
+	}
+
+	public void setTexturaElasticitat2(Boolean texturaElasticitat2) {
+		this.texturaElasticitat2 = texturaElasticitat2;
+	}
+
+	public Boolean getTexturaElasticitat3() {
+		return texturaElasticitat3;
+	}
+
+	public void setTexturaElasticitat3(Boolean texturaElasticitat3) {
+		this.texturaElasticitat3 = texturaElasticitat3;
+	}
+
+	public Boolean getTexturaElasticitat4() {
+		return texturaElasticitat4;
+	}
+
+	public void setTexturaElasticitat4(Boolean texturaElasticitat4) {
+		this.texturaElasticitat4 = texturaElasticitat4;
+	}
+
+	public Boolean getTexturaElasticitat5() {
+		return texturaElasticitat5;
+	}
+
+	public void setTexturaElasticitat5(Boolean texturaElasticitat5) {
+		this.texturaElasticitat5 = texturaElasticitat5;
+	}
+
+	public Boolean getTexturaSuavitat1() {
+		return texturaSuavitat1;
+	}
+
+	public void setTexturaSuavitat1(Boolean texturaSuavitat1) {
+		this.texturaSuavitat1 = texturaSuavitat1;
+	}
+
+	public Boolean getTexturaSuavitat2() {
+		return texturaSuavitat2;
+	}
+
+	public void setTexturaSuavitat2(Boolean texturaSuavitat2) {
+		this.texturaSuavitat2 = texturaSuavitat2;
+	}
+
+	public Boolean getTexturaSuavitat3() {
+		return texturaSuavitat3;
+	}
+
+	public void setTexturaSuavitat3(Boolean texturaSuavitat3) {
+		this.texturaSuavitat3 = texturaSuavitat3;
+	}
+
+	public Boolean getTexturaSuavitat4() {
+		return texturaSuavitat4;
+	}
+
+	public void setTexturaSuavitat4(Boolean texturaSuavitat4) {
+		this.texturaSuavitat4 = texturaSuavitat4;
+	}
+
+	public Boolean getTexturaSuavitat5() {
+		return texturaSuavitat5;
+	}
+
+	public void setTexturaSuavitat5(Boolean texturaSuavitat5) {
+		this.texturaSuavitat5 = texturaSuavitat5;
+	}
+
+	public Boolean getTexturabocaFermesaEnBoca1() {
+		return texturabocaFermesaEnBoca1;
+	}
+
+	public void setTexturabocaFermesaEnBoca1(Boolean texturabocaFermesaEnBoca1) {
+		this.texturabocaFermesaEnBoca1 = texturabocaFermesaEnBoca1;
+	}
+
+	public Boolean getTexturabocaFermesaEnBoca2() {
+		return texturabocaFermesaEnBoca2;
+	}
+
+	public void setTexturabocaFermesaEnBoca2(Boolean texturabocaFermesaEnBoca2) {
+		this.texturabocaFermesaEnBoca2 = texturabocaFermesaEnBoca2;
+	}
+
+	public Boolean getTexturabocaFermesaEnBoca3() {
+		return texturabocaFermesaEnBoca3;
+	}
+
+	public void setTexturabocaFermesaEnBoca3(Boolean texturabocaFermesaEnBoca3) {
+		this.texturabocaFermesaEnBoca3 = texturabocaFermesaEnBoca3;
+	}
+
+	public Boolean getTexturabocaFermesaEnBoca4() {
+		return texturabocaFermesaEnBoca4;
+	}
+
+	public void setTexturabocaFermesaEnBoca4(Boolean texturabocaFermesaEnBoca4) {
+		this.texturabocaFermesaEnBoca4 = texturabocaFermesaEnBoca4;
+	}
+
+	public Boolean getTexturabocaFermesaEnBoca5() {
+		return texturabocaFermesaEnBoca5;
+	}
+
+	public void setTexturabocaFermesaEnBoca5(Boolean texturabocaFermesaEnBoca5) {
+		this.texturabocaFermesaEnBoca5 = texturabocaFermesaEnBoca5;
+	}
+
+	public Boolean getTexturaFriabilitat1() {
+		return texturaFriabilitat1;
+	}
+
+	public void setTexturaFriabilitat1(Boolean texturaFriabilitat1) {
+		this.texturaFriabilitat1 = texturaFriabilitat1;
+	}
+
+	public Boolean getTexturaFriabilitat2() {
+		return texturaFriabilitat2;
+	}
+
+	public void setTexturaFriabilitat2(Boolean texturaFriabilitat2) {
+		this.texturaFriabilitat2 = texturaFriabilitat2;
+	}
+
+	public Boolean getTexturaFriabilitat3() {
+		return texturaFriabilitat3;
+	}
+
+	public void setTexturaFriabilitat3(Boolean texturaFriabilitat3) {
+		this.texturaFriabilitat3 = texturaFriabilitat3;
+	}
+
+	public Boolean getTexturaFriabilitat4() {
+		return texturaFriabilitat4;
+	}
+
+	public void setTexturaFriabilitat4(Boolean texturaFriabilitat4) {
+		this.texturaFriabilitat4 = texturaFriabilitat4;
+	}
+
+	public Boolean getTexturaFriabilitat5() {
+		return texturaFriabilitat5;
+	}
+
+	public void setTexturaFriabilitat5(Boolean texturaFriabilitat5) {
+		this.texturaFriabilitat5 = texturaFriabilitat5;
+	}
+
+	public Boolean getTexturaCohesio1() {
+		return texturaCohesio1;
+	}
+
+	public void setTexturaCohesio1(Boolean texturaCohesio1) {
+		this.texturaCohesio1 = texturaCohesio1;
+	}
+
+	public Boolean getTexturaCohesio2() {
+		return texturaCohesio2;
+	}
+
+	public void setTexturaCohesio2(Boolean texturaCohesio2) {
+		this.texturaCohesio2 = texturaCohesio2;
+	}
+
+	public Boolean getTexturaCohesio3() {
+		return texturaCohesio3;
+	}
+
+	public void setTexturaCohesio3(Boolean texturaCohesio3) {
+		this.texturaCohesio3 = texturaCohesio3;
+	}
+
+	public Boolean getTexturaCohesio4() {
+		return texturaCohesio4;
+	}
+
+	public void setTexturaCohesio4(Boolean texturaCohesio4) {
+		this.texturaCohesio4 = texturaCohesio4;
+	}
+
+	public Boolean getTexturaCohesio5() {
+		return texturaCohesio5;
+	}
+
+	public void setTexturaCohesio5(Boolean texturaCohesio5) {
+		this.texturaCohesio5 = texturaCohesio5;
+	}
+
+	public Boolean getTexturaUntuositat1() {
+		return texturaUntuositat1;
+	}
+
+	public void setTexturaUntuositat1(Boolean texturaUntuositat1) {
+		this.texturaUntuositat1 = texturaUntuositat1;
+	}
+
+	public Boolean getTexturaUntuositat2() {
+		return texturaUntuositat2;
+	}
+
+	public void setTexturaUntuositat2(Boolean texturaUntuositat2) {
+		this.texturaUntuositat2 = texturaUntuositat2;
+	}
+
+	public Boolean getTexturaUntuositat3() {
+		return texturaUntuositat3;
+	}
+
+	public void setTexturaUntuositat3(Boolean texturaUntuositat3) {
+		this.texturaUntuositat3 = texturaUntuositat3;
+	}
+
+	public Boolean getTexturaUntuositat4() {
+		return texturaUntuositat4;
+	}
+
+	public void setTexturaUntuositat4(Boolean texturaUntuositat4) {
+		this.texturaUntuositat4 = texturaUntuositat4;
+	}
+
+	public Boolean getTexturaUntuositat5() {
+		return texturaUntuositat5;
+	}
+
+	public void setTexturaUntuositat5(Boolean texturaUntuositat5) {
+		this.texturaUntuositat5 = texturaUntuositat5;
+	}
+
+	public Boolean getSaborAcid() {
+		return saborAcid;
+	}
+
+	public void setSaborAcid(Boolean saborAcid) {
+		this.saborAcid = saborAcid;
+	}
+
+	public Boolean getSaborSalat() {
+		return saborSalat;
+	}
+
+	public void setSaborSalat(Boolean saborSalat) {
+		this.saborSalat = saborSalat;
+	}
+
+	public Boolean getSaborAmarg() {
+		return saborAmarg;
+	}
+
+	public void setSaborAmarg(Boolean saborAmarg) {
+		this.saborAmarg = saborAmarg;
+	}
+
+	public String getSaborAltres() {
+		return saborAltres;
+	}
+
+	public void setSaborAltres(String saborAltres) {
+		this.saborAltres = saborAltres;
+	}
+
+	public Boolean getSensacioAstringent() {
+		return sensacioAstringent;
+	}
+
+	public void setSensacioAstringent(Boolean sensacioAstringent) {
+		this.sensacioAstringent = sensacioAstringent;
+	}
+
+	public Boolean getSensacioPicant() {
+		return sensacioPicant;
+	}
+
+	public void setSensacioPicant(Boolean sensacioPicant) {
+		this.sensacioPicant = sensacioPicant;
+	}
+
+	public String getSensacioAltres() {
+		return sensacioAltres;
+	}
+
+	public void setSensacioAltres(String sensacioAltres) {
+		this.sensacioAltres = sensacioAltres;
+	}
+
+	public Boolean getRegustBaix() {
+		return regustBaix;
+	}
+
+	public void setRegustBaix(Boolean regustBaix) {
+		this.regustBaix = regustBaix;
+	}
+
+	public Boolean getRegustMitja() {
+		return regustMitja;
+	}
+
+	public void setRegustMitja(Boolean regustMitja) {
+		this.regustMitja = regustMitja;
+	}
+
+	public Boolean getRegustProlongat() {
+		return regustProlongat;
+	}
+
+	public void setRegustProlongat(Boolean regustProlongat) {
+		this.regustProlongat = regustProlongat;
+	}
+
+	public Boolean getOKcolorCorrecte() {
+		return OKcolorCorrecte;
+	}
+
+	public void setOKcolorCorrecte(Boolean oKcolorCorrecte) {
+		OKcolorCorrecte = oKcolorCorrecte;
+	}
+
+	public Boolean getOKaromaCorrecte() {
+		return OKaromaCorrecte;
+	}
+
+	public void setOKaromaCorrecte(Boolean oKaromaCorrecte) {
+		OKaromaCorrecte = oKaromaCorrecte;
+	}
+
+	public Boolean getOKtexturaFermesaCorrecte() {
+		return OKtexturaFermesaCorrecte;
+	}
+
+	public void setOKtexturaFermesaCorrecte(Boolean oKtexturaFermesaCorrecte) {
+		OKtexturaFermesaCorrecte = oKtexturaFermesaCorrecte;
+	}
+
+	public Boolean getOKtexturaDeformabilitatCorrecte() {
+		return OKtexturaDeformabilitatCorrecte;
+	}
+
+	public void setOKtexturaDeformabilitatCorrecte(
+			Boolean oKtexturaDeformabilitatCorrecte) {
+		OKtexturaDeformabilitatCorrecte = oKtexturaDeformabilitatCorrecte;
+	}
+
+	public Boolean getOKtexturaElasticitatCorrecte() {
+		return OKtexturaElasticitatCorrecte;
+	}
+
+	public void setOKtexturaElasticitatCorrecte(Boolean oKtexturaElasticitatCorrecte) {
+		OKtexturaElasticitatCorrecte = oKtexturaElasticitatCorrecte;
+	}
+
+	public Boolean getOKtexturaSuavitatCorrecte() {
+		return OKtexturaSuavitatCorrecte;
+	}
+
+	public void setOKtexturaSuavitatCorrecte(Boolean oKtexturaSuavitatCorrecte) {
+		OKtexturaSuavitatCorrecte = oKtexturaSuavitatCorrecte;
+	}
+
+	public Boolean getOKtexturabocaFermesaEnBocaCorrecte() {
+		return OKtexturabocaFermesaEnBocaCorrecte;
+	}
+
+	public void setOKtexturabocaFermesaEnBocaCorrecte(
+			Boolean oKtexturabocaFermesaEnBocaCorrecte) {
+		OKtexturabocaFermesaEnBocaCorrecte = oKtexturabocaFermesaEnBocaCorrecte;
+	}
+
+	public Boolean getOKtexturaFriabilitatCorrecte() {
+		return OKtexturaFriabilitatCorrecte;
+	}
+
+	public void setOKtexturaFriabilitatCorrecte(Boolean oKtexturaFriabilitatCorrecte) {
+		OKtexturaFriabilitatCorrecte = oKtexturaFriabilitatCorrecte;
+	}
+
+	public Boolean getOKtexturaCohesioCorrecte() {
+		return OKtexturaCohesioCorrecte;
+	}
+
+	public void setOKtexturaCohesioCorrecte(Boolean oKtexturaCohesioCorrecte) {
+		OKtexturaCohesioCorrecte = oKtexturaCohesioCorrecte;
+	}
+
+	public Boolean getOKtexturaUntuositatCorrecte() {
+		return OKtexturaUntuositatCorrecte;
+	}
+
+	public void setOKtexturaUntuositatCorrecte(Boolean oKtexturaUntuositatCorrecte) {
+		OKtexturaUntuositatCorrecte = oKtexturaUntuositatCorrecte;
+	}
+
+	public Boolean getOKsaborCorrecte() {
+		return OKsaborCorrecte;
+	}
+
+	public void setOKsaborCorrecte(Boolean oKsaborCorrecte) {
+		OKsaborCorrecte = oKsaborCorrecte;
+	}
+
+	public Boolean getOKsensacioCorrecte() {
+		return OKsensacioCorrecte;
+	}
+
+	public void setOKsensacioCorrecte(Boolean oKsensacioCorrecte) {
+		OKsensacioCorrecte = oKsensacioCorrecte;
+	}
+
+	public Boolean getOKregustCorrecte() {
+		return OKregustCorrecte;
+	}
+
+	public void setOKregustCorrecte(Boolean oKregustCorrecte) {
+		OKregustCorrecte = oKregustCorrecte;
+	}
+
+	public Boolean getApta() {
+		return apta;
+	}
+
+	public void setApta(Boolean apta) {
+		this.apta = apta;
+	}
+
+	public String getMesuresCorrectores() {
+		return mesuresCorrectores;
+	}
+
+	public void setMesuresCorrectores(String mesuresCorrectores) {
+		this.mesuresCorrectores = mesuresCorrectores;
+	}
+
+	public Boolean getVerificacioMesuresCorrectores() {
+		return verificacioMesuresCorrectores;
+	}
+
+	public void setVerificacioMesuresCorrectores(
+			Boolean verificacioMesuresCorrectores) {
+		this.verificacioMesuresCorrectores = verificacioMesuresCorrectores;
+	}
+
+	public Boolean getValid() {
+		return valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
+	
+	public String getDataFormat() {
+		if (this.data != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			return sdf.format(this.data);
+		} 
+		return null;
+	}
+}

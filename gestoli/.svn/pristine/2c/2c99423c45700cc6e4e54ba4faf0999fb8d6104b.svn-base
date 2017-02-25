@@ -1,0 +1,17 @@
+<decorators defaultdir="/WEB-INF/jsp/plantilla">
+	<decorator name="default" page="Default.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+	<decorator name="popup" page="Popup.jsp">
+		<pattern>/PartidaOliPopupForm.html</pattern>
+	</decorator>
+	<decorator name="web" page="Web.jsp">
+		<pattern>/web/*</pattern>
+	</decorator>
+	<excludes>
+		<pattern>*d-*-e*</pattern>
+		<pattern>*/Mapa.html?x=*</pattern>
+		<pattern>*/MapaMultiple.html*</pattern>
+		<pattern>*/web/gestioInfografiesView.ca.html*</pattern>
+	</excludes>
+</decorators>

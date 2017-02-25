@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.SortidaOrujo" table="oli_sortida_orujo" schema="public">
+		<meta attribute="class-description" inherit="false">
+			Javadoc de les clases Model de Gest Oli @author Miquel Angel Amengual (miquelaa@limit.es)
+		</meta>
+		<meta attribute="class-code" inherit="false">
+			/** * Devuelve una fecha formateada */
+			public String getDataFormat() { SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.getData()); }
+		</meta>
+		<comment>Sortida de Orujo</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="sor_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="data" type="date">
+			<column name="sor_data" length="13"><comment>Data</comment></column>
+		</property>
+		<property name="kilos" type="java.lang.Double">
+			<column name="sor_kilos" precision="17" scale="17"><comment>Kilos</comment></column>
+		</property>
+		<property name="albara" type="java.lang.String">
+			<column name="sor_albara" length="128"><comment>Albarà</comment></column>
+		</property>
+		<property name="desti" type="java.lang.String">
+			<column name="sor_desti" length="128" not-null="true"><comment>Destí</comment></column>
+		</property>
+		<property name="document" type="java.lang.String">
+			<column name="sor_document" length="16" not-null="true"><comment>CIF/NIF</comment></column>
+		</property>
+		<property name="valid" type="java.lang.Boolean" insert="false">
+			<column name="sor_valid" not-null="true"><comment>Proces valid</comment></column>
+		</property>
+		<many-to-one name="establiment" class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="sor_codest" not-null="true"><comment>Codi de establiment</comment></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

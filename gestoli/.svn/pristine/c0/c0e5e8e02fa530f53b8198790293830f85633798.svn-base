@@ -1,0 +1,53 @@
+#asistenciaMicroweb {
+	padding: 0 20px;
+	background: url(../../img/general/microweb/fondoAsistencia.jpg) 0 20px
+		no-repeat;
+	min-height: 763px;
+	height: auto !important;
+	height: 763px;
+	font-size: 15px;
+}
+
+/* primer párrafo */
+#asistenciaMicroweb .faseImplantacion {
+	padding-bottom: 28px;
+}
+
+/* segundo párrafo */
+#asistenciaMicroweb .datosEmpresa {
+	padding-bottom: 20px;
+	float: left;
+}
+
+#asistenciaMicroweb .primerNivel {
+	padding-bottom: 9px;
+}
+
+#asistenciaMicroweb .empresa,#asistenciaMicroweb .fecha {
+	background:
+		url(../../img/general/microweb/fondoTextoAsistenciaTecnica.gif) top
+		left no-repeat #ffffff;
+	margin-bottom: 7px;
+	border-bottom: 1px solid #ECBF1E;
+}
+
+#asistenciaMicroweb .empresa a {
+	color: #000000;
+	text-decoration: none;
+}
+
+#asistenciaMicroweb .fecha {
+	padding: 0 7px 0 8px;
+}
+
+#asistenciaMicroweb .empresa {
+	font-size: 18px;
+	float: left;
+	clear: left;
+	padding: 1px 6px;
+}
+
+/* tercer párrafo */
+#asistenciaMicroweb .segundoNivel {
+	clear: left;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.PartidaElaboracio" schema="public" table="oli_partida_elaboracio">
+		<meta attribute="class-description" inherit="false">Javadoc de les clases Model de Gest Oli</meta>
+		<meta attribute="extra-import" inherit="false">java.text.DecimalFormat</meta>
+		<meta attribute="extra-import" inherit="false">java.util.Iterator</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Partides Elaboracio</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pel_codi" />
+			<generator class="native" />
+		</id>
+		<many-to-one class="es.caib.gestoli.logic.model.ElaboracioOliva" fetch="select" name="elaboracio">
+			<column name="pel_codela" not-null="true">
+				<comment>Elaboracio</comment>
+			</column>
+		</many-to-one>
+		<many-to-one class="es.caib.gestoli.logic.model.PartidaOliva" fetch="select" name="partida">
+			<column name="pel_codpao" not-null="true">
+				<comment>Partida oliva</comment>
+			</column>
+		</many-to-one>
+		<property generated="never" lazy="false" name="quantitat" type="java.lang.Double">
+			<column name="pel_quantitat" not-null="false">
+				<comment>Kg oliva utilitzats</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="quantitatCriba" type="java.lang.Double">
+			<column name="pel_quacri" not-null="false">
+				<comment>Kg oliva cribats</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

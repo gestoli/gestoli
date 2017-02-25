@@ -1,0 +1,366 @@
+package es.caib.gestoli.logic.dao;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import es.caib.gestoli.logic.exception.InfrastructureException;
+import es.caib.gestoli.logic.model.EtiquetesLot;
+import es.caib.gestoli.logic.model.Lot;
+import es.caib.gestoli.logic.model.Marca;
+
+public class EtiquetesLotDao {
+
+	private static Logger logger = Logger.getLogger(EtiquetesLotDao.class);
+	private HibernateTemplate hibernateTemplate;
+	
+	/**
+	 * Actualiza un registro
+	 * @param rendimentVarietat
+	 * @throws InfrastructureException
+	 */
+	public void makePersistent(EtiquetesLot etiquetesLot) throws InfrastructureException {
+		try {
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			getHibernateTemplate().saveOrUpdate(etiquetesLot);
+			getHibernateTemplate().flush();
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	/**
+	 * Borra un registro
+	 * @param marca
+	 * @throws InfrastructureException
+	 */
+	public void makeTransient(EtiquetesLot etiquetesLot)
+	throws InfrastructureException {
+		try {
+			logger.debug("makeTransient ini");
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			getHibernateTemplate().delete(etiquetesLot);
+			getHibernateTemplate().flush();
+			logger.debug("makeTransient fin");
+		} catch (HibernateException ex) {
+			logger.error("makeTransient failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+
+	public EtiquetesLot getById(Long id) {
+		EtiquetesLot etiquetesLot;
+		try {
+			logger.debug("getById ini");
+			etiquetesLot = (EtiquetesLot)getHibernateTemplate().load(EtiquetesLot.class, id);	
+		} catch (HibernateException ex) {
+			logger.error("getById failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getById fin");
+		return etiquetesLot;
+	}
+	
+	/**
+	 * Tots els registres d'etiquetat d'un lot.
+	 * @param idLot
+	 * @return
+	 */
+	public Collection findEtiquetesLotByIdLot(Long idLot) {
+		try {
+			String q =	"from EtiquetesLot " +
+						"where lot.id = " + idLot + " " +
+						"order by id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	/**
+	 * Tots els registres d'etiquetat d'un lot creat entre les dates indicades.
+	 * @param idLot
+	 * @return
+	 */
+	public Collection findEtiquetesLotByIdLotEntreDates(Long idLot, Date dataInici, Date dataFi) {
+		Collection col;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			String di = sdf.format(dataInici);
+			String df = sdf.format(dataFi);
+			
+			String q =	"select el " +
+						"from EtiquetesLot el, " +
+						"Lot l " +
+						"where l.id = " + idLot + " " +
+						"and l.id = el.lot.id " +
+						"and l.data >= '" + di + "' " +
+						"and l.data <= '" + df + "' " +
+						"order by l.id asc ";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		return col;
+	}
+	/**
+	 * Tots els registres d'etiquetat d'un lot.
+	 * @param idLot
+	 * @return
+	 */
+	public Collection findEtiquetesLot() {
+		try {
+			String q =	"from EtiquetesLot " +
+						"order by id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection findEtiquetesLotByEstabliment(Long idEstabliment) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.establiment.id = " + idEstabliment + " " +
+						"order by el.id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection findEtiquetesLotOriginalsByEstabliment(Long idEstabliment) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.establiment.id = " + idEstabliment + " " +
+						"and el.rangOriginal is null " +
+						"order by el.id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection findEtiquetesLotByLot(Long idLot) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.lot.id = " + idLot + " " +
+						"order by el.id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection findEtiquetesLotEmpradesByLot(Long idLot) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.lot.id = " + idLot + " " +
+						"and el.utilitzat = true and (el.retirat = false or el.retirat is null) " +
+						"order by el.id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection findEtiquetesLotEmpradesByEstabliment(Long idEstabliment) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.establiment.id = " + idEstabliment + " " +
+						"and el.utilitzat = true and (el.retirat = false or el.retirat is null) " +
+						"order by el.id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public EtiquetesLot findByEtiqueta(String lletres, Integer numeros) {
+		List etiquetes = null;
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where UPPER(el.etiquetaLletra) = '" + lletres.toUpperCase() + "' " +
+						"and el.etiquetaInici <= " + numeros + " " +
+						"and el.etiquetaFi >= " + numeros + " " +
+						"and el.utilitzat is true " +
+						"and el.lot is not null " +
+						"and el.retirat is false " +
+						"order by el.id desc ";
+			etiquetes = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		if (etiquetes != null && etiquetes.size() > 0){
+			return (EtiquetesLot)etiquetes.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	public EtiquetesLot findByEtiquetaUsada(String lletres, Integer numeros) {
+		List etiquetes = null;
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where UPPER(el.etiquetaLletra) = '" + lletres.toUpperCase() + "' " +
+						"and el.etiquetaInici <= " + numeros + " " +
+						"and el.etiquetaFi >= " + numeros + " " +
+						"and el.lot is not null " +
+						"order by el.id desc ";
+			etiquetes = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+		if (etiquetes != null && etiquetes.size() > 0){
+			return (EtiquetesLot)etiquetes.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	public Collection findEtiquetesLotDisponiblesByEstabliment(Long idEstabliment) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.establiment.id = " + idEstabliment + " " +
+						"and (el.utilitzat = false or el.utilitzat is null) and (el.retirat = false or el.retirat is null) " +
+						"order by el.id asc ";
+			Collection c = getHibernateTemplate().find(q);
+			Collection resultat = new ArrayList();
+			
+			for(Object o: c){
+				EtiquetesLot e = (EtiquetesLot)o;
+				if(!teFills(e)){
+					resultat.add(e);
+				}
+			}
+			
+			return resultat;
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection findEtiquetesLotDisponiblesByEstablimentILot(Long idEstabliment, Lot lot, Boolean olivaTaula) {
+		Collection etiquetesEstabliment = findEtiquetesLotDisponiblesByEstabliment(idEstabliment);
+		Collection resultat = new ArrayList();
+		
+		for(Object o: etiquetesEstabliment){
+			EtiquetesLot e = (EtiquetesLot)o;
+			if(e.getCapacitat().equals(lot.getEtiquetatge().getTipusEnvas().getVolum())){
+				if (e.getOlivaTaula()!=null && e.getOlivaTaula()!=false && olivaTaula)
+					resultat.add(e);
+				else if ((e.getOlivaTaula()==null || e.getOlivaTaula()==false) && !olivaTaula)
+					resultat.add(e);
+			}
+		}
+		
+		return resultat;
+	}
+	
+	public Collection findEtiquetesLotRetiradesByEstabliment(Long idEstabliment) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.establiment.id = " + idEstabliment + " " +
+						"and (el.utilitzat = false or el.utilitzat is null) and el.retirat = true " +
+						"order by el.id asc ";
+			return getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public boolean teFills(EtiquetesLot et){
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where el.rangOriginal.id = " + et.getId();
+			return getHibernateTemplate().find(q).size() > 0;
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	public Collection getDescendents(EtiquetesLot et){
+		Collection col;
+		try {
+			logger.debug("getDescendents ini");
+			String q =	"from EtiquetesLot el " +
+						"where el.etiquetaLletra = '" + et.getEtiquetaLletra() + "' " +
+//						"and el.capacitat = " + et.getCapacitat() + " " +
+						"and el.etiquetaInici >= " + et.getEtiquetaInici() + " " +
+						"and el.etiquetaFi <= " + et.getEtiquetaFi();
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.debug("getDescendents failed");
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getDescendents fin");
+		return col;
+	}
+	
+	public Collection getLotsDescendents(EtiquetesLot et){
+		Collection col;
+		try {
+			logger.debug("getLotsDescendents ini");
+			String q =	"select el.lot " +
+						"from EtiquetesLot el " +
+						"where el.etiquetaLletra = '" + et.getEtiquetaLletra() + "' " +
+						"and el.etiquetaInici >= " + et.getEtiquetaInici() + " " +
+						"and el.etiquetaFi <= " + et.getEtiquetaFi() + " " +
+						"and el.lot is not null";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.debug("getLotsDescendents failed");
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getLotsDescendents fin");
+		return col;
+	}
+	
+	public boolean teEtiquetesLotSolapades(EtiquetesLot et) {
+		try {
+			String q =	"from EtiquetesLot el " +
+						"where " +
+						" el.id != " + et.getId() +
+						" and el.establiment.id = " + et.getEstabliment().getId() + 
+						" and el.etiquetaLletra = '" + et.getEtiquetaLletra() + "' " +
+						" and el.capacitat = " + et.getCapacitat() +
+						" and (" +
+						"	   ("+ et.getEtiquetaInici() + " <= el.etiquetaInici and "+ et.getEtiquetaFi() +" >= el.etiquetaInici)" +
+						"	or ("+ et.getEtiquetaInici() + " <= el.etiquetaInici and "+ et.getEtiquetaFi() +" >= el.etiquetaFi)" +
+						"	or ("+ et.getEtiquetaInici() + " >= el.etiquetaInici and "+ et.getEtiquetaFi() +" <= el.etiquetaFi)" +
+						"	or ("+ et.getEtiquetaInici() + " >= el.etiquetaInici and "+ et.getEtiquetaInici() + " <= el.etiquetaFi and " +et.getEtiquetaFi() +" >= el.etiquetaFi)" +
+						") " +
+						((et.getOlivaTaula()!=null && et.getOlivaTaula()) ? " and el.olivaTaula is true ":" and el.olivaTaula is false");
+			System.out.println("CONSULTA:"+q);
+			return getHibernateTemplate().find(q).size() > 0;
+		} catch (HibernateException ex) {
+			throw new InfrastructureException(ex);
+		}
+	}
+	
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 *
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+}

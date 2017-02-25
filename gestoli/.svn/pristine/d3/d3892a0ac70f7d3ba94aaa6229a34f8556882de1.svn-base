@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.GestorDocumentalDocument" table="qua_document"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Documents</comment>
+		<id name="id" type="java.lang.Integer">
+			<column name="doc_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="gestorDocumentalInformacio" class="es.caib.gestoli.logic.model.GestorDocumentalInformacio"
+			fetch="select">
+			<column name="doc_codinf" not-null="true">
+				<comment>Codi de informacio</comment>
+			</column>
+		</many-to-one>
+		<property name="titol" type="java.lang.String">
+			<column name="doc_titol" length="128" not-null="true">
+				<comment>Titol</comment>
+			</column>
+		</property>
+		<property name="arxiu" type="java.lang.Long">
+			<column name="doc_arxiu" not-null="true">
+				<comment>Codi de arxiu</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

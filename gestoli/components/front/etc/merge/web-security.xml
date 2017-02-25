@@ -1,0 +1,791 @@
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Abierto</web-resource-name>
+		<url-pattern>/web/*</url-pattern>
+		<url-pattern>/GenerarPdfWeb.html</url-pattern>
+		<url-pattern>/dwr/*</url-pattern>
+<!-- 	<url-pattern>/dwr/engine.js</url-pattern>
+		<url-pattern>/dwr/util.js</url-pattern>
+		<url-pattern>/dwr/interface/frontOfficeService.js</url-pattern> -->
+	</web-resource-collection>
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Publico</web-resource-name>
+		<url-pattern>/Inici.html</url-pattern>
+		<url-pattern>/Login.html</url-pattern>
+		<url-pattern>/LoginError.html</url-pattern>
+		<url-pattern>/Rfid.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>*</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_ADMINISTRACIO</web-resource-name>
+		<url-pattern>/AltresConsultesTrazabilidad.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadAnaliticas.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadLotes.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadPartida.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadPartidaInforme.html</url-pattern>
+		<url-pattern>/AnaliticaForm.html</url-pattern>
+		<url-pattern>/ConsultaGeneralOliComercialitzat.html</url-pattern>
+		<url-pattern>/Cartilla.html</url-pattern>
+		<url-pattern>/CategoriaInformacio.html</url-pattern>
+		<url-pattern>/CategoriaInformacioForm.html</url-pattern>
+		<url-pattern>/ConsultaAgrupacioConsultes.html</url-pattern>
+		<url-pattern>/ConsultaLlibres.html</url-pattern>
+		<url-pattern>/ConsultaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistatEstabliment.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHaMunicipiLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistat.html</url-pattern>
+		<url-pattern>/ConsultaAnaliticasEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsLlistat.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDeclaracioMensual.html</url-pattern>
+		<url-pattern>/ConsultaGeneral.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/Establiment.html</url-pattern>
+		<url-pattern>/EstablimentLlistat.html</url-pattern>
+		<url-pattern>/EstablimentPrincipal.html</url-pattern>
+		<url-pattern>/GenerarPdf.html</url-pattern>
+		<url-pattern>/GestionarDocument.html</url-pattern>
+		<url-pattern>/GestionarDocumentForm.html</url-pattern>
+		<url-pattern>/GestionarInformacio.html</url-pattern>
+		<url-pattern>/GestionarInformacioForm.html</url-pattern>
+		<url-pattern>/GestionarInformacioLlistat.html</url-pattern>
+		<url-pattern>/InformeProduccio.html</url-pattern>
+		<url-pattern>/InformeProductors.html</url-pattern>
+		<url-pattern>/ProcesInici.html</url-pattern>
+		<url-pattern>/UsuariForm.html</url-pattern>
+		<url-pattern>/AltresConsultesGrafics.html</url-pattern>
+		<url-pattern>/GenerarPdfGrafic.html</url-pattern>
+		<url-pattern>/AnaliticaParametre.html</url-pattern>
+		<url-pattern>/AnaliticaParametreForm.html</url-pattern>
+		<url-pattern>/AnaliticaParametreTipus.html</url-pattern>
+		<url-pattern>/AnaliticaParametreTipusForm.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/InformacioUtil.html</url-pattern>
+		<url-pattern>/InformacioUtilForm.html</url-pattern>
+		<url-pattern>/GestioInfografia.html</url-pattern>
+		<url-pattern>/GestioInfografiaForm.html</url-pattern>
+		<url-pattern>/EtiquetesLotEstabliment.html</url-pattern>
+		<url-pattern>/EtiquetesLot.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDadesOlivicultorLlistat.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ADMINISTRACIO</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_DOGESTOR</web-resource-name>
+		<url-pattern>/InicialitzarBBDD.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidad.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadAnaliticas.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadLotes.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadPartida.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadPartidaInforme.html</url-pattern>
+		<url-pattern>/ConsultaGeneralOliComercialitzat.html</url-pattern>
+		<url-pattern>/Campanya.html</url-pattern>
+		<url-pattern>/CampanyaForm.html</url-pattern>
+		<url-pattern>/Cartilla.html</url-pattern>
+		<url-pattern>/ConsultaAgrupacioConsultes.html</url-pattern>
+		<url-pattern>/ConsultaLlibres.html</url-pattern>
+		<url-pattern>/ConsultaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistatEstabliment.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHaMunicipiLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistat.html</url-pattern>
+		<url-pattern>/ConsultaAnaliticasEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsLlistat.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDeclaracioMensual.html</url-pattern>
+		<url-pattern>/AnaliticaForm.html</url-pattern>
+		<url-pattern>/ConsultaGeneral.html</url-pattern>
+		<url-pattern>/DescomposicioPlantacioForm.html</url-pattern>
+		<url-pattern>/Establiment.html</url-pattern>
+		<url-pattern>/EstablimentLlistat.html</url-pattern>
+		<url-pattern>/EstablimentForm.html</url-pattern>
+		<url-pattern>/EstablimentPrincipal.html</url-pattern>
+		<url-pattern>/EtiquetesOlivicultors.html</url-pattern>
+		<url-pattern>/Factura.html</url-pattern>
+		<url-pattern>/FincasForm.html</url-pattern>
+		<url-pattern>/Fincas.html</url-pattern>
+		<url-pattern>/GenerarPdf.html</url-pattern>
+		<url-pattern>/GestionarDocument.html</url-pattern>
+		<url-pattern>/GestionarDocumentForm.html</url-pattern>
+		<url-pattern>/GestionarInformacio.html</url-pattern>
+		<url-pattern>/GestionarInformacioForm.html</url-pattern>
+		<url-pattern>/GestionarInformacioLlistat.html</url-pattern>
+		<url-pattern>/InformeProduccio.html</url-pattern>
+		<url-pattern>/InformeProductors.html</url-pattern>
+		<url-pattern>/Marca.html</url-pattern>
+		<url-pattern>/MarcaForm.html</url-pattern>
+		<url-pattern>/EtiquetatgeForm.html</url-pattern>
+		<url-pattern>/MarcaLlistat.html</url-pattern>
+		<url-pattern>/Olivicultor.html</url-pattern>
+		<url-pattern>/OlivicultoresFincas.html</url-pattern>
+		<url-pattern>/OlivicultoresFincasLlistat.html</url-pattern>
+		<url-pattern>/OlivicultoresPlantaciones.html</url-pattern>
+		<url-pattern>/OlivicultoresPlantacionesLlistat.html</url-pattern>
+		<url-pattern>/OlivicultorForm.html</url-pattern>
+		<url-pattern>/OlivicultorLlistat.html</url-pattern>
+		<url-pattern>/Plantacio.html</url-pattern>
+		<url-pattern>/PlantacioForm.html</url-pattern>
+		<url-pattern>/PlantacioLlistat.html</url-pattern>
+		<url-pattern>/Prefactura.html</url-pattern>
+		<url-pattern>/PrefacturaLlistat.html</url-pattern>
+		<url-pattern>/ProcesConsultaAnaliticaLlistat.html</url-pattern>
+		<url-pattern>/ProcesInici.html</url-pattern>
+		<url-pattern>/TaxaForm.html</url-pattern>
+		<url-pattern>/TipusEnvas.html</url-pattern>
+		<url-pattern>/TipusEnvasLlistat.html</url-pattern>
+		<url-pattern>/TipusEnvasForm.html</url-pattern>
+		<url-pattern>/Usuari.html</url-pattern>
+		<url-pattern>/UsuariLlistat.html</url-pattern>
+		<url-pattern>/UsuariForm.html</url-pattern>
+		<url-pattern>/Rfid.html</url-pattern>
+		<url-pattern>/CategoriaInformacio.html</url-pattern>
+		<url-pattern>/CategoriaInformacioForm.html</url-pattern>
+		<url-pattern>/AltresConsultesGrafics.html</url-pattern>
+		<url-pattern>/GenerarPdfGrafic.html</url-pattern>
+		<url-pattern>/VarietatsExperimentalsLlistat.html</url-pattern>
+		<url-pattern>/VarietatsExperimentalsForm.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/InformacioUtil.html</url-pattern>
+		<url-pattern>/InformacioUtilForm.html</url-pattern>
+		<url-pattern>/GestioInfografia.html</url-pattern>
+		<url-pattern>/GestioInfografiaForm.html</url-pattern>
+		<url-pattern>/QuadernCampLlistat.html</url-pattern>
+		<url-pattern>/EtiquetesLotEstabliment.html</url-pattern>
+		<url-pattern>/EtiquetesLot.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/DocumentInspeccioForm.html</url-pattern>
+		<url-pattern>/InformeCampanya.html</url-pattern>
+		<url-pattern>/InformeCampanyaForm.html</url-pattern>
+		<url-pattern>/ConsultaDadesOlivicultorLlistat.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_DOGESTOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_DOCONTROLADOR</web-resource-name>
+		<url-pattern>/AnaliticaForm.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidad.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadAnaliticas.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadLotes.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadPartida.html</url-pattern>
+		<url-pattern>/AltresConsultesTrazabilidadPartidaInforme.html</url-pattern>
+		<url-pattern>/AnaliticaForm.html</url-pattern>
+		<url-pattern>/ConsultaGeneralOliComercialitzat.html</url-pattern>
+		<url-pattern>/Cartilla.html</url-pattern>
+		<url-pattern>/CategoriaInformacio.html</url-pattern>
+		<url-pattern>/CategoriaInformacioLlistat.html</url-pattern>
+		<url-pattern>/CategoriaInformacioForm.html</url-pattern>
+		<url-pattern>/ConsultaAgrupacioConsultes.html</url-pattern>
+		<url-pattern>/ConsultaLlibres.html</url-pattern>
+		<url-pattern>/ConsultaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistatEstabliment.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHaMunicipiLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistat.html</url-pattern>
+		<url-pattern>/ConsultaAnaliticasEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsLlistat.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDeclaracioMensual.html</url-pattern>
+		<url-pattern>/ConsultaGeneral.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/FacturaLlistat.html</url-pattern>
+		<url-pattern>/EdicioProcessos.html</url-pattern>
+		<url-pattern>/EdicioProcessosLlistat.html</url-pattern>
+		<url-pattern>/Establiment.html</url-pattern>
+		<url-pattern>/EstablimentPrincipal.html</url-pattern>
+		<url-pattern>/GenerarPdf.html</url-pattern>
+		<url-pattern>/GestionarDocument.html</url-pattern>
+		<url-pattern>/GestionarDocumentForm.html</url-pattern>
+		<url-pattern>/GestionarInformacio.html</url-pattern>
+		<url-pattern>/GestionarInformacioForm.html</url-pattern>
+		<url-pattern>/GestionarInformacioLlistat.html</url-pattern>
+		<url-pattern>/InformeProduccio.html</url-pattern>
+		<url-pattern>/InformeProductors.html</url-pattern>
+		<url-pattern>/ProcesConsultaAnaliticaLlistat.html</url-pattern>
+		<url-pattern>/ProcesInici.html</url-pattern>
+		<url-pattern>/UsuariForm.html</url-pattern>
+		<url-pattern>/AltresConsultesGrafics.html</url-pattern>
+		<url-pattern>/GenerarPdfGrafic.html</url-pattern>
+		<url-pattern>/InicialitzarBBDD.html</url-pattern>
+		<url-pattern>/AnaliticaParametre.html</url-pattern>
+		<url-pattern>/AnaliticaParametreForm.html</url-pattern>
+		<url-pattern>/AnaliticaParametreTipus.html</url-pattern>
+		<url-pattern>/AnaliticaParametreTipusForm.html</url-pattern>
+		<url-pattern>/Olivicultor.html</url-pattern>
+		<url-pattern>/OlivicultorLlistat.html</url-pattern>
+		<url-pattern>/OlivicultorForm.html</url-pattern>
+		<url-pattern>/Fincas.html</url-pattern>
+		<url-pattern>/FincasForm.html</url-pattern>
+		<url-pattern>/Plantacio.html</url-pattern>
+		<url-pattern>/PlantacioForm.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/InformacioUtil.html</url-pattern>
+		<url-pattern>/InformacioUtilForm.html</url-pattern>
+		<url-pattern>/GestioInfografia.html</url-pattern>
+		<url-pattern>/GestioInfografiaForm.html</url-pattern>
+		<url-pattern>/QuadernCampLlistat.html</url-pattern>
+		<url-pattern>/EtiquetesLotEstabliment.html</url-pattern>
+		<url-pattern>/EtiquetesLot.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesEstablimentLlistat.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDadesOlivicultorLlistat.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_DOCONTROLADOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_OLIVICULTOR</web-resource-name>
+		<url-pattern>/FacturaLlistat.html</url-pattern>
+		<url-pattern>/FincasForm.html</url-pattern>
+		<url-pattern>/Fincas.html</url-pattern>
+		<url-pattern>/FincasLlistat.html</url-pattern>
+		<url-pattern>/GenerarPdf.html</url-pattern>
+		<url-pattern>/OlivicultorForm.html</url-pattern>
+		<url-pattern>/Plantacio.html</url-pattern>
+		<url-pattern>/PlantacioForm.html</url-pattern>
+		<url-pattern>/PlantacioLlistat.html</url-pattern>
+		<url-pattern>/UsuariForm.html</url-pattern>
+		<url-pattern>/LlegirInformacio.html</url-pattern>
+		<url-pattern>/LlegirInformacioForm.html</url-pattern>
+		<url-pattern>/LlegirInformacioLlistat.html</url-pattern>
+		<url-pattern>/Avis.html</url-pattern>
+		<url-pattern>/AvisForm.html</url-pattern>
+		<url-pattern>/QuadernCampLlistat.html</url-pattern>
+		<url-pattern>/QuadernCampForm.html</url-pattern>
+		<url-pattern>/ConsultaDadesOlivicultorLlistat.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_OLIVICULTOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_PRODUCTOR</web-resource-name>
+		<url-pattern>/AnaliticaForm.html</url-pattern>
+		<url-pattern>/ConsultaLlibres.html</url-pattern>
+		<url-pattern>/ConsultaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliElaboratLlistat.html</url-pattern>
+		<url-pattern>/ConsultaDocRendimentLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/ConsultaDeclaracioMensual.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorLlistat.html</url-pattern>
+		<url-pattern>/Diposit.html</url-pattern>
+		<url-pattern>/DipositForm.html</url-pattern>
+		<url-pattern>/DipositLlistat.html</url-pattern>
+		<url-pattern>/EdicioProcessos.html</url-pattern>
+		<url-pattern>/EdicioProcessosLlistat.html</url-pattern>
+		<url-pattern>/EstablimentForm.html</url-pattern>
+		<url-pattern>/EstablimentPrincipal.html</url-pattern>
+		<url-pattern>/GenerarPdf.html</url-pattern>
+		<url-pattern>/PartidaOliLlistat.html</url-pattern>
+		<url-pattern>/PartidaOliForm.html</url-pattern>
+		<url-pattern>/PartidaOliPopupForm.html</url-pattern>
+		<url-pattern>/ProcesCanviZonaForm.html</url-pattern>
+		<url-pattern>/ProcesElaboracioOliForm.html</url-pattern>
+		<url-pattern>/ProcesEntradaOlivaForm.html</url-pattern>
+		<url-pattern>/ProcesEntradaOlivaTaulaForm.html</url-pattern>
+		<url-pattern>/ProcesInici.html</url-pattern>
+		<url-pattern>/ProcesPerduesForm.html</url-pattern>
+		<url-pattern>/ProcesTrasbalsForm.html</url-pattern>
+		<url-pattern>/ProcesDesqualificarForm.html</url-pattern>
+		<url-pattern>/ProcesMoureDipositForm.html</url-pattern>
+		<url-pattern>/ProcesMoureOliForm.html</url-pattern>
+		<url-pattern>/ProcesSortidaForm.html</url-pattern>
+		<url-pattern>/UsuariForm.html</url-pattern>
+		<url-pattern>/Zona.html</url-pattern>
+		<url-pattern>/ZonaLlistat.html</url-pattern>
+		<url-pattern>/ZonaForm.html</url-pattern>
+		<url-pattern>/TrasllatLlistat.html</url-pattern>
+		<url-pattern>/LlegirInformacio.html</url-pattern>
+		<url-pattern>/LlegirInformacioForm.html</url-pattern>
+		<url-pattern>/TancamentLlibresDipositForm.html</url-pattern>
+		<url-pattern>/TancamentLlibresLotForm.html</url-pattern>
+		<url-pattern>/TancamentLlibres.html</url-pattern>
+		<url-pattern>/TancamentLlibresForm.html</url-pattern>
+		<url-pattern>/TancamentLlibresLlistat.html</url-pattern>
+		<url-pattern>/Avis.html</url-pattern>
+		<url-pattern>/AvisForm.html</url-pattern>
+		<url-pattern>/AgenciaOliEntradaOliva.html</url-pattern>
+		<url-pattern>/AgenciaOliSortidaOli.html</url-pattern>
+		<url-pattern>/AgenciaOliSortidaOrujo.html</url-pattern>
+		<url-pattern>/AgenciaOliResum.html</url-pattern>
+		<url-pattern>/AgenciaOliDeclaracioMensual.html</url-pattern>
+		<url-pattern>/ImportacioProcesSortidaForm.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositTrasllatLlistat.html</url-pattern>
+<!-- 		<url-pattern>/ProcesRetirarEtiquetesEstablimentLlistat.html</url-pattern> -->
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_PRODUCTOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_ENVASADOR</web-resource-name>
+		<url-pattern>/AnaliticaForm.html</url-pattern>
+		<url-pattern>/ConsultaLlibres.html</url-pattern>
+		<url-pattern>/ConsultaOliDisponibleLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliSalidaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliEntradaTrasladoLlistat.html</url-pattern>
+		<url-pattern>/ConsultaOliComercialitzatLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrazabilitat.html</url-pattern>
+		<url-pattern>/ConsultaDeclaracioMensual.html</url-pattern>
+		<url-pattern>/ConsultaMovimentsEntreEstablimentsLlistat.html</url-pattern>
+		<url-pattern>/ConsultaEtiquetatgeMarcaLlistat.html</url-pattern>
+		<url-pattern>/ConsultaTrasabilitatOlivicultorLlistat.html</url-pattern>
+		<url-pattern>/Diposit.html</url-pattern>
+		<url-pattern>/DipositForm.html</url-pattern>
+		<url-pattern>/DipositLlistat.html</url-pattern>
+		<url-pattern>/EdicioProcessos.html</url-pattern>
+		<url-pattern>/EdicioProcessosLlistat.html</url-pattern>
+		<url-pattern>/GenerarPdf.html</url-pattern>
+		<url-pattern>/Lot.html</url-pattern>
+		<url-pattern>/UsuariForm.html</url-pattern>
+		<url-pattern>/PartidaOliForm.html</url-pattern>
+		<url-pattern>/PartidaOliPopupForm.html</url-pattern>
+		<url-pattern>/ProcesCanviZonaForm.html</url-pattern>
+		<url-pattern>/ProcesCambioZonaForm.html</url-pattern>
+		<url-pattern>/ProcesConsultaAnaliticaLlistat.html</url-pattern>
+		<url-pattern>/ProcesDesqualificarForm.html</url-pattern>
+		<url-pattern>/ProcesInici.html</url-pattern>
+		<url-pattern>/ProcesLotForm.html</url-pattern>
+		<url-pattern>/ProcesMoureDipositForm.html</url-pattern>
+		<url-pattern>/ProcesMoureOliForm.html</url-pattern>
+		<url-pattern>/ProcesPerduesForm.html</url-pattern>
+		<url-pattern>/ProcesTrasbalsForm.html</url-pattern>
+		<url-pattern>/ProcesSortidaForm.html</url-pattern>
+		<url-pattern>/EstablimentForm.html</url-pattern>
+		<url-pattern>/EstablimentPrincipal.html</url-pattern>
+		<url-pattern>/Zona.html</url-pattern>
+		<url-pattern>/ZonaLlistat.html</url-pattern>
+		<url-pattern>/ZonaForm.html</url-pattern>
+		<url-pattern>/TrasllatLlistat.html</url-pattern>
+		<url-pattern>/LlegirInformacio.html</url-pattern>
+		<url-pattern>/LlegirInformacioForm.html</url-pattern>
+		<url-pattern>/TancamentLlibresDipositForm.html</url-pattern>
+		<url-pattern>/TancamentLlibresLotForm.html</url-pattern>
+		<url-pattern>/TancamentLlibres.html</url-pattern>
+		<url-pattern>/TancamentLlibresForm.html</url-pattern>
+		<url-pattern>/TancamentLlibresLlistat.html</url-pattern>
+		<url-pattern>/Avis.html</url-pattern>
+		<url-pattern>/AvisForm.html</url-pattern>
+		<url-pattern>/AgenciaOliEntradaOliva.html</url-pattern>
+		<url-pattern>/AgenciaOliSortidaOli.html</url-pattern>
+		<url-pattern>/AgenciaOliSortidaOrujo.html</url-pattern>
+		<url-pattern>/AgenciaOliResum.html</url-pattern>
+		<url-pattern>/AgenciaOliDeclaracioMensual.html</url-pattern>
+		<url-pattern>/ImportacioProcesSortidaForm.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/ConsultaHistoriaDipositTrasllatLlistat.html</url-pattern>
+<!-- 		<url-pattern>/ProcesRetirarEtiquetesEstablimentLlistat.html</url-pattern> -->
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ENVASADOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_ESTADMINISTRADOR</web-resource-name>
+		<url-pattern>/Usuari.html</url-pattern>
+		<url-pattern>/QualitatDescripcioInstalacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonal.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquips.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquipsForm.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreball.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreballForm.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacio.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacioForm.html</url-pattern>
+		<url-pattern>/QualitatFormacioEvaluacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalCVForm.html</url-pattern>
+		<url-pattern>/GestionarDocument.html</url-pattern>
+		<url-pattern>/GestionarDocumentForm.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransport.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransportForm.html</url-pattern>
+		<url-pattern>/QualitatPlaManteniment.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControl.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatOrganigramaEmpresa.html</url-pattern>
+		<url-pattern>/QualitatControlPlagues.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesForm.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacio.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitat.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccio.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapa.html</url-pattern>
+		<url-pattern>/QualitatAPPCCVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaPerillForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPerill.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCProducteForm.html</url-pattern>
+		<url-pattern>/QualitatAvisos.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesLlistat.html</url-pattern>
+		<url-pattern>/ProcesRetirarEtiquetesEstablimentLlistat.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ESTADMINISTRADOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_ESTENCARREGAT</web-resource-name>
+		<url-pattern>/Usuari.html</url-pattern>
+		<url-pattern>/QualitatDescripcioInstalacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonal.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquips.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquipsForm.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreball.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreballForm.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacio.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacioForm.html</url-pattern>
+		<url-pattern>/QualitatFormacioEvaluacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalCVForm.html</url-pattern>
+		<url-pattern>/GestionarDocument.html</url-pattern>
+		<url-pattern>/GestionarDocumentForm.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransport.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransportForm.html</url-pattern>
+		<url-pattern>/QualitatPlaManteniment.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControl.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatOrganigramaEmpresa.html</url-pattern>
+		<url-pattern>/QualitatControlPlagues.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesForm.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacio.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitat.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccio.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapa.html</url-pattern>
+		<url-pattern>/QualitatAPPCCVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaPerillForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPerill.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCProducteForm.html</url-pattern>
+		<url-pattern>/QualitatAvisos.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ESTENCARREGAT</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_ESTTREBALLADOR</web-resource-name>
+		<url-pattern>/Usuari.html</url-pattern>
+		<url-pattern>/QualitatDescripcioInstalacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonal.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquips.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquipsForm.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreball.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreballForm.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacio.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacioForm.html</url-pattern>
+		<url-pattern>/QualitatFormacioEvaluacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalCVForm.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransport.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransportForm.html</url-pattern>
+		<url-pattern>/QualitatPlaManteniment.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControl.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatOrganigramaEmpresa.html</url-pattern>
+		<url-pattern>/QualitatControlPlagues.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesForm.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacio.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitat.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccio.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapa.html</url-pattern>
+		<url-pattern>/QualitatAPPCCVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaPerillForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPerill.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCProducteForm.html</url-pattern>
+		<url-pattern>/QualitatAvisos.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ESTTREBALLADOR</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Manteniments i consultes pel rol
+			OLI_ESTCONSULTA</web-resource-name>
+		<url-pattern>/Usuari.html</url-pattern>
+		<url-pattern>/QualitatDescripcioInstalacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonal.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquips.html</url-pattern>
+		<url-pattern>/QualitatDescripcioEquipsForm.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreball.html</url-pattern>
+		<url-pattern>/QualitatPuestoTreballForm.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacio.html</url-pattern>
+		<url-pattern>/QualitatPlaFormacioForm.html</url-pattern>
+		<url-pattern>/QualitatFormacioEvaluacioForm.html</url-pattern>
+		<url-pattern>/QualitatDescripcioPersonalCVForm.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransport.html</url-pattern>
+		<url-pattern>/QualitatPlaControlTransportForm.html</url-pattern>
+		<url-pattern>/QualitatPlaManteniment.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControl.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlForm.html</url-pattern>
+		<url-pattern>/QualitatPlaMantenimentControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatOrganigramaEmpresa.html</url-pattern>
+		<url-pattern>/QualitatControlPlagues.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesForm.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacio.html</url-pattern>
+		<url-pattern>/QualitatControlPlaguesVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitat.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatForm.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccio.html</url-pattern>
+		<url-pattern>/QualitatNoConformitatAccioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapa.html</url-pattern>
+		<url-pattern>/QualitatAPPCCVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCEtapaPerillForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPerill.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControl.html</url-pattern>
+		<url-pattern>/QualitatAPPCCFitxaControlForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCControlVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacio.html</url-pattern>
+		<url-pattern>/QualitatAPPCCPlaVerificacioForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCForm.html</url-pattern>
+		<url-pattern>/QualitatAPPCCProducteForm.html</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ESTCONSULTA</role-name>
+	</auth-constraint>
+	<!-- <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint> -->
+</security-constraint>
+<!-- 
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Generic</web-resource-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>OLI_ADMINISTRACIO</role-name>
+		<role-name>OLI_DOGESTOR</role-name>
+		<role-name>OLI_DOCONTROLADOR</role-name>
+		<role-name>OLI_OLIVICULTOR</role-name>
+		<role-name>OLI_PRODUCTOR</role-name>
+		<role-name>OLI_ENVASADOR</role-name>
+		<role-name>OLI_ESTADMINISTRADOR</role-name>
+		<role-name>OLI_ESTENCARREGAT</role-name>
+		<role-name>OLI_ESTTREBALLADOR</role-name>
+		<role-name>OLI_ESTCONSULTA</role-name>
+	</auth-constraint>
+	<user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+</security-constraint>
+-->
+<!-- login-config>
+	<auth-method>BASIC</auth-method>
+	<realm-name>Gest-OLI</realm-name>
+</login-config-->
+<login-config>
+	<auth-method>FORM</auth-method>
+	<realm-name>Gest-OLI</realm-name>
+	<form-login-config>
+		<form-login-page>/login.html</form-login-page>
+		<form-error-page>/loginError.html</form-error-page>
+	</form-login-config>
+</login-config>
+
+<security-role>
+	<role-name>OLI_ADMINISTRACIO</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_DOGESTOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_DOCONTROLADOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_OLIVICULTOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_PRODUCTOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_ENVASADOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_ESTADMINISTRADOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_ESTENCARREGAT</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_ESTTREBALLADOR</role-name>
+</security-role>
+<security-role>
+	<role-name>OLI_ESTCONSULTA</role-name>
+</security-role>

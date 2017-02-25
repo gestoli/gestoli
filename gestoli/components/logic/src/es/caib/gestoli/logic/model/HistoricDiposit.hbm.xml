@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 30-nov-2009 17:09:51 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.HistoricDiposit" table="oli_histdiposit" schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve el tipo
+			del icono de deposito */ public Long getTipo() { Long tipo = null;
+			String nom = ""; if
+			(this.materialDiposit != null) { tipo = this.materialDiposit.getIcona(); } return tipo; }
+			/** * Devuelve el aceite disponible en kilos */ public Double
+			getDisponibleOliQuilos() { Double cantidad = null; if
+			(this.getVolumActual() != null) { //PASAMOS A KG cantidad =
+			Double.valueOf(String.valueOf((Double.valueOf("0.916").doubleValue()
+			* this.getVolumActual().doubleValue()))); } return cantidad; }</meta>
+		<comment>Diposits</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="hed_codi" />
+			<generator class="native"></generator>
+		</id>
+		<many-to-one name="diposit" class="es.caib.gestoli.logic.model.Diposit" fetch="select">
+			<column name="hed_coddip" not-null="true"><comment>Codi del diposit</comment></column>
+		</many-to-one>
+		<many-to-one name="partidaOli" class="es.caib.gestoli.logic.model.PartidaOli" fetch="select">
+			<column name="hed_codpar">
+				<comment>Codi de partida de oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="zona" class="es.caib.gestoli.logic.model.HistoricZona" fetch="select">
+			<column name="hed_codzon" not-null="false">
+				<comment>Codi de zona</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="zonaOrigenTrasllat" class="es.caib.gestoli.logic.model.HistoricZona" fetch="select">
+			<column name="hed_codzonoritras" not-null="false">
+				<comment>Codi de zona origen</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="establiment"
+			class="es.caib.gestoli.logic.model.HistoricEstabliment" fetch="select">
+			<column name="hed_codest" not-null="true">
+				<comment>Codi de establiment de creacio inicial</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="materialDiposit"
+			class="es.caib.gestoli.logic.model.MaterialDiposit" fetch="select">
+			<column name="hed_codmdi">
+				<comment>Codi de material de diposit</comment>
+			</column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="hed_codori">
+				<comment>Codi de diposit original</comment>
+			</column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="hed_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<property name="codiAssignat" type="java.lang.String">
+			<column name="hed_codias" length="128" not-null="true">
+				<comment>Codi de diposit assignat</comment>
+			</column>
+		</property>
+		<property name="fictici" type="java.lang.Boolean">
+			<column name="hed_fictic" not-null="true">
+				<comment>Fictici</comment>
+			</column>
+		</property>
+		<property name="capacitat" type="java.lang.Double">
+			<column name="hed_capaci" precision="17" scale="17">
+				<comment>Capacitat (litres)</comment>
+			</column>
+		</property>
+		<property name="posicioX" type="java.lang.Integer">
+			<column name="hed_posx">
+				<comment>Posicio X</comment>
+			</column>
+		</property>
+		<property name="posicioY" type="java.lang.Integer">
+			<column name="hed_posy">
+				<comment>Posicio Y</comment>
+			</column>
+		</property>
+		<property name="volumActual" type="java.lang.Double">
+			<column name="hed_volact" precision="17" scale="17">
+				<comment>Volum del contingut</comment>
+			</column>
+		</property>
+		<property name="acidesa" type="java.lang.Double">
+			<column name="hed_acides" precision="17" scale="17">
+				<comment>Acidesa del contingut</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="hed_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="volumTrasllat" type="java.lang.Double">
+			<column name="hed_voltra" precision="17" scale="17" not-null="false">
+				<comment>Volum del contingut</comment>
+			</column>
+		</property>
+		<property name="codiOriginal" type="java.lang.String">
+			<column name="hed_codioriginal" length="128" not-null="false">
+				<comment>Codi original de diposit assignat</comment>
+			</column>
+		</property>
+		<property name="precintat" type="java.lang.Boolean">
+			<column name="hed_precintat" not-null="false">
+				<comment>Precintat</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,195 @@
+package es.caib.gestoli.logic.util;
+
+public class Constants {
+
+	public static final int CODI_TRAZA_TIPUS_PARTIDA = 1;
+	public static final int CODI_TRAZA_TIPUS_ELABORACIO = 2;
+	public static final int CODI_TRAZA_TIPUS_ENTRADA_DIPOSIT = 3; 
+	public static final int CODI_TRAZA_TIPUS_SORTIDA_DIPOSIT = 4;
+	public static final int CODI_TRAZA_TIPUS_ANALITICA = 5;
+	public static final int CODI_TRAZA_TIPUS_ENTRADA_LOT = 6;
+	public static final int CODI_TRAZA_TIPUS_SORTIDA_LOT = 7;
+	public static final int CODI_TRAZA_TIPUS_TRASLLAT_DIPOSIT = 8;
+	public static final int CODI_TRAZA_TIPUS_VENDA_OLI = 9;
+	public static final int CODI_TRAZA_TIPUS_TRASLLAT_OLI = 10;
+	public static final int CODI_TRAZA_TIPUS_ELABORACIO_OLIVA_TAULA = 11;
+	public static final int CODI_TRAZA_TIPUS_ENTRADA_BOTA = 12;
+	public static final int CODI_TRAZA_TIPUS_ENTRADA_FONOLL = 13;
+	public static final int CODI_TRAZA_TIPUS_SORTIDA_BOTA = 14;
+	public static final int CODI_TRAZA_TIPUS_AUTOCONTROL = 15;
+	public static final int CODI_TRAZA_TIPUS_SORTIDA_OLIVA_CRUA_GRANEL = 16;
+	public static final int CODI_TRAZA_TIPUS_SORTIDA_OLIVA_BOTA_GRANEL = 17;
+
+	// Això es trobava en l'ejb de consultes
+	public static final int TRAZA_TIPUS_OLI_ELABORAT = 1;
+	public static final int TRAZA_TIPUS_OLI_DISPONIBLE_DIPOSIT = 2;
+	public static final int TRAZA_TIPUS_OLI_DISPONIBLE_LOTE = 3;
+	public static final int TRAZA_TIPUS_SORTIDA_VOLANT = 4;
+	public static final int TRAZA_TIPUS_ENTRADA_VOLANT = 5;
+	public static final int TRAZA_TIPUS_OLI_COMERCIALIZAT = 6;
+	public static final int TRAZA_TIPUS_PARTIDAOLI = 7;
+	public static final int TRAZA_TIPUS_OLIVA_ELABORADA = 8;
+	public static final int TRAZA_TIPUS_OLIVA_COMERCIALITZADA = 9;
+	public static final int TRAZA_TIPUS_OLIVA_DISPONIBLE_BOTA = 10;
+	public static final int TRAZA_TIPUS_OLIVA_DISPONIBLE_ENVAS = 11;
+	public static final int TRAZA_TIPUS_SORTIDA_OLI = 12;
+	//----
+	
+	public static final String DESTI_EMBOTELLAT = "EMBOTELLAT";
+	public static final String DESTI_PERDUA = "PÈRDUA";
+	public static final String DESTI_MESCLA = "MESCLA";
+	public static final String DESTI_TRASLLAT = "TRASLLAT";
+	public static final String DESTI_TORNAR = "TORNAR";
+	public static final String DESTI_DESQUALIFICAT = "DESQUALIFICAT";
+	public static final String DESTI_TANCAMENT = "TANCAMENT LLIBRES";
+	public static final String DESTI_ANALITICA = "ANALITICA";
+	public static final String DESTI_OLIVA_NEGRA = "ADDITIU OLIVA NEGRA";
+	public static final String DESTI_ENVASAT = "ENVASAT";
+
+	
+	public static final Long CODI_TAFONA = Long.valueOf("1");
+	public static final Long CODI_ENVASADORA = Long.valueOf("2");
+	public static final Long CODI_TAFONA_ENVASADORA = Long.valueOf("3");
+
+	public static final Boolean PROCES_VALID_TRUE = Boolean.TRUE;
+	public static final Boolean PROCES_VALID_FALSE = Boolean.FALSE;
+	
+	public static final int ADMINISTRACIO = 1; 
+    public static final int DO_GESTOR = 2;
+    public static final int DO_CONTROL = 3;
+    public static final int TAFONA = 4;
+    public static final int ENVASADORA = 5;
+    public static final int TAFONA_ENVASADORA = 6;
+    public static final int OLIVICULTOR = 7;
+    public static final int EST_ADMINISTRADOR = 8;
+    public static final int EST_TREBALLADOR = 9;
+    public static final int EST_CONSULTOR = 10;
+    public static final int EST_ENCARREGAT = 11;
+    
+    public static final int CATEGORIA_NO_DO = 1;
+    public static final int CATEGORIA_PENDENT = 2;
+    public static final int CATEGORIA_DO = 3;
+    
+    public static final int PARAMETRE_TIPUS_STRING = 1;
+    public static final int PARAMETRE_TIPUS_SENCER = 2;
+    public static final int PARAMETRE_TIPUS_DECIMAL = 3;
+    public static final int PARAMETRE_TIPUS_BOOLEAN = 4;
+    
+    public static final int PARAMETRE_TIPUS_ANALISI_SENSORIAL = 1;
+    public static final int PARAMETRE_TIPUS_ANALISI_FISICOQUIMIC = 2;
+    
+    public static final int PARAMETRE_OPERADOR_LT = 1;
+    public static final int PARAMETRE_OPERADOR_LE = 2;
+    public static final int PARAMETRE_OPERADOR_GT = 3;
+    public static final int PARAMETRE_OPERADOR_GE = 4;
+    public static final int PARAMETRE_OPERADOR_EQ = 5;
+    public static final int PARAMETRE_OPERADOR_NE = 6;
+    
+    public static final int VARIETAT_VERGE_EXTRA = 1;
+    public static final int VARIETAT_VERGE = 2;
+    public static final int VARIETAT_LLAMPANT = 3;
+    
+    public static final int PROCES_ENTRADA_OLIVA = 0;
+    public static final int PROCES_SITUAR_DIPOSIT = 1;
+    public static final int PROCES_ELABORACIO_OLI = 2;
+    public static final int PROCES_TRASBALS = 3;
+    public static final int PROCES_PERDUES = 4;
+    public static final int PROCES_ANALITICA = 5;
+    public static final int PROCES_DESQUALIFICAR = 6;
+    public static final int PROCES_CREAR_LOT = 7;
+    public static final int PROCES_ETIQUETAR = 8;
+    public static final int PROCES_SORTIDA_OLI = 9;
+    public static final int PROCES_MOURE_DIPOSIT = 10;
+    public static final int PROCES_CONSULTA_ANALITIQUES = 11;
+    public static final int PROCES_MOURE_OLI_GRANEL = 12;
+    public static final int PROCES_ACCEPTAR_OLI_GRANEL = 13;
+    public static final int PROCES_PENDENT_ANALITICA = 14;
+    public static final int PROCES_DESFER_PENDENT_ANALITICA = 15;
+    public static final int PROCES_ENTRADA_OLIVA_TAULA = 16;
+    public static final int PROCES_ELABORACIO_OLIVA = 17;
+    public static final int PROCES_ENTRADA_FONOLL = 18;
+    public static final int PROCES_ENVASAT_OLIVA = 19;
+    public static final int PROCES_ETIQUETAT_OLIVA = 20;
+    public static final int PROCES_SORTIDA_OLIVA = 21;
+    public static final int PROCES_AUTOCONTROL = 22;
+    public static final int PROCES_CONSULTA_AUTOCONTROL = 23;
+    public static final int PROCES_SORTIDA_OLIVA_CRUA_GRANEL = 24;
+    public static final int PROCES_SORTIDA_OLIVA_BOTA_GRANEL = 25;
+    
+    
+	public static final int ACCIO_PARTIDA = 1;
+	public static final int ACCIO_ELABORACIO = 2;
+	public static final int ACCIO_SORTIDA_LOT = 3;
+	public static final int ACCIO_ENTRADA_DIPOSIT = 4; 
+	public static final int ACCIO_PERDUA = 5;
+	public static final int ACCIO_EMBOTELLAT = 6;
+	public static final int ACCIO_SORTIDA_GRANEL = 7;
+	public static final int ACCIO_TRASLLAT_DIPOSIT = 8;
+	public static final int ACCIO_TANCAMENT = 9;
+	public static final int ACCIO_DESQUALIFICAT = 10;
+	public static final int ACCIO_TRASBALS = 11;
+	public static final int ACCIO_ANALITICA = 12;
+	public static final int ACCIO_ENVASAT_OLIVA = 13;
+	
+	public static final int VARIETAT_OLIVA_MALLORQUINA = 2;
+	public static final int VARIETAT_OLIVA_ARBEQUINA = 1;
+	public static final int VARIETAT_OLIVA_PICUAL = 3;
+	public static final int VARIETAT_OLIVA_MALLORQUINA_TAULA = 26;
+	
+	public static final int PROVINCIA_BALEARS = 7;
+	public static final int PAIS_ESPANYA = 73;
+	
+	//Traçabilitat resumida
+	public static final int TRAZABILITAT_RESUMIDA_ESTABLIMENT = 0;
+    public static final int TRAZABILITAT_RESUMIDA_CATEGORIA_OLI = 1;
+    public static final int TRAZABILITAT_RESUMIDA_TIPUS_OLI = 2;
+    public static final int TRAZABILITAT_RESUMIDA_ACIDESA = 3;
+    public static final int TRAZABILITAT_RESUMIDA_ANALITICA = 4;
+    public static final int TRAZABILITAT_RESUMIDA_PERCENTATGE_VARIETATS = 5;
+    public static final int TRAZABILITAT_RESUMIDA_QUANTITAT_TOTAL = 6;
+    public static final int TRAZABILITAT_RESUMIDA_VARIETAT_PLATACIONS = 7;
+    public static final int TRAZABILITAT_RESUMIDA_LITRES_TOTAL = 8;
+    public static final int TRAZABILITAT_RESUMIDA_RENDIMENT = 9;
+    public static final int TRAZABILITAT_RESUMIDA_MUNICIPIS = 10;
+    public static final int TRAZABILITAT_RESUMIDA_PLANTACIONS = 11;
+    public static final int TRAZABILITAT_RESUMIDA_ELABORACIONS = 12;
+    public static final int TRAZABILITAT_RESUMIDA_ESTABLIMENT_EMBOTELLAT = 13;
+    public static final int TRAZABILITAT_RESUMIDA_LOT = 14;
+    public static final int TRAZABILITAT_RESUMIDA_DIPOSIT = 15;
+    public static final int TRAZABILITAT_RESUMIDA_TIPUS = 16;
+    public static final int TRAZABILITAT_RESUMIDA_ETIQUETALLETRA = 17;
+    public static final int TRAZABILITAT_RESUMIDA_OLIVA_TAULA = 18;
+    public static final int TRAZABILITAT_RESUMIDA_TIPUS_OLIVA = 19;
+    public static final int TRAZABILITAT_RESUMIDA_ELABORACIONS_OLIVA = 20;
+    public static final int TRAZABILITAT_RESUMIDA_BOTA = 21;
+    public static final int TRAZABILITAT_RESUMIDA_AUTOCONTROL = 22;
+    public static final int TRAZABILITAT_RESUMIDA_OLI_AFEGIT = 23;
+    public static final int TRAZABILITAT_RESUMIDA_QUANTITAT_TOTAL_CRIBADA = 24;
+    public static final int TRAZABILITAT_RESUMIDA_SORTIDA_BOTA = 25;
+    public static final int TRAZABILITAT_RESUMIDA_LOT_OLI_AFEGIT = 26;
+    public static final int TRAZABILITAT_RESUMIDA_PARTIDA_OLI = 27;
+    public static final int TRAZABILITAT_RESUMIDA_VOLUM_DIPOSIT = 28;
+    public static final int TRAZABILITAT_RESUMIDA_DIPOSITS_AMB_PARTIDAID = 29;
+    
+        
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_PARTIDA = 0;
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_ELABORACIO = 1;
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_DIPOSIT = 2;
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_LOT = 3;
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_OLIVA_ELABORACIO = 4;
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_OLIVA_BOTA = 5;
+    public static final int TIPUS_TRAZABILITAT_RESUMIDA_OLIVA_ENVAS = 6;
+	
+    public static final Long ILLES_BALEARS = 7L;
+	public static final int INFORMACIO_ESBORRANY = 1;
+	public static final int INFORMACIO_REVISAT = 2;
+	public static final int INFORMACIO_APROVAT = 3;
+	
+	public static final int ENV_TAFONA = 1;
+    public static final int ENV_ENVASADORA = 2;
+    public static final int ENV_TAFONA_ENVASADORA = 3;
+    
+    public static final int TIPUS_OLIVA_TAULA_VERDA = 0;
+    public static final int TIPUS_OLIVA_TAULA_TRENCADA = 1;
+    public static final int TIPUS_OLIVA_TAULA_NEGRA = 2;
+}

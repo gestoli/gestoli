@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatProveidorRGSA" table="qua_proveidor_RGSA" schema="public">
+  		<comment>Qualitat - Proveidor - RGSA</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="prr_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="prr_nom" not-null="true"><comment>Codi registre sanitari</comment></column>
+		</property>
+		<property name="caducitatRGSA" type="java.util.Date">
+			<column name="prr_cadRGSA" not-null="false"><comment>Caducitat registre sanitari</comment></column>
+		</property>
+	    <many-to-one 
+			name="proveidor" 
+			class="es.caib.gestoli.logic.model.QualitatProveidor"
+			column="prr_codpro" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

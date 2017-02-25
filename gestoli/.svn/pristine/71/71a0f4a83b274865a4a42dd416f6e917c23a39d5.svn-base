@@ -1,0 +1,79 @@
+#objetivosMicroweb {
+	padding: 0 20px;
+	background: url(../../img/general/microweb/fondoObjetivos.jpg) top left
+		no-repeat;
+	min-height: 466px;
+	height: auto !important;
+	height: 466px;
+	position: relative;
+}
+
+#objetivosMicroweb p {
+	text-align: justify;
+	margin-bottom: 15px;
+	font-size: 15px;
+}
+
+#objetivosMicroweb h3.microweb {
+	margin-bottom: 12px;
+}
+
+#objetivosMicroweb .enlaceSiguiente {
+	position: absolute;
+	right: 42px;
+	bottom: 0px;
+	height: 25px;
+}
+
+#objetivosMicroweb .enlaceSiguiente a {
+	color: #000;
+	position: relative;
+}
+
+#objetivosMicroweb .enlaceAnterior {
+	position: absolute;
+	left: 42px;
+	bottom: 0px;
+	height: 25px;
+}
+
+#objetivosMicroweb .enlaceAnterior div,#objetivosMicroweb .enlaceSiguiente div
+	{
+	float: left;
+	font-size: 12px;
+	margin-right: 5px;
+}
+
+#objetivosMicroweb .enlaceSiguiente div a span {
+	background: url(../../img/general/siguiente.png) top right no-repeat
+		!important;
+	width: 25px;
+	height: 16px;
+	display: block;
+	position: absolute;
+	right: -25px !important;
+	right: -30px;
+	top: 0px;
+	cursor: pointer;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/siguiente.png', sizingMethod = 'crop' );
+}
+
+#objetivosMicroweb .enlaceAnterior div a {
+	color: #000;
+}
+
+#objetivosMicroweb .enlaceAnterior div span {
+	background: url(../../img/general/anterior.png) top left no-repeat
+		!important;
+	width: 25px;
+	height: 16px;
+	display: block;
+	position: absolute;
+	left: -21px;
+	top: 0px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/anterior.png', sizingMethod = 'crop' );
+}

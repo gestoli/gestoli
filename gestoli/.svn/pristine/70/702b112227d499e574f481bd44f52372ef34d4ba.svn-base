@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatSubministre" table="qua_subministre" schema="public">
+  		<comment>Qualitat - Proveidors</comment>
+		<id name="codi" type="java.lang.Long">
+			<column name="sub_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="tipusSubministre" type="java.lang.String">
+			<column name="sub_nom" not-null="true"><comment>Nom</comment></column>
+		</property>
+		<property name="homologacio" type="java.util.Date">
+			<column name="sub_homologacio" not-null="false"><comment>Direccio</comment></column>
+		</property>
+		<property name="deshomologacio" type="java.util.Date">
+			<column name="sub_deshomologacio" not-null="false"><comment>Telefon</comment></column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="sub_observacions" not-null="false"><comment>Persona de contacte</comment></column>
+		</property>
+	    <many-to-one 
+			name="proveidor" 
+			class="es.caib.gestoli.logic.model.QualitatProveidor"
+			column="sum_codpro" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

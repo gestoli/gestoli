@@ -1,0 +1,509 @@
+/**
+ * ProcesEntradaOlivaFormController.java
+ */
+package es.caib.gestoli.front.spring; 
+
+import java.rmi.RemoteException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.propertyeditors.CustomBooleanEditor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractFormController;
+import org.springframework.web.servlet.mvc.BaseCommandController;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import es.caib.gestoli.front.util.BasicData;
+import es.caib.gestoli.front.util.Idioma;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.interfaces.OliProcessosEjb;
+import es.caib.gestoli.logic.model.Bota;
+import es.caib.gestoli.logic.model.ElaboracioOliva;
+import es.caib.gestoli.logic.model.Establiment;
+import es.caib.gestoli.logic.model.Olivicultor;
+import es.caib.gestoli.logic.model.PartidaElaboracio;
+import es.caib.gestoli.logic.model.PartidaOliva;
+
+
+
+/**
+ * <p>Controlador per a l'accio d'executar un proces d'entrada
+ * de oliva.</p>
+ * <p>Aquest controlador distingueix entre les peticions del
+ * tipus GET y les de tipus POST. Si la petici�n es de tipus POST
+ * s'executa l'acci� de creaci� o d'edici�. Si la petici� es de
+ * tipo GET nom�s mostra la p�gina.
+ *
+ * @author cperez <cperez@at4.net>
+ */
+public class ProcesElaboracioOlivaFormController extends SimpleFormController {
+
+    private static Logger logger = Logger.getLogger(ProcesElaboracioOlivaFormController.class);
+    private OliProcessosEjb oliProcessosEjb;
+    private OliInfraestructuraEjb oliInfraestructuraEjb;
+    private String establimentSessionKey;
+    private String seleccioSessionKeyOrigen;
+    private String seleccioSessionKeyDesti;
+    private String desqualificat;
+    private String pendentQualificar;
+	private HibernateTemplate hibernateTemplate;
+	private String tipusOlivaVerda;
+	private String tipusOlivaTrencada;
+	private String tipusOlivaNegra;
+    
+    /**
+     * Es crida quan s'accepten les modificacions a l'objecte. Només
+     * s'executa aquesta funció en el cas de que s'hagi executat la
+     * validació sense produïr cap error.
+     * 
+     * @see SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
+     */
+    public ModelAndView onSubmit(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object command,
+            BindException errors)
+    throws ServletException {
+    	
+    	ProcesElaboracioOlivaCommand peo = (ProcesElaboracioOlivaCommand)command;
+    	Establiment establiment = (Establiment) request.getSession().getAttribute(establimentSessionKey);
+    	
+    	Map myModel = new HashMap();
+    	
+    	Long idElaboracio = null;
+    	
+		if (isCreate(request)) {
+			try{ 
+				
+				ElaboracioOliva eo = new ElaboracioOliva();
+				eo.setData(new Date());
+				
+//				PartidaOliva[] partides = peo.getPartides();
+//				Set partidaOlivas = new HashSet();
+//				for (int i = 0; i<partides.length; i++) {
+//					partidaOlivas.add(partides[i]);
+//				}
+//				eo.setPartidaOlivas(partidaOlivas);
+				PartidaOliva[] partides = peo.getPartides();
+				Set partidaElaboracions = new HashSet();
+				for (int i = 0; i < partides.length; i++) {
+					PartidaElaboracio pe = new PartidaElaboracio();
+					pe.setElaboracio(eo);
+					pe.setPartida(partides[i]);
+					pe.setQuantitat(peo.getKgOliva()[i]);
+					pe.setQuantitatCriba(peo.getKgCriba()[i]);
+					partidaElaboracions.add(pe);
+				}
+				eo.setPartidaElaboracions(partidaElaboracions);
+				eo.setValid(new Boolean(true));
+				eo.setObservacions(peo.getObservacions());
+				eo.setEstabliment(establiment);
+				Bota bota = new Bota();
+				bota.setIdentificador(peo.getIdBota());
+				bota.setActiu(new Boolean(true));
+				bota.setKgOliva(peo.getKgBota());
+				bota.setKgOlivaRestant(peo.getKgBota());
+				bota.setLotSal(peo.getLotSal());
+				bota.setConcentracioSalmorra(peo.getConcentracioSalmorra());
+				bota.setTipusOlivaTaula(peo.getTipusOlivaTaula());
+				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+				if (peo.getTipusOlivaTaula() == 1) {
+					bota.setgFonoll(peo.getgFonoll());
+					if (peo.getPartidaFonollId()!=null)
+						bota.setPartidaFonoll(oliInfraestructuraEjb.partidaFonollAmbId(peo.getPartidaFonollId()));
+					else bota.setLotFonoll(peo.getLotFonoll());
+					bota.setgPebre(peo.getgPebre());
+					bota.setLotPebre(peo.getLotPebre());
+				}
+				bota.setEstabliment(establiment);
+				bota.setZona(oliInfraestructuraEjb.zonaAmbId(peo.getZonaId()));
+				bota.setPosicioX(0);
+				bota.setPosicioY(0);
+				
+				oliProcessosEjb.setHibernateTemplate(getHibernateTemplate());
+				oliProcessosEjb.setMessageSourceAccessor(getMessageSourceAccessor());
+				idElaboracio = oliProcessosEjb.generarElaboracioOliva(eo, bota, establiment.getId());
+				ControllerUtils.saveMessageInfo(request, missatge("proces.elaboracioOli.missatge.crear.ok"));
+	    	} catch (Exception e) {
+	    		 logger.error("Error processant l'elaboracio de l'oliva", e);
+	             ControllerUtils.saveMessageError(request, missatge("proces.elaboracioOli.missatge.no"));
+			}
+		}
+        
+		String desti = "EstablimentPrincipal.html";
+		
+		return new ModelAndView("redirect:" + desti);
+    }
+
+    /**
+     * Retorna totes les dades del model necessàries per a mostrar
+     * el formulari d'inserció (LOVs y coses per l'estil) si no
+     * n'hi ha.
+     * 
+     * @see SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest, java.lang.Object, org.springframework.validation.Errors)
+     */
+    @SuppressWarnings("unchecked")
+	protected Map referenceData(
+            HttpServletRequest request,
+            Object command,
+            Errors errors) throws Exception {
+        
+        Map myModel = new HashMap();
+        ProcesElaboracioOlivaCommand peo = (ProcesElaboracioOlivaCommand)command;
+        
+        Establiment establiment = (Establiment) request.getSession().getAttribute(establimentSessionKey);
+        
+        Collection origenList = (Collection)request.getSession().getAttribute(seleccioSessionKeyOrigen);
+        Collection destiList = (Collection)request.getSession().getAttribute(seleccioSessionKeyDesti);
+        
+        Collection origen = null;
+        Collection desti = null;
+        
+        Double kgMaxim = 0.0;
+        
+        Integer tipusOlivaTaula = null;
+        if (origenList.size() != 0) {
+        	oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+        	origen = oliInfraestructuraEjb.partidasInfo(origenList.toArray());
+        	
+        	Date data = null;
+        	Iterator itOri = origen.iterator();
+        	Long olivicultor = null;
+        	while (itOri.hasNext()) {
+        		PartidaOliva partida = (PartidaOliva) itOri.next();
+        		olivicultor = partida.getOlivicultor().getId();
+        		if (partida.getQuantitat() != null) {
+        			kgMaxim += partida.getQuantitat();
+        		} else {
+        			kgMaxim += partida.getTotalKilos();
+        		}
+        		if (data == null){ 
+        			data = partida.getData();
+        		} else if (partida.getData().after(data)){
+        			data = partida.getData();  
+        		}
+        	}
+        	if (peo.getData() == null) peo.setData(data);
+        }
+        if (peo.getKgBota() == null) peo.setKgBota(0.0);
+        peo.setKgMaxim(kgMaxim);
+        
+        oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+        if (destiList.size() != 0) desti = oliInfraestructuraEjb.dipositsInfo(destiList.toArray());
+        
+        oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+        Collection partidesFonoll = oliInfraestructuraEjb.findPartidesFonollByEstabliment(establiment.getId(), true);
+        
+        
+        String lang = Idioma.getLang(request);
+        myModel.put("partidesFonoll", partidesFonoll);
+        myModel.put("tipusOlivaTaula", tipusOlivaTaula(lang));
+        myModel.put("establiment", establiment);
+        myModel.put("origen", origen);
+        myModel.put("desti", desti);
+        String tipusProces = request.getParameter("tipusProces");
+    	myModel.put("tipusProces", tipusProces);
+        String pas = request.getParameter("pas");
+    	myModel.put("pas", pas);
+    	myModel.put("path", "elaboracio.oliva");
+    	
+    	Establiment est = (Establiment)request.getSession().getAttribute("establiment");
+    	if (est != null) {
+			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+			List zonasActivasEst = oliInfraestructuraEjb.zonaActiusAmbEstabliment(est.getId());
+			if (zonasActivasEst != null) {
+				myModel.put("zonasActivasEst", zonasActivasEst);
+			}
+		}
+    	
+        return myModel;
+    }
+
+    
+    /**
+     * En el cas de que sigui una ediciÃ³ retorna l'objecte omplit amb
+     * les dades actuals del registre. En caso de que sigui una creaciÃ³
+     * retorna l'objecte buit.
+     * 
+     * @see AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+     */
+    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+    	
+    	ProcesElaboracioOlivaCommand peo = new ProcesElaboracioOlivaCommand();
+    	
+    	Establiment establiment = (Establiment) request.getSession().getAttribute(establimentSessionKey);
+    	
+    	//Collection destiList = (Collection)request.getSession().getAttribute(seleccioSessionKeyDesti);
+    	Collection origenList = (Collection)request.getSession().getAttribute(seleccioSessionKeyOrigen);
+    	
+    	DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.000");
+    	
+    	Object[] idPartidesOliva = origenList.toArray();
+    	List<Olivicultor> olivicultors = new ArrayList<Olivicultor>();
+    	Double[] kgOliva = new Double[idPartidesOliva.length];
+    	Double[] kgCriba = new Double[idPartidesOliva.length];
+    	for(int i=0; i<idPartidesOliva.length; i++){
+    		try {
+    			oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    			PartidaOliva p = oliInfraestructuraEjb.partidaAmbId((Long)idPartidesOliva[i]);
+				Olivicultor o  = oliInfraestructuraEjb.olivicultorAmbId(p.getOlivicultor().getId());
+				if(!olivicultors.contains(o)){
+					olivicultors.add(o);
+				}
+				peo.setTipusOlivaTaula(p.getTipusOlivaTaula());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			kgOliva[i] = 0.0;
+			kgCriba[i] = 0.0;
+    	}
+    	peo.setKgOliva(kgOliva);
+    	peo.setKgCriba(kgCriba);
+
+    	try {
+    		Long idElaboracio = null;
+    		if (request.getParameter("id") != null) idElaboracio = new Long(request.getParameter("id"));
+			
+			if (!isFormSubmission(request)) {
+				if (idElaboracio != null) {
+					oliProcessosEjb.setHibernateTemplate(getHibernateTemplate());
+					ElaboracioOliva elaboracioOliva = oliProcessosEjb.findElaboracioOlivaById(idElaboracio);
+					
+					if (elaboracioOliva != null) {
+						peo.setData(elaboracioOliva.getData());
+			    		peo.setId(elaboracioOliva.getId());
+			    		peo.setObservacions(elaboracioOliva.getObservacions());
+					}
+					
+				}
+			} else {
+//				peo.setLitros(new Double[destiList.size()]);
+//				peo.setKilos(new Double[destiList.size()]);
+//				//peo.setData(new Date());
+//				
+//		    	Double[] litresRetirats = new Double[olivicultors.size()];
+//		    	Double[] kilosRetirats = new Double[olivicultors.size()];
+//		    	Long[] idOlivicultors = new Long[olivicultors.size()];
+//		    	String[] nomOlivicultors = new String[olivicultors.size()];
+//		    	
+//		    	if (olivicultors != null && olivicultors.size() > 0){
+//			    	int index = 0;
+//			    	for(Olivicultor o: olivicultors){
+//			    		litresRetirats[index] = 0.0;
+//			    		kilosRetirats[index] = 0.0;
+//			    		idOlivicultors[index] = o.getId();
+//			    		nomOlivicultors[index] = o.getNom();
+//			    		index++;
+//			    	}
+//		    	}
+//		    	peo.setLitrosRetirats(litresRetirats);
+//		    	peo.setKilosRetirats(kilosRetirats);
+//		    	peo.setIdOlivicultors(idOlivicultors);
+//		    	peo.setNomOlivicultors(nomOlivicultors);
+			}
+			
+				
+			PartidaOliva[] partides = new PartidaOliva[origenList.size()];
+			for (int i = 0; i < partides.length; i++) {
+				partides[i] = new PartidaOliva();
+			}
+			
+			peo.setEstabliment(establiment);
+			peo.setPartides(partides);
+			
+		} catch (Exception e) {
+			logger.error("EXCEPTION", e);
+		}
+    	    	
+        return peo;
+        
+    }
+
+    /**
+	 * Llistat amb els estats de l'oliva.
+	 * @param lang
+	 * @return
+	 */
+	private List tipusOlivaTaula(String lang) {
+		ResourceBundle bundle = ResourceBundle.getBundle("messages", new java.util.Locale(lang));
+		List tipusOliva = new ArrayList();
+		
+		BasicData olivaVerda = new BasicData();
+		olivaVerda.setId(tipusOlivaVerda);
+		olivaVerda.setNom(bundle.getString("proces.elaboracioOlivaTaula.camp.tipus.verda"));
+		tipusOliva.add(olivaVerda);
+		
+		BasicData olivaTrencada = new BasicData();
+		olivaTrencada.setId(tipusOlivaTrencada);
+		olivaTrencada.setNom(bundle.getString("proces.entradaOlivaTaula.camp.tipus.trencada"));
+		tipusOliva.add(olivaTrencada);
+		
+		BasicData olivaNegra = new BasicData();
+		olivaNegra.setId(tipusOlivaNegra);
+		olivaNegra.setNom(bundle.getString("proces.entradaOlivaTaula.camp.tipus.negra"));
+		tipusOliva.add(olivaNegra);
+		
+		return tipusOliva;
+	}
+    /**
+     * ConfiguraciÃ³ del <i>binder</i>. Si hi ha camps en el
+     * <i>command</i> amb tipus que no siguin <i>String</i>
+     * s'ha de configurar el seu corresponent binder aquÃ­.
+     * 
+     * @see BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest, org.springframework.web.bind.ServletRequestDataBinder)
+     */
+    protected void initBinder(
+            HttpServletRequest request,
+            ServletRequestDataBinder binder)
+    throws Exception {
+    	binder.registerCustomEditor(
+    			Integer.class,
+        		new CustomNumberEditor(Integer.class, true));
+    	binder.registerCustomEditor(
+        		Long.class,
+        		new CustomNumberEditor(Long.class, true));
+    	binder.registerCustomEditor(
+        		Float.class,
+        		new CustomNumberEditor(Float.class, true));
+    	binder.registerCustomEditor(
+        		Boolean.class,
+        		new CustomBooleanEditor("S", "N", true));
+        binder.registerCustomEditor(
+        		Date.class,
+        		new CustomDateEditor(new SimpleDateFormat("dd/MM/yyyy"), true));
+    }
+
+
+    /**
+     * InjecciÃ³ de la dependÃ¨ncia oliProcessb
+     *
+     * @param oliProcessosEjb La classe a injectar.
+     */
+       
+    public void setOliProcessosEjb(OliProcessosEjb oliProcessosEjb) {
+		this.oliProcessosEjb = oliProcessosEjb;
+	}
+ 
+    /**
+	 * @param infraestructuraEjb the infraestructuraEjb to set
+	 */
+	public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+		this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+	}
+
+    /**
+	 * @param establimentSessionKey the establimentSessionKey to set
+	 */
+	public void setEstablimentSessionKey(String establimentSessionKey) {
+		this.establimentSessionKey = establimentSessionKey;
+	}
+
+	/**
+     * InjecciÃ³ de la dependÃ¨ncia seleccioSessionKeyOrigen
+     *
+     * @param seleccioSessionKey La classe a injectar.
+     */
+    public void setSeleccioSessionKeyOrigen(String seleccioSessionKeyOrigen) {
+        this.seleccioSessionKeyOrigen = seleccioSessionKeyOrigen;
+    }
+    
+    /**
+     * InjecciÃ³ de la dependÃ¨ncia seleccioSessionKeyDesti
+     *
+     * @param seleccioSessionKey La classe a injectar.
+     */
+    public void setSeleccioSessionKeyDesti(String seleccioSessionKeyDesti) {
+        this.seleccioSessionKeyDesti = seleccioSessionKeyDesti;
+    }
+    
+    /**
+	 * Injecció de la dependència tipusOlivaVerda
+	 *
+	 * @param tipusOlivaVerda La classe a injectar.
+	 */
+	public void setTipusOlivaVerda(String tipusOlivaVerda) {
+		this.tipusOlivaVerda = tipusOlivaVerda;
+	}
+
+	/**
+	 * Injecció de la dependència tipusOlivaTrencada
+	 *  
+	 * @param tipusOlivaTrencada La classe a injectar.
+	 */
+	public void setTipusOlivaTrencada(String tipusOlivaTrencada) {
+		this.tipusOlivaTrencada = tipusOlivaTrencada;
+	}
+
+	/**
+	 * Injecció de la dependència tipusOlivaNegra
+	 *  
+	 * @param tipusOlivaNegra La classe a injectar.
+	 */
+	public void setTipusOlivaNegra(String tipusOlivaNegra) {
+		this.tipusOlivaNegra = tipusOlivaNegra;
+	}
+    
+    public void setDesqualificat(String desqualificat) {
+		this.desqualificat = desqualificat;
+	}
+
+	public void setPendentQualificar(String pendentQualificar) {
+		this.pendentQualificar = pendentQualificar;
+	}
+
+	private String missatge(String clave){
+    	String valor= getMessageSourceAccessor().getMessage(clave);
+    	return valor;
+    }
+    
+    /**
+	 * Indica si la peticiÃ³n es de creaciÃ³n o no.
+	 * @param request
+	 * @return true si es una peticiÃ³n de creaciÃ³n o false si es de ediciÃ³n.
+	 */
+	private boolean isCreate(HttpServletRequest request) {
+		return (request.getParameter("id") == null);
+	}
+
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+	
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatProveidorAvaluacio" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_proveidor_aval" schema="public">
+  		<comment>Qualitat - Control Proveidors - Avaluació</comment>
+		<key column="cpa_id"/>
+		<property name="dataRehomologacio" type="java.util.Date">
+			<column name="cpa_rehomologacio" not-null="false"></column>
+		</property>
+		<property name="dataDeshomologacio" type="java.util.Date">
+			<column name="cpa_deshomologacio" not-null="false"></column>
+		</property>
+		<property name="proximaAvaluacio" type="java.util.Date">
+			<column name="cpa_proximaAv" not-null="false"></column>
+		</property>
+		<property name="valoracio" type="java.lang.Integer">
+			<column name="cpa_valoracio" not-null="false"><comment>Valoracio</comment></column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="cpa_obs" not-null="false"><comment>Observacions</comment></column>
+		</property>
+		<many-to-one 
+			name="proveidor" 
+			class="es.caib.gestoli.logic.model.QualitatProveidor"
+			column="cpa_proveidor" 
+			not-null="false"/>
+	</joined-subclass>
+</hibernate-mapping>

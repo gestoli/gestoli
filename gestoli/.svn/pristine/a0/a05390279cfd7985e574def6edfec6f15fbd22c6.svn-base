@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC
+  "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+  "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+
+<dwr>
+	<allow>
+
+		<!-- 
+			<convert converter="hibernate2" match="es.caib.gestoli.logic.model.*"/>
+		 -->
+
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Establiment" >
+			<param name="exclude" value="campanya,tipusEstabliment,solicitant,poblacio,marcas,
+			informacios,diposits,zonas,usuaris,partidesOli,productes,descripcio,equips,personal,
+			puestos,proveidors,subministres,plansNeteja,descripcioSubministreAigua,
+			aiguaControlOrganoleptic,aiguaControlAnalitic" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.TipusEnvas" >
+			<param name="exclude" value="materialTipusEnvas,color" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Etiquetatge" />
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Zona" >
+			<param name="exclude" value="lots,diposits" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.EntradaLot" >
+			<param name="exclude" value="traza" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Analitica" >
+			<param name="exclude" value="varietatOli, partidaOli, traza,  
+			varietatOli1, varietatOli2, analiticaValor" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.VarietatOli" >
+			<param name="exclude" value="analiticaParametre" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.CategoriaOli" >
+			<param name="exclude" value="partidesOli" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.PartidaOli" >
+			<param name="exclude" value="categoriaOliOriginal,elaboracions,diposits" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Elaboracio" >
+			<param name="exclude" value="traza,partidaOlivas" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Olivicultor">
+			<param name="exclude" value="fincas, informacios, campanya, poblacio, usuari" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Finca">
+			<param name="exclude" value="plantacios" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Municipi" />
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.Plantacio">
+			<param name="exclude" value="descomposicioPlantacios" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.DescomposicioPlantacio">
+			<param name="exclude" value="varietatOliva" />
+		</convert>
+		<convert converter="hibernate3" match="es.caib.gestoli.logic.model.DescomposicioPartidaOliva" />
+
+		
+		<convert converter="hibernate2" match="es.caib.gestoli.logic.model.PartidaOliva">
+			<param name="exclude" value="traza,elaboracio,olivicultor,zona" />
+		</convert>
+		<convert converter="hibernate2" match="es.caib.gestoli.logic.model.Diposit">
+			<param name="exclude" value="categoriaOli,zona,establiment,materialDiposit" />
+		</convert>
+		<convert converter="hibernate2" match="es.caib.gestoli.logic.model.Lot">
+			<param name="exclude"
+				value="zona,categoriaOli,sortidaDiposits,varietatOlivas,sortidaLots,entradaLots" />
+		</convert>
+
+		<convert converter="hibernate2" match="es.caib.gestoli.logic.model.Marca">
+			<param name="exclude" value="etiquetatges,establiments" />
+		</convert>
+		
+		<convert converter="bean" match="es.caib.gestoli.front.util.BasicData"/>
+		<convert converter="bean" match="es.caib.gestoli.logic.model.PartidaOli"/>
+		<convert converter="bean" match="es.caib.gestoli.logic.model.VarietatOliva"/>
+		<convert converter="bean" match="es.caib.gestoli.logic.model.TipusEnvas"/>
+		<convert converter="bean" match="es.caib.gestoli.logic.model.Bota"/>
+		<convert converter="bean" match="es.caib.gestoli.front.spring.PlantacioCommand" />
+		<convert converter="bean" match="es.caib.gestoli.front.spring.EtiquetatgeCommand" />
+		<convert converter="bean" match="es.caib.gestoli.front.spring.*" />
+
+		<!-- 
+			<convert converter="bean" match="es.caib.gestoli.logic.model.Marca" />
+		 -->
+		 
+		<create creator="spring" javascript="contenidorService">
+			<param name="beanName" value="contenidorService" />
+		</create>
+
+		<create creator="spring" javascript="processosService">
+			<param name="beanName" value="processosService" />
+		</create>
+
+		<create creator="spring" javascript="varietatOlivaService">
+			<param name="beanName" value="varietatOlivaService" />
+		</create>
+
+		<create creator="spring" javascript="qualitatService">
+			<param name="beanName" value="qualitatService" />
+		</create>
+		
+		<create creator="spring" javascript="frontOfficeService">
+			<param name="beanName" value="frontOfficeService" />
+		</create>
+		
+		<convert converter="null" match="void" />
+		<convert converter="null" match="java.lang.Void" />
+
+		<convert converter="primitive" match="boolean" />
+		<convert converter="primitive" match="byte" />
+		<convert converter="primitive" match="short" />
+		<convert converter="primitive" match="int" />
+		<convert converter="primitive" match="long" />
+		<convert converter="primitive" match="float" />
+		<convert converter="primitive" match="double" />
+		<convert converter="primitive" match="char" />
+		<convert converter="primitive" match="java.lang.Boolean" />
+		<convert converter="primitive" match="java.lang.Byte" />
+		<convert converter="primitive" match="java.lang.Short" />
+		<convert converter="primitive" match="java.lang.Integer" />
+		<convert converter="primitive" match="java.lang.Long" />
+		<convert converter="primitive" match="java.lang.Float" />
+		<convert converter="primitive" match="java.lang.Double" />
+		<convert converter="primitive" match="java.lang.Character" />
+
+		<convert converter="bignumber" match="java.math.BigInteger" />
+		<convert converter="bignumber" match="java.math.BigDecimal" />
+
+		<convert converter="string" match="java.lang.String" />
+		<convert converter="date" match="java.util.Date" />
+
+
+
+		<!--
+			<convert converter="array" match="[Z"/> <convert converter="array"
+			match="[B"/> <convert converter="array" match="[S"/> <convert
+			converter="array" match="[I"/> <convert converter="array"
+			match="[J"/> <convert converter="array" match="[F"/> <convert
+			converter="array" match="[D"/> <convert converter="array"
+			match="[C"/> <convert converter="array" match="[L*"/> <convert
+			converter="collection" match="java.util.Collection"/> <convert
+			converter="map" match="java.util.Map"/> <convert converter="dom"
+			match="org.w3c.dom.Node"/> <convert converter="dom"
+			match="org.w3c.dom.Element"/> <convert converter="dom"
+			match="org.w3c.dom.Document"/> <convert converter="dom4j"
+			match="org.dom4j.Document"/> <convert converter="dom4j"
+			match="org.dom4j.Element"/> <convert converter="dom4j"
+			match="org.dom4j.Node"/> <convert converter="jdom"
+			match="org.jdom.Document"/> <convert converter="jdom"
+			match="org.jdom.Element"/> <convert converter="xom"
+			match="nu.xom.Document"/> <convert converter="xom"
+			match="nu.xom.Element"/> <convert converter="xom"
+			match="nu.xom.Node"/>
+		-->
+		<convert converter="servlet" match="javax.servlet.ServletConfig" />
+		<convert converter="servlet" match="javax.servlet.ServletContext" />
+		<convert converter="servlet" match="javax.servlet.http.HttpServletRequest" />
+		<convert converter="servlet" match="javax.servlet.http.HttpServletResponse" />
+		<convert converter="servlet" match="javax.servlet.http.HttpSession" />
+	</allow>
+</dwr>

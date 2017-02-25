@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Elaboracio" table="oli_elaboracio"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf =
+			new
+			SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.data); } /** * Devuelve una descripcion de
+			total kilos de oliva que intervienen en la elaboracion */ public
+			String
+			getTotalQuilos() { DecimalFormat numberDecimalFormat = new
+			DecimalFormat("###,###,##0.00"); double total = 0; Set partidas =
+			this.partidaOlivas; for (Iterator it =
+			partidas.iterator(); it.hasNext();) { PartidaOliva partida = (PartidaOliva)it.next(); if
+			(partida.getDescomposicioPartidesOlives() != null) { Iterator desc =
+			partida.getDescomposicioPartidesOlives().iterator(); while
+			(desc.hasNext()) { DescomposicioPartidaOliva dpo =
+			(DescomposicioPartidaOliva) desc.next(); total +=
+			dpo.getKilos().doubleValue(); } } } return
+			numberDecimalFormat.format(total); } /** * Devuelve una descripcion
+			de total kilos */ public String getNomVarietat(){ String nom
+			= ""; Set partidas = this.partidaOlivas; for (Iterator it =
+			partidas.iterator(); it.hasNext();) { PartidaOliva partida =
+			(PartidaOliva)it.next(); if
+			(partida.getDescomposicioPartidesOlives() != null) { Iterator desc =
+			partida.getDescomposicioPartidesOlives().iterator(); while
+			(desc.hasNext()) {
+			DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next(); if
+			(dpo.getDescomposicioPlantacio() != null) { DescomposicioPlantacio
+			descompPlanta =
+			dpo.getDescomposicioPlantacio(); VarietatOliva varietat = descompPlanta.getVarietatOliva(); if
+			(varietat != null &amp;&amp; varietat.getNom() != null) { if (nom != ""
+        &amp;&amp; !nom.equalsIgnoreCase(varietat.getNom())) { nom = "mezcla"; break; } else { nom = varietat.getNom(); } } } } if(nom.equalsIgnoreCase("mezcla")){ break; } } }
+        return nom; } /** * Comparator */ public int compareTo(Object e) { Elaboracio elaboracion = (Elaboracio)e; if (this.data.compareTo(elaboracion.getData())== 0) { return
+        this.numeroElaboracio.compareTo(elaboracion.getNumeroElaboracio()); } else { return this.data.compareTo(elaboracion.getData()); } } /** * Devuelve el nombre del
+        establecimiento donde se realiza la elaboracion */ public String getEstablimentName() { String establimentName = ""; Set partidas = this.partidaOlivas; for (Iterator it =
+        partidas.iterator(); it.hasNext();) { PartidaOliva partida = (PartidaOliva) it.next(); establimentName = partida.getZona().getEstabliment().getNom(); break; } return
+        establimentName; }</meta>
+        <meta attribute="extra-import" inherit="false">java.text.DecimalFormat</meta>
+        <meta attribute="extra-import" inherit="false">java.util.Iterator</meta>
+        <meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+        <comment>Elaboracions de oli</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="ela_codi" />
+            <generator class="identity"></generator>
+        </id>
+        <!--
+        <many-to-one name="varietatOli" class="es.caib.gestoli.logic.model.VarietatOli" fetch="select">
+            <column name="ela_codvol" not-null="true">
+                <comment>Codi de varietat de oli</comment>
+            </column>
+        </many-to-one>
+        -->
+        <many-to-one name="categoriaOli" class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+            <column name="ela_codcao" not-null="true">
+                <comment>Codi de categoria de oli</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza" fetch="select">
+            <column name="ela_codtra" not-null="true">
+                <comment>Codi de traza</comment>
+            </column>
+        </many-to-one>
+        <property name="data" type="date">
+            <column name="ela_data" length="13" not-null="true">
+                <comment>Data</comment>
+            </column>
+        </property>
+        <property name="numeroElaboracio" type="java.lang.Integer">
+            <column name="ela_numela" not-null="true">
+                <comment>Numero de elaboracio diaria</comment>
+            </column>
+        </property>
+        <property name="responsable" type="java.lang.String">
+            <column name="ela_respon" length="128" not-null="true">
+                <comment>Responsable</comment>
+            </column>
+        </property>
+        <property name="acidesa" type="java.lang.Double">
+            <column name="ela_acides" precision="17" scale="17" not-null="true">
+                <comment>Acidesa</comment>
+            </column>
+        </property>
+        <property name="temperatura" type="java.lang.Double">
+            <column name="ela_temper" precision="17" scale="17" not-null="true">
+                <comment>Temperatura</comment>
+            </column>
+        </property>
+        <property name="talcMarcaComercial" type="java.lang.String">
+            <column name="ela_talmar" length="128" not-null="true">
+                <comment>Talc: marca comercial</comment>
+            </column>
+        </property>
+        <property name="talcLot" type="java.lang.String">
+            <column name="ela_taclot" length="128" not-null="true">
+                <comment>Talc: lot</comment>
+            </column>
+        </property>
+        <property name="talcQuantitat" type="java.lang.Double">
+            <column name="ela_talqua" precision="17" scale="17" not-null="true">
+                <comment>Talc: quantitat</comment>
+            </column>
+        </property>
+        <property name="litres" type="java.lang.Double">
+            <column name="ela_litres" precision="17" scale="17" not-null="true">
+                <comment>Litres (totals)</comment>
+            </column>
+        </property>
+        <property name="observacions" type="java.lang.String">
+            <column name="ela_observ">
+                <comment>Observacions</comment>
+            </column>
+        </property>
+        <property name="valid" type="java.lang.Boolean" insert="false">
+            <column name="ela_valid" not-null="true">
+                <comment>Proces valid</comment>
+            </column>
+        </property>
+        <property name="numPrintsDocRendiment" type="java.lang.Integer">
+            <column name="ela_numprint" not-null="true">
+                <comment>Numero dimpresions document de rendiment</comment>
+            </column>
+        </property>
+        <property name="autoNumDocRendiment" type="java.lang.Integer">
+            <column name="ela_autonum" not-null="true">
+                <comment>Autonumeracio document de rendiment</comment>
+            </column>
+        </property>
+        <set name="partidaOlivas" inverse="true">
+            <key>
+                <column name="pao_codela">
+                    <comment>Codi de la elaboraci&#243;, si la partida s'ha elaborat</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.PartidaOliva" />
+        </set>
+        <many-to-one name="partidaOli" class="es.caib.gestoli.logic.model.PartidaOli"
+			fetch="select">
+			<column name="ela_codpar" not-null="true">
+				<comment>Codi de partida de oli</comment>
+			</column>
+		</many-to-one>
+    </class>
+</hibernate-mapping>

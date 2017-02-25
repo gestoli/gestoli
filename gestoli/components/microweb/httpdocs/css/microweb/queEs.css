@@ -1,0 +1,35 @@
+#queEsMicroweb {
+	padding: 0 20px;
+	background: url(../../img/general/microweb/fondoQueEs.jpg) top left
+		no-repeat;
+	min-height: 418px;
+	height: auto !important;
+	height: 418px;
+}
+
+#queEsMicroweb h2.microweb {
+	margin-bottom: 5px;
+}
+
+#queEsMicroweb p {
+	font-size: 15px;
+	text-align: justify;
+	margin-bottom: 15px;
+}
+
+#queEsMicroweb strong {
+	font-size: 13px;
+}
+
+#queEsMicroweb ul li {
+	background: url(../../img/general/microweb/redot.png) 0px 0px no-repeat
+		!important;
+	padding-left: 12px;
+	font-size: 13px;
+	margin-top: 7px;
+	display: block;
+	width: 800px;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/general/microweb/redot.png', sizingMethod = 'crop' );
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Solicitant" table="oli_solicitant"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Solicitant de alta</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="sol_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="sol_nom" length="64" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="nif" type="java.lang.String">
+			<column name="sol_nif" length="16">
+				<comment>NIF</comment>
+			</column>
+		</property>
+		<property name="perfil" type="java.lang.String">
+			<column name="sol_perfil" length="64">
+				<comment>Perfil</comment>
+			</column>
+		</property>
+		<property name="telefon" type="java.lang.String">
+			<column name="sol_telefo" length="16">
+				<comment>Telefon</comment>
+			</column>
+		</property>
+		<property name="data" type="timestamp">
+			<column name="sol_data" length="29" not-null="true">
+				<comment>Data</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

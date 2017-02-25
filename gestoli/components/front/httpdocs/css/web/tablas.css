@@ -1,0 +1,622 @@
+/* General Tablas */
+table,td,tr,th {
+	margin: 0;
+	border: none;
+	padding: 0;
+	z-index: 1000;
+}
+
+td,th {
+	padding-left: 15px;
+	padding-right: 5px;
+}
+
+th { /*height: 23px;*/
+	background: #000 url(../../img/tabla/sep_negro.gif) top right repeat-y;
+	color: #ECBF1B;
+	text-align: left;
+}
+
+th a {
+	color: #ECBF1B;
+	text-decoration: none;
+	display: block;
+	background: url(../../img/tabla/btnTabla.gif) top right no-repeat;
+	/* height: 23px; */
+	line-height: 23px;
+	margin-right: 5px;
+	width: auto;
+}
+
+th.order1 a {
+	background: url(../../img/tabla/btnTablaDown.gif) top right no-repeat;
+}
+
+th.order2 a {
+	background: url(../../img/tabla/btnTablaUp.gif) top right no-repeat;
+}
+
+td.final,th.final {
+	background-image: none;
+}
+
+th.alto80 {
+	height: 80px;	
+}
+
+td {
+	height: 25px;
+	background: #fff url(../../img/tabla/sep_blanco.gif) top right repeat-y;
+}
+
+.zona table {
+	border-collapse: collapse;
+}
+
+.zona td {
+	background: #F9E574 none repeat scroll 0 0;
+	padding: 3px 3px 3px 15px;
+}
+
+tr.alt td {
+	background: #F8F8F8 url(../../img/tabla/sep_blanco.gif) top right repeat-y;
+}
+
+tr.over td {
+	background-color: #797979;
+	text-decoration: underline;
+	color: #fff;
+	cursor: pointer;
+}
+
+.noEnlace tr.over td {
+	cursor: default;
+}
+
+/* Anchos tablas */
+table.listadoEstrecho {
+	width: 485px;
+}
+
+table.listadoMedio {
+	width: 510px;
+}
+
+table.listado665 {
+	width: 665px;
+}
+
+table.listado888 {
+	width: 888px;
+}
+
+#layoutSombraTabla .ancho {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+table.listadoAncho {
+	width: 842px;
+}
+
+table .ancho20 {
+	width: 20px;
+}
+
+table .ancho32 {
+	width: 32px;
+}
+
+table form.ancho32 {
+	width: 32px;
+	padding-top: 0px;
+}
+
+table .ancho50 {
+	width: 50px;
+}
+
+table .ancho75 {
+	width: 75px;
+}
+
+table .ancho100 {
+	width: 100px;
+}
+
+table .ancho110 {
+	width: 110px;
+}
+
+table .ancho120 {
+	width: 120px;
+}
+
+table .ancho130 {
+	width: 130px;
+}
+
+table .ancho160 {
+	width: 160px;
+}
+
+table .ancho175 {
+	width: 175px;
+}
+
+table .ancho210 {
+	width: 210px;
+}
+
+table .ancho310 {
+	width: 310px;
+}
+
+table .ancho340 {
+	width: 340px;
+}
+
+table .total {
+	font-weight: bold;
+}
+
+table .left5 {
+	padding-left: 5px;
+}
+
+/* ------------------ MODIFICADO SOMBRAS 17-04-2009 ---------------------- */
+	/* Sombras Tablas */
+#layoutSombraTabla {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 12px;
+}
+
+#layoutSombraTabla .rellenoInf {
+	background: url(../../img/tabla/borde_inf.png) bottom center repeat-x
+		!important;
+	height: 14px;
+	position: absolute;
+	bottom: -14px;
+	left: 14px;
+	width: 100px; .
+	background-image: none;
+}
+
+#layoutSombraTabla .rellenoIzq {
+	width: 14px;
+	position: absolute;
+	left: -14px;
+	top: 34px;
+	background: url(../../img/tabla/borde_izq.png) top left repeat-y !important
+		;
+	height: 1px;
+	background-image: none;
+}
+
+#layoutSombraTabla .rellenoDer {
+	width: 14px;
+	position: absolute;
+	right: -14px;
+	top: 34px;
+	background: url(../../img/tabla/borde_der.png) top right repeat-y
+		!important;
+	height: 1px;
+	background-image: none;
+}
+
+#layoutSombraTabla .supDer {
+	width: 14px;
+	height: 34px;
+	background: url(../../img/tabla/sup_der.png) top right no-repeat !important
+		;
+	position: absolute;
+	top: 0px;
+	right: -14px;
+	background-image: none;
+}
+
+#layoutSombraTabla .supIzq {
+	width: 14px;
+	height: 34px;
+	background: url(../../img/tabla/sup_izq.png) top left no-repeat !important;
+	position: absolute;
+	top: 0px;
+	left: -14px;
+	background-image: none;
+}
+
+#layoutSombraTabla .infIzq {
+	width: 28px;
+	height: 28px;
+	background: url(../../img/tabla/inf_izq.png) bottom left no-repeat
+		!important;
+	position: absolute;
+	bottom: -14px;
+	left: -14px;
+	z-index: 1;
+	background-image: none;
+}
+
+#layoutSombraTabla .infDer {
+	width: 28px;
+	height: 28px;
+	background: url(../../img/tabla/inf_der.png) bottom right no-repeat
+		!important;
+	position: absolute;
+	bottom: -14px;
+	right: -14px;
+	z-index: 1;
+	background-image: none;
+}
+
+.iconoSituar {
+	background: url(../../img/icons/situar.png) top left no-repeat !important;
+	background-image: none;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
+
+.iconoVer {
+	background: url(../../img/icons/lupa.png) top left no-repeat !important;
+	background-image: none;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
+
+.iconoBorrar {
+	background: url(../../img/icons/eliminar.png) top left no-repeat !important;
+	background-image: none;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
+
+/* ------------------ ------------------ */ /* Sombras Tablas */
+.layoutSombraTabla {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 12px;
+}
+
+.layoutSombraTabla .rellenoInf {
+	background: url(../../img/tabla/borde_inf.png) bottom center repeat-x
+		!important;
+	height: 14px;
+	position: absolute;
+	bottom: -14px;
+	left: 14px;
+	width: 100px; .
+	background-image: none;
+}
+
+.layoutSombraTabla .rellenoIzq {
+	width: 14px;
+	position: absolute;
+	left: -14px;
+	top: 34px;
+	background: url(../../img/tabla/borde_izq.png) top left repeat-y !important
+		;
+	height: 1px;
+	background-image: none;
+}
+
+.layoutSombraTabla .rellenoDer {
+	width: 14px;
+	position: absolute;
+	right: -14px;
+	top: 34px;
+	background: url(../../img/tabla/borde_der.png) top right repeat-y
+		!important;
+	height: 1px;
+	background-image: none;
+}
+
+.layoutSombraTabla .supDer {
+	width: 14px;
+	height: 34px;
+	background: url(../../img/tabla/sup_der.png) top right no-repeat !important
+		;
+	position: absolute;
+	top: 0px;
+	right: -14px;
+	background-image: none;
+}
+
+.layoutSombraTabla .supIzq {
+	width: 14px;
+	height: 34px;
+	background: url(../../img/tabla/sup_izq.png) top left no-repeat !important;
+	position: absolute;
+	top: 0px;
+	left: -14px;
+	background-image: none;
+}
+
+.layoutSombraTabla .infIzq {
+	width: 28px;
+	height: 28px;
+	background: url(../../img/tabla/inf_izq.png) bottom left no-repeat
+		!important;
+	position: absolute;
+	bottom: -14px;
+	left: -14px;
+	z-index: 1;
+	background-image: none;
+}
+
+.layoutSombraTabla .infDer {
+	width: 28px;
+	height: 28px;
+	background: url(../../img/tabla/inf_der.png) bottom right no-repeat
+		!important;
+	position: absolute;
+	bottom: -14px;
+	right: -14px;
+	z-index: 1;
+	background-image: none;
+}
+
+.iconoSituar {
+	background: url(../../img/icons/situar.png) top left no-repeat !important;
+	background-image: none;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
+
+.layoutSombraTabla td a {
+	color: #000;
+	text-decoration: none;
+}
+
+.layoutSombraTabla tr.over td a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+table .etiqueta {
+	background-color: transparent;
+	padding: 0px;
+	margin-bottom: 0px;
+}
+
+.etiquetatge table {
+	border-collapse: collapse;
+}
+
+.etiquetatge td {
+	background: #F9E574 none repeat scroll 0 0;
+	padding: 3px 3px 3px 15px;
+}
+
+.importar #divIdForfichero table,.equip #divIdForimatgeImatgeEquip table
+	{
+	border-collapse: collapse;
+}
+
+.importar #divIdForfichero td,.equip #divIdForimatgeImatgeEquip td {
+	background: #F9E574 none repeat scroll 0 0;
+	padding: 3px 3px 3px 10px;
+}
+
+#fichaEstablecimiento .listadepositos {
+	text-align: left;
+}
+
+/* ---------------- NUEVAS TABLAS 03/07/2009---------------- */
+table .ancho318 {
+	width: 318px;
+}
+
+table .ancho200 {
+	width: 200px;
+}
+
+td.multilinea {
+	vertical-align: top;
+	line-height: 22px;
+}
+
+tr.over td.conversor {
+	background-color: #F8F8F8;
+	text-decoration: none;
+	color: #000;
+	cursor: default;
+}
+
+th {
+	color: #ECBF1B;
+}
+
+.conversor form {
+	width: auto;
+}
+
+.conversor fieldset {
+	padding: 0px 0px 0px 0px !important;
+	padding: 0px 0px 20px 0px;
+}
+
+.conversor fieldset input {
+	width: 116px;
+	border: 1px solid #7F9DB9;
+}
+
+.conversor fieldset span {
+	display: block;
+	width: 142px;
+	float: left;
+}
+
+.conversor fieldset span label {
+	background-color: transparent;
+	padding: 2px 16px 3px 0px;
+	font: normal 15px Arial, Helvetica, sans-serif;
+}
+
+.conversor fieldset span .bordeInput {
+	background-color: transparent;
+	padding: 3px 3px 3px 0px;
+}
+
+.conversor fieldset span .bordeFoco {
+	background-color: transparent;
+	padding: 1px !important;
+}
+
+.paddingCelda {
+	padding-left: 5px;
+}
+
+.conversor fieldset input.disabled {
+	background: #D4D0C8;
+}
+
+.noRoll th {
+	height: 23px;
+}
+
+.noRoll tr.over td {
+	cursor: default;
+}
+
+div.cajaTabla {
+	padding-bottom: 20px;
+}
+
+td.boldtd {
+	font-weight: bold;
+}
+
+th.unicoHead {
+	background-image: none;
+	color: #ECBF1B;
+}
+
+th.unicoHead2 {
+	background: url("../../img/menu/fondoMenu.gif") top center repeat-x;
+	color: #ECBF1B;
+}
+
+.pendientesDevolver .noEnlace tr.over td,.pendientesAceptar .noEnlace tr.over td
+	{
+	background-color: white;
+	color: #000000;
+	text-decoration: none;
+}
+
+.pendientesDevolver .noEnlace tr.over td a,.pendientesAceptar .noEnlace tr.over td a
+	{
+	text-decoration: none;
+}
+
+.pendientesDevolver .noEnlace  td,.pendientesAceptar .noEnlace  td {
+	background-color: white;
+	color: #000000;
+	text-decoration: none;
+	padding: 5px 0px 5px 15px;
+}
+span.filtres{
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	padding-left: 40px;
+}
+
+.exportPDFWidth16{
+	background:url("../../img/icons/pdf.png") no-repeat scroll 0 0 transparent;
+	border:medium none;
+	height:16px;
+	width:16px;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.exportPDFWidth32{
+	background:url("../../img/icons/pdf2.png") no-repeat scroll 0 0 transparent;
+	border:medium none;
+	height:32px;
+	width:32px;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+/* DISPLAY TAG */
+
+span.export {
+	cursor:pointer;
+	display:inline-block;
+	padding:0 5px 5px 20px;
+	background-repeat:no-repeat;
+	font-size:1em;
+	list-style-type:none;
+	margin:0;
+}
+
+span.excel {
+	background-image:url(../../img/icons/excel.png);
+}
+
+
+.group-1 {
+    font-weight:bold;
+    padding-bottom:10px;
+    border-top:1px solid black;
+}
+.group-2 {
+    font-style:italic;
+    border-top: 1px solid black;
+
+}
+.subtotal-sum, .grandtotal-sum {
+    font-weight:bold;
+    text-align:right;
+}
+.subtotal-header {
+    padding-bottom: 0px;
+    border-top: 1px solid white;
+}
+.subtotal-label, .grandtotal-label {
+    border-top: 1px solid white;
+    font-weight: bold;
+}
+.grouped-table tr.even {
+    background-color: #fff;
+}
+.grouped-table tr.odd {
+    background-color: #fff;
+}
+.grandtotal-row {
+    border-top: 2px solid black;
+}
+tr.total{
+    font-weight: bold;
+}
+
+.exportlinks{
+	padding:10px 0 5px 10px;
+	margin: 0 0 10px 0;
+	position:absolute;
+	z-index:1;
+	color: #FFFFFF;
+	background-color: #000000;
+}
+
+.exportlinks a{
+	color:#FFFFFF;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.listadoAncho td.hidden {
+     display: none;
+}
+.listadoAncho th.hidden {
+     display: none;
+}

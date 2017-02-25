@@ -1,0 +1,681 @@
+package es.caib.gestoli.front.spring.views;
+
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.apache.log4j.Logger;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.web.servlet.view.document.AbstractPdfView;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.pdf.PdfWriter;
+
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.model.DescomposicioPlantacio;
+import es.caib.gestoli.logic.model.Factura;
+import es.caib.gestoli.logic.model.Finca;
+import es.caib.gestoli.logic.model.HistoricLlistatFactura;
+import es.caib.gestoli.logic.model.Olivicultor;
+import es.caib.gestoli.logic.model.Plantacio;
+import es.caib.gestoli.logic.model.Taxa;
+import es.caib.gestoli.logic.model.VarietatOliva;
+
+public class GenerarPdfFactura extends AbstractPdfView {
+	private static Logger logger = Logger.getLogger(GenerarPdfFactura.class);
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+	private HibernateTemplate hibernateTemplate;
+	
+    protected void buildPdfDocument(
+        Map model,
+        Document document,
+        PdfWriter writer,
+        HttpServletRequest request,
+        HttpServletResponse response)
+    throws Exception {
+
+	    Collection olivicultores = (Collection)model.get("llistat");
+	    String prefactura = (String)request.getParameter("prefactura");
+	    String historic = request.getParameter("historic");
+	    historic = ((historic == null) || (historic.equals("")))?"N":historic;
+	    String identificador = request.getParameter("identificador");
+	    identificador = (identificador == null)?"":identificador;
+
+		document = null;
+		writer = null;
+		
+		oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+		Taxa taxa = oliInfraestructuraEjb.getTaxaActual();
+	
+		// Compilar archivo
+		logger.debug("1.- Leyendo el stream del jrxml");
+	    InputStream is = this.getClass().getClassLoader().getResourceAsStream("es/caib/gestoli/logic/resources/facturaOlivicultor.jrxml");
+		logger.debug("2.- Compilando el report");
+	    JasperReport report = JasperCompileManager.compileReport(is);
+
+		// Data Source
+		logger.debug("3.- Asociando los datos");
+		JRBeanCollectionDataSource ds;
+		if (historic.equals("S") && !identificador.equals("")) {
+			ds = new JRBeanCollectionDataSource(getDataSourceFacturaHistoric(prefactura, identificador));
+		} else {
+			ds = new JRBeanCollectionDataSource(getDataSourceFactura(olivicultores, prefactura, taxa));
+		}
+		
+		//Parametros
+		logger.debug("4.- Cargando parametros");
+		HashMap params = new HashMap();
+		params.put("pLogo", "es/caib/gestoli/logic/resources/do.jpg");
+		params.put("pHectarees", missatge("pdf.factura.ha"));
+		params.put("pConcepte", missatge("pdf.factura.concepte"));
+		params.put("pImportUnitatHectarees", missatge("pdf.factura.importHa"));
+		params.put("pSubtotal", missatge("pdf.factura.subtotal"));
+		params.put("pIva", missatge("pdf.factura.iva"));
+		params.put("pTotal", missatge("pdf.factura.total"));
+		
+		
+		logger.debug("5.- Cargando los datos al report");
+		JasperPrint jasperPrint = JasperFillManager.fillReport( report, params, ds );
+
+		// Configure exporter and set parameters
+		ServletOutputStream out = response.getOutputStream();
+		response.setContentType("application/pdf");
+		response.setHeader("Cache-Control", "store");
+		response.setHeader("Pragma", "cache");            
+		if (prefactura != null && prefactura.equals("1")) {
+			response.setHeader("Content-Disposition","attachment; filename=prefactura.pdf");
+		} else {
+			response.setHeader("Content-Disposition","attachment; filename=factura.pdf");
+		}
+
+		logger.debug("6.- Exportando el report a pdf");
+	    byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+	    for (int i = 0; i < bytes.length; i ++) {
+	    	out.write(bytes[i]);
+	    }
+	    out.close();
+	    out.flush();
+    }
+
+	/**
+     * getDataSourceFactura
+     * @param i
+     * @return
+     */
+    public Collection getDataSourceFactura(Collection olivicultors, String prefactura, Taxa taxa) throws Exception {
+		Collection col = new ArrayList();
+
+		//separar els olivicultors per RA/RE/RT
+		//si tenen RA + RE només imprimir una factura amb l'emisor DO Oli
+		//si tenen RT l'emisor ha de ser DO Oliva
+		//si tenen RA + RT fer 1 factura per cada emisor (Oli i Oliva)
+		
+
+		
+		StringBuffer dadesConsellRegulador = new StringBuffer(missatge("pdf.factura.dadesDO1")).append("\n"). 
+											 append(missatge("pdf.factura.dadesDO2")).append("\n").
+											 append(missatge("pdf.factura.dadesDO3")).append("\n").
+											 append(missatge("pdf.factura.dadesDO4"));
+		
+		StringBuffer dadesConsellReguladorOliva = new StringBuffer(missatge("pdf.factura.dadesDOO1")).append("\n"). 
+		 append(missatge("pdf.factura.dadesDOO2")).append("\n").
+		 append(missatge("pdf.factura.dadesDOO3")).append("\n").
+		 append(missatge("pdf.factura.dadesDOO4"));
+		
+		SimpleDateFormat sdfData = new SimpleDateFormat("dd/MM/yyyy");
+		DecimalFormat dfNumeroDecimal = new DecimalFormat("###,###,##0.00");
+		DecimalFormat dfNumeroDecimalHectarees = new DecimalFormat("###,###,##0.000");
+	    DecimalFormat dfNumeroFactura = new DecimalFormat("0000");
+	    
+	    Long idFactura = 0L;
+	    Integer id = 0;
+	    
+	    oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+	    Long identificador = oliInfraestructuraEjb.identificadorFactura();
+
+		// IVA en tanto por 100
+		float IVA = 0;
+	    String valorIVA = dfNumeroDecimal.format(IVA) + "%";
+	    // Any actual
+	    Date dataActualSenseFormat = new Date();
+	    String dataActual = sdfData.format(dataActualSenseFormat);
+	    int anyActual = Integer.parseInt(dataActual.split("/")[2]);
+
+	    boolean novaFactura = false;
+	    // Recorremos todos los olivicultores
+	    Iterator iter = olivicultors.iterator();
+		while(iter.hasNext()) {
+			Olivicultor olivicultor = (Olivicultor)iter.next();
+			
+			StringBuffer dadesOlivicultor = new StringBuffer(olivicultor.getNom()).append("\n").
+							   append(olivicultor.getDireccio()).append("\n").
+							   append(olivicultor.getCodiPostal()).append(" ").append(olivicultor.getPoblacio().getNom()).append("\n").
+							   append(olivicultor.getNif());
+			
+			///////////////////////////////////////////////////////////////////
+			// només RA, només RE o RA+RE
+			///////////////////////////////////////////////////////////////////
+			if (((olivicultor.getCodiDO() != null && !olivicultor.getCodiDO().equals("")) &&  
+					(olivicultor.getCodiDOExperimental() != null && !olivicultor.getCodiDOExperimental().equals(""))) ||
+					((olivicultor.getCodiDO() != null && !olivicultor.getCodiDO().equals("")) &&
+					(olivicultor.getCodiDOExperimental() == null)) ||
+					((olivicultor.getCodiDO() == null) &&	
+					(olivicultor.getCodiDOExperimental() != null && !olivicultor.getCodiDOExperimental().equals("")))) {
+				
+				LlistatFactura llistatFactura = new LlistatFactura();
+				String tipusCodiOlivicultor = "RA";
+
+				float hectareasMenos75anyosAutorizadas = 0;
+				float hectareasMas75anyosAutorizadas = 0;
+				float hectareasMenos75anyosNoAutorizadas = 0;
+				float hectareasMas75anyosNoAutorizadas = 0;
+				StringBuffer hectarees = new StringBuffer();
+				StringBuffer conceptes = new StringBuffer();
+				StringBuffer importsUnitatHectarea = new StringBuffer();
+
+				llistatFactura.setIdOlivicultor(String.valueOf(olivicultor.getId() + tipusCodiOlivicultor));
+				llistatFactura.setDadesConsellRegulador(dadesConsellRegulador.toString());
+				llistatFactura.setDadesOlivicultor(dadesOlivicultor.toString());
+				// Numero factura
+				if (prefactura != null && prefactura.equals("1")) {
+					llistatFactura.setDetallProformaEtiqueta(missatge("pdf.factura.detallProforma"));
+					llistatFactura.setDataEtiqueta(missatge("pdf.factura.data"));
+					llistatFactura.setData(dataActual);
+					llistatFactura.setInscripcioEtiqueta(missatge("pdf.factura.inscripcio"));
+					llistatFactura.setInscripcio(tipusCodiOlivicultor + "-" + olivicultor.getCodiDO() + (olivicultor.getCodiDOExperimental()!=null?"/RE-"+olivicultor.getCodiDOExperimental():""));
+				} else {
+					llistatFactura.setFacturaEtiqueta(missatge("pdf.factura.factura"));
+					oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+					Factura factura = oliInfraestructuraEjb.facturaAnyCercaOliId(anyActual, olivicultor.getId());
+					if (factura != null) {  // Factura existente
+						String refFactura = tipusCodiOlivicultor + "/" + dfNumeroFactura.format(factura.getNumero()) + "/" + factura.getAny();
+						llistatFactura.setNumFactura(refFactura);
+						llistatFactura.setDataEtiqueta(missatge("pdf.factura.data"));
+						String dataFactura = sdfData.format(factura.getData());
+						llistatFactura.setData(dataFactura);
+						llistatFactura.setInscripcioEtiqueta(missatge("pdf.factura.inscripcio"));
+						llistatFactura.setInscripcio(tipusCodiOlivicultor + "-" + olivicultor.getCodiDO() + (olivicultor.getCodiDOExperimental()!=null?"/RE-"+olivicultor.getCodiDOExperimental():""));
+					} else { // Nueva Factura
+						novaFactura = true;
+						factura = new Factura();
+						factura.setData(dataActualSenseFormat);
+						factura.setOlivicultor(olivicultor);
+						factura.setAny(new Integer(anyActual));
+						oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+						int maxNumeracion = oliInfraestructuraEjb.facturaGetMaxNumeracionParaAnyo(new Integer(anyActual)).intValue();
+						factura.setNumero(new Integer(maxNumeracion + 1));
+						String refFactura = tipusCodiOlivicultor + "/" + dfNumeroFactura.format(maxNumeracion+1) + "/" + anyActual;
+						oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+						oliInfraestructuraEjb.facturaCreaModifica(factura);
+						llistatFactura.setNumFactura(refFactura);
+						llistatFactura.setDataEtiqueta(missatge("pdf.factura.data"));
+						String dataFactura = sdfData.format(factura.getData());
+						llistatFactura.setData(dataFactura);
+						llistatFactura.setInscripcioEtiqueta(missatge("pdf.factura.inscripcio"));
+						llistatFactura.setInscripcio(tipusCodiOlivicultor + "-" + olivicultor.getCodiDO() + (olivicultor.getCodiDOExperimental()!=null?"/RE-"+olivicultor.getCodiDOExperimental():""));
+					}
+					idFactura = factura.getNumero().longValue();
+				}
+
+				// Obtenemos las fincas del olivicultor
+				Collection fincasOlivicultor = olivicultor.getFincas();
+				Iterator iteFincasOlivicultor = fincasOlivicultor.iterator();
+				while (iteFincasOlivicultor.hasNext()) {
+					Finca fincaOlivicultor = (Finca)iteFincasOlivicultor.next();
+					if (!fincaOlivicultor.getActiu().booleanValue()) {
+						continue;
+					}
+
+					// Obtenemos las plantaciones de cada finca
+					Collection plantacionesFinca = fincaOlivicultor.getPlantacios();
+					Iterator iterPlantacionesFinca = plantacionesFinca.iterator();
+					while (iterPlantacionesFinca.hasNext()){
+						Plantacio plantacionFinca = (Plantacio)iterPlantacionesFinca.next();
+						if (!plantacionFinca.getActiu().booleanValue()) {
+							continue;
+						}
+						int anysPlantada = anyActual - plantacionFinca.getAnyPlantacio().intValue();
+
+						// Obtenemos las descomposiciones para cada plantacion
+						Collection descPlantacionLista = plantacionFinca.getDescomposicioPlantacios();
+						Iterator iterDescPlantacion = descPlantacionLista.iterator();
+						float superficieMenor75 = 0;
+						float superficieMajorIgual75 = 0;
+						while (iterDescPlantacion.hasNext()){
+							DescomposicioPlantacio descPlantacio = (DescomposicioPlantacio)iterDescPlantacion.next();
+							VarietatOliva varietatOliva = descPlantacio.getVarietatOliva();
+							if (varietatOliva.getAutoritzada() && !varietatOliva.getOlivaTaula()) {
+								if (anysPlantada < 75) {
+									hectareasMenos75anyosAutorizadas += descPlantacio.getSuperficie().floatValue();
+									superficieMenor75 += descPlantacio.getSuperficie().floatValue();
+								} else {
+									hectareasMas75anyosAutorizadas += descPlantacio.getSuperficie().floatValue();
+									superficieMajorIgual75 += descPlantacio.getSuperficie().floatValue();
+								}
+							}else if(!varietatOliva.getOlivaTaula()){
+								if (anysPlantada < 75) {
+									hectareasMenos75anyosNoAutorizadas += descPlantacio.getSuperficie().floatValue();
+									superficieMenor75 += descPlantacio.getSuperficie().floatValue();
+								} else {
+									hectareasMas75anyosNoAutorizadas += descPlantacio.getSuperficie().floatValue();
+									superficieMajorIgual75 += descPlantacio.getSuperficie().floatValue();
+								}
+							}
+						}
+						StringBuffer concepte = new StringBuffer();
+						concepte.append(plantacionFinca.getMunicipi().getNom()).
+								 append("  -  ").
+								 append(missatge("pdf.factura.poligon")).append(": ").append(plantacionFinca.getPoligon()).
+								 append("  -  ").
+								 append(missatge("pdf.factura.parcela")).append(": ").append(plantacionFinca.getParcela()).
+								 append("  -  ").
+								 append(missatge("pdf.factura.finca")).append(": ").append(fincaOlivicultor.getNom());
+						String concepteString = concepte.toString();
+						if (concepteString != null &&  concepteString.length() > 80) {
+							concepteString = concepteString.substring(0, 80) + "...";
+						}
+						if (superficieMenor75 != 0) {
+							hectarees.append(dfNumeroDecimalHectarees.format(superficieMenor75)).append("\n");
+							conceptes.append(concepteString).append("\n");
+							importsUnitatHectarea.append(dfNumeroDecimal.format(taxa.getTaxaPlantacioMenor75())).append(" €/ha\n");
+						}
+						if (superficieMajorIgual75 != 0) {
+							hectarees.append(dfNumeroDecimalHectarees.format(superficieMajorIgual75)).append("\n");
+							conceptes.append(concepteString).append("\n");
+							importsUnitatHectarea.append(dfNumeroDecimal.format(taxa.getTaxaPlantacioMajorIgual75())).append(" €/ha\n");
+						}
+					}
+				}			
+				
+				if((olivicultor.getCodiDO() != null && !olivicultor.getCodiDO().equals("")) &&
+						(olivicultor.getCodiDOExperimental() == null || (olivicultor.getCodiDOExperimental() != null && !olivicultor.getCodiDOExperimental().equals("")))
+				){
+				
+					if (hectareasMenos75anyosAutorizadas > 0 && hectareasMenos75anyosAutorizadas < 1) {
+						hectareasMenos75anyosAutorizadas = 1;
+					}
+					if (hectareasMas75anyosAutorizadas > 0 && hectareasMas75anyosAutorizadas < 1) {
+						hectareasMas75anyosAutorizadas = 1;
+					}
+					
+	
+					if (hectareasMenos75anyosAutorizadas > 0 || hectareasMas75anyosAutorizadas > 0) {
+						llistatFactura.setHectarees(hectarees.toString());
+						llistatFactura.setConceptes(conceptes.toString());
+						llistatFactura.setImportUnitat(importsUnitatHectarea.toString());
+						float subTotal = (hectareasMas75anyosAutorizadas * taxa.getTaxaPlantacioMajorIgual75().floatValue()) +
+										 (hectareasMenos75anyosAutorizadas * taxa.getTaxaPlantacioMenor75().floatValue());
+						llistatFactura.setSubtotal(dfNumeroDecimal.format(subTotal) + " €");
+						llistatFactura.setIva(valorIVA);
+						if(olivicultor.getSubvencionat()){
+							llistatFactura.setSubvencionat(missatge("pdf.factura.subvencionat"));
+							subTotal = 0;
+						}
+						
+						float total = (subTotal>0)?(subTotal + (subTotal * IVA / 100)):new Float(0);
+						llistatFactura.setTotal(dfNumeroDecimal.format(total) + " €");
+						llistatFactura.setId(id);
+						col.add(llistatFactura);
+						if (novaFactura) afegirLlistatFactura(llistatFactura, identificador, idFactura, ""+anyActual);
+						else if (prefactura != null && prefactura.equals("1")) {
+							actualitzaLlistatFactura(llistatFactura, identificador, idFactura, ""+anyActual);
+						}
+						id++;
+					}
+				}	
+				if((olivicultor.getCodiDO() == null) &&
+						(olivicultor.getCodiDOPOliva()==null) && 
+						(olivicultor.getCodiDOExperimental() != null && !olivicultor.getCodiDOExperimental().equals(""))){
+					//no autoritzades
+					if (hectareasMenos75anyosNoAutorizadas > 0 && hectareasMenos75anyosNoAutorizadas < 1) {
+						hectareasMenos75anyosNoAutorizadas = 1;
+					}
+					if (hectareasMas75anyosNoAutorizadas > 0 && hectareasMas75anyosNoAutorizadas < 1) {
+						hectareasMas75anyosNoAutorizadas = 1;
+					}
+	
+					if (hectareasMenos75anyosNoAutorizadas > 0 || hectareasMas75anyosNoAutorizadas > 0) {
+						llistatFactura.setHectarees(hectarees.toString());
+						llistatFactura.setConceptes(conceptes.toString());
+						llistatFactura.setImportUnitat(importsUnitatHectarea.toString());
+						float subTotal = (hectareasMas75anyosNoAutorizadas * taxa.getTaxaPlantacioMajorIgual75().floatValue()) +
+										 (hectareasMenos75anyosNoAutorizadas * taxa.getTaxaPlantacioMenor75().floatValue());
+						llistatFactura.setSubtotal(dfNumeroDecimal.format(subTotal) + " €");
+						llistatFactura.setIva(valorIVA);
+						if(olivicultor.getSubvencionat()){
+							llistatFactura.setSubvencionat(missatge("pdf.factura.subvencionat"));
+							subTotal = 0;
+						}
+						
+						float total = (subTotal>0)?(subTotal + (subTotal * IVA / 100)):new Float(0);
+						llistatFactura.setTotal(dfNumeroDecimal.format(total) + " €");
+						llistatFactura.setId(id);
+						col.add(llistatFactura);
+						if (novaFactura) afegirLlistatFactura(llistatFactura, identificador, idFactura, ""+anyActual);
+						else if (prefactura != null && prefactura.equals("1")) {
+							actualitzaLlistatFactura(llistatFactura, identificador, idFactura, ""+anyActual);
+						}
+						id++;
+					}
+				}
+				
+			}
+
+			///////////////////////////////////////////////////////////////////
+			// Si és olivicultor d'oliva de taula 
+			///////////////////////////////////////////////////////////////////
+			if ((olivicultor.getCodiDO() != null && !olivicultor.getCodiDO().equals("")) &&
+				(olivicultor.getCodiDOExperimental() == null) &&
+				(olivicultor.getCodiDOPOliva() != null && !olivicultor.getCodiDOPOliva().equals(""))) {
+				
+				LlistatFactura llistatFactura = new LlistatFactura();
+				String tipusCodiOlivicultor = "RT";
+
+				float hectareasMenos75anyosAutorizadas = 0;
+				float hectareasMas75anyosAutorizadas = 0;
+				StringBuffer hectarees = new StringBuffer();
+				StringBuffer conceptes = new StringBuffer();
+				StringBuffer importsUnitatHectarea = new StringBuffer();
+
+				llistatFactura.setIdOlivicultor(String.valueOf(olivicultor.getId() + tipusCodiOlivicultor));
+				llistatFactura.setDadesConsellRegulador(dadesConsellReguladorOliva.toString());
+				llistatFactura.setDadesOlivicultor(dadesOlivicultor.toString());
+				// Numero factura
+				if (prefactura != null && prefactura.equals("1")) {
+					llistatFactura.setDetallProformaEtiqueta(missatge("pdf.factura.detallProforma"));
+					llistatFactura.setDataEtiqueta(missatge("pdf.factura.data"));
+					llistatFactura.setData(dataActual);
+					llistatFactura.setInscripcioEtiqueta(missatge("pdf.factura.inscripcio"));
+					llistatFactura.setInscripcio(tipusCodiOlivicultor + "-" + olivicultor.getCodiDOPOliva());
+				} else {
+					llistatFactura.setFacturaEtiqueta(missatge("pdf.factura.factura"));
+					oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+					Factura factura = oliInfraestructuraEjb.facturaAnyCercaOliId(anyActual, olivicultor.getId());
+//					Factura factura = oliInfraestructuraEjb.facturaCercaOliId(olivicultor.getId());
+					if (factura != null) {  // Factura existente
+						String refFactura = tipusCodiOlivicultor + "/" + dfNumeroFactura.format(factura.getNumero()) + "/" + factura.getAny();
+						llistatFactura.setNumFactura(refFactura);
+						llistatFactura.setDataEtiqueta(missatge("pdf.factura.data"));
+						String dataFactura = sdfData.format(factura.getData());
+						llistatFactura.setData(dataFactura);
+						llistatFactura.setInscripcioEtiqueta(missatge("pdf.factura.inscripcio"));
+						llistatFactura.setInscripcio(tipusCodiOlivicultor + "-" + olivicultor.getCodiDOPOliva());
+					} else { // Nueva Factura
+						novaFactura = true;
+						factura = new Factura();
+						factura.setData(dataActualSenseFormat);
+						factura.setOlivicultor(olivicultor);
+						factura.setAny(new Integer(anyActual));
+						oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+						int maxNumeracion = oliInfraestructuraEjb.facturaGetMaxNumeracionParaAnyo(new Integer(anyActual)).intValue();
+						factura.setNumero(new Integer(maxNumeracion + 1));
+						String refFactura = tipusCodiOlivicultor + "/" + dfNumeroFactura.format(maxNumeracion+1) + "/" + anyActual;
+						oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+						oliInfraestructuraEjb.facturaCreaModifica(factura);
+						llistatFactura.setNumFactura(refFactura);
+						llistatFactura.setDataEtiqueta(missatge("pdf.factura.data"));
+						String dataFactura = sdfData.format(factura.getData());
+						llistatFactura.setData(dataFactura);
+						llistatFactura.setInscripcioEtiqueta(missatge("pdf.factura.inscripcio"));
+						llistatFactura.setInscripcio(tipusCodiOlivicultor + "-" + olivicultor.getCodiDOPOliva());
+					}
+					idFactura = factura.getNumero().longValue();
+				}
+
+				// Obtenemos las fincas del olivicultor
+				Collection fincasOlivicultor = olivicultor.getFincas();
+				Iterator iteFincasOlivicultor = fincasOlivicultor.iterator();
+				while (iteFincasOlivicultor.hasNext()) {
+					Finca fincaOlivicultor = (Finca)iteFincasOlivicultor.next();
+					if (!fincaOlivicultor.getActiu().booleanValue()) {
+						continue;
+					}
+
+					// Obtenemos las plantaciones de cada finca
+					Collection plantacionesFinca = fincaOlivicultor.getPlantacios();
+					Iterator iterPlantacionesFinca = plantacionesFinca.iterator();
+					while (iterPlantacionesFinca.hasNext()){
+						Plantacio plantacionFinca = (Plantacio)iterPlantacionesFinca.next();
+						if (!plantacionFinca.getActiu().booleanValue()) {
+							continue;
+						}
+						int anysPlantada = anyActual - plantacionFinca.getAnyPlantacio().intValue();
+
+						// Obtenemos las descomposiciones para cada plantacion
+						Collection descPlantacionLista = plantacionFinca.getDescomposicioPlantacios();
+						Iterator iterDescPlantacion = descPlantacionLista.iterator();
+						float superficieMenor75 = 0;
+						float superficieMajorIgual75 = 0;
+						while (iterDescPlantacion.hasNext()){
+							DescomposicioPlantacio descPlantacio = (DescomposicioPlantacio)iterDescPlantacion.next();
+							VarietatOliva varietatOliva = descPlantacio.getVarietatOliva();
+							if(varietatOliva.getAutoritzada() && varietatOliva.getOlivaTaula()){
+								if (anysPlantada > 75) {
+									hectareasMas75anyosAutorizadas += descPlantacio.getSuperficie().floatValue();
+									superficieMajorIgual75 += descPlantacio.getSuperficie().floatValue();
+								}
+								else{
+									hectareasMenos75anyosAutorizadas += descPlantacio.getSuperficie().floatValue();
+									superficieMenor75 += descPlantacio.getSuperficie().floatValue();
+								} 
+							}
+						}
+						StringBuffer concepte = new StringBuffer();
+						concepte.append(plantacionFinca.getMunicipi().getNom()).
+								 append("  -  ").
+								 append(missatge("pdf.factura.poligon")).append(": ").append(plantacionFinca.getPoligon()).
+								 append("  -  ").
+								 append(missatge("pdf.factura.parcela")).append(": ").append(plantacionFinca.getParcela()).
+								 append("  -  ").
+								 append(missatge("pdf.factura.finca")).append(": ").append(fincaOlivicultor.getNom());
+						String concepteString = concepte.toString();
+						if (concepteString != null &&  concepteString.length() > 80) {
+							concepteString = concepteString.substring(0, 80) + "...";
+						}
+						if (superficieMenor75 != 0) {
+							hectarees.append(dfNumeroDecimalHectarees.format(superficieMenor75)).append("\n");
+							conceptes.append(concepteString).append("\n");
+							importsUnitatHectarea.append(dfNumeroDecimal.format(taxa.getTaxaRT())).append(" €/ha\n");
+						}
+						if (superficieMajorIgual75 != 0) {
+							hectarees.append(dfNumeroDecimalHectarees.format(superficieMajorIgual75)).append("\n");
+							conceptes.append(concepteString).append("\n");
+							importsUnitatHectarea.append(dfNumeroDecimal.format(taxa.getTaxaRT())).append(" €/ha\n");
+						}
+					}
+				}			
+
+				llistatFactura.setHectarees(hectarees.toString());
+				llistatFactura.setConceptes(conceptes.toString());
+				llistatFactura.setImportUnitat(importsUnitatHectarea.toString());
+				float subTotal = new Float(0.00);
+				if(hectareasMas75anyosAutorizadas != 0){
+					subTotal += (hectareasMas75anyosAutorizadas * taxa.getTaxaRT().floatValue());
+				}else{
+					subTotal += (hectareasMenos75anyosAutorizadas * taxa.getTaxaRT().floatValue());
+				}
+				
+				llistatFactura.setSubtotal(dfNumeroDecimal.format(subTotal) + " €");
+				llistatFactura.setIva(valorIVA);
+				if(olivicultor.getSubvencionat()){
+					llistatFactura.setSubvencionat(missatge("pdf.factura.subvencionat"));
+					subTotal = 0;
+				}
+				
+				float total = (subTotal>0)?(subTotal + (subTotal * IVA / 100)):new Float(0);
+				llistatFactura.setTotal(dfNumeroDecimal.format(total) + " €");
+				llistatFactura.setId(id);
+				col.add(llistatFactura);
+				if (novaFactura) afegirLlistatFactura(llistatFactura, identificador, idFactura, ""+anyActual);
+				else if (prefactura != null && prefactura.equals("1")) {
+					actualitzaLlistatFactura(llistatFactura, identificador, idFactura, ""+anyActual);
+				id++;
+				}
+			}
+			
+		}
+		return col;
+	}
+	
+    /**
+     * Guarda a bbdd un objecte del tipus HistoricLlistatFactura.
+     * @param llistatFactura
+     * @param identificador
+     * @param idFactura
+     * @param anyActual
+     * @throws Exception
+     */
+    public void afegirLlistatFactura(LlistatFactura llistatFactura, Long identificador, Long idFactura, String anyActual) throws Exception {
+    	HistoricLlistatFactura historicLlistatFactura = new HistoricLlistatFactura();
+		historicLlistatFactura.setFactura(idFactura);
+		historicLlistatFactura.setCampanya(anyActual);
+		historicLlistatFactura.setDadesConsellRegulador(llistatFactura.getDadesConsellRegulador());
+		historicLlistatFactura.setDadesOlivicultor(llistatFactura.getDadesOlivicultor());
+		historicLlistatFactura.setIdOlivicultor(llistatFactura.getIdOlivicultor());
+		historicLlistatFactura.setDetallProformaEtiqueta(llistatFactura.getDetallProformaEtiqueta());
+		historicLlistatFactura.setFacturaEtiqueta(llistatFactura.getFacturaEtiqueta());
+		historicLlistatFactura.setNumFactura(llistatFactura.getNumFactura());
+		historicLlistatFactura.setDataEtiqueta(llistatFactura.getDataEtiqueta());
+		historicLlistatFactura.setData(llistatFactura.getData());
+		historicLlistatFactura.setInscripcioEtiqueta(llistatFactura.getInscripcioEtiqueta());
+		historicLlistatFactura.setInscripcio(llistatFactura.getInscripcio());
+		historicLlistatFactura.setHectarees(llistatFactura.getHectarees());
+		historicLlistatFactura.setConceptes(llistatFactura.getConceptes());
+		historicLlistatFactura.setImportUnitat(llistatFactura.getImportUnitat());
+		historicLlistatFactura.setSubtotal(llistatFactura.getSubtotal());
+		historicLlistatFactura.setIva(llistatFactura.getIva());
+		historicLlistatFactura.setTotal(llistatFactura.getTotal());
+		historicLlistatFactura.setDataModificacio(Calendar.getInstance().getTime());
+		historicLlistatFactura.setIdentificador(identificador);
+		
+		oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+		oliInfraestructuraEjb.creaHistoricLlistatFactura(historicLlistatFactura);
+    }
+    
+    /**
+     * Guarda a bbdd un objecte del tipus HistoricLlistatFactura.
+     * @param llistatFactura
+     * @param identificador
+     * @param idFactura
+     * @param anyActual
+     * @throws Exception
+     */
+    public void actualitzaLlistatFactura(LlistatFactura llistatFactura, Long identificador, Long idFactura, String anyActual) throws Exception {
+    	oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    	HistoricLlistatFactura historicLlistatFactura = oliInfraestructuraEjb.findHistoricLlistatFacturaPreformaByOlivicultorAny(llistatFactura.getIdOlivicultor(), anyActual);
+    	if (historicLlistatFactura == null) {
+    		historicLlistatFactura = new HistoricLlistatFactura();
+    	}
+		historicLlistatFactura.setFactura(idFactura);
+		historicLlistatFactura.setCampanya(anyActual);
+		historicLlistatFactura.setDadesConsellRegulador(llistatFactura.getDadesConsellRegulador());
+		historicLlistatFactura.setDadesOlivicultor(llistatFactura.getDadesOlivicultor());
+		historicLlistatFactura.setIdOlivicultor(llistatFactura.getIdOlivicultor());
+		historicLlistatFactura.setDetallProformaEtiqueta(llistatFactura.getDetallProformaEtiqueta());
+		historicLlistatFactura.setFacturaEtiqueta(llistatFactura.getFacturaEtiqueta());
+		historicLlistatFactura.setNumFactura(llistatFactura.getNumFactura());
+		historicLlistatFactura.setDataEtiqueta(llistatFactura.getDataEtiqueta());
+		historicLlistatFactura.setData(llistatFactura.getData());
+		historicLlistatFactura.setInscripcioEtiqueta(llistatFactura.getInscripcioEtiqueta());
+		historicLlistatFactura.setInscripcio(llistatFactura.getInscripcio());
+		historicLlistatFactura.setHectarees(llistatFactura.getHectarees());
+		historicLlistatFactura.setConceptes(llistatFactura.getConceptes());
+		historicLlistatFactura.setImportUnitat(llistatFactura.getImportUnitat());
+		historicLlistatFactura.setSubtotal(llistatFactura.getSubtotal());
+		historicLlistatFactura.setIva(llistatFactura.getIva());
+		historicLlistatFactura.setTotal(llistatFactura.getTotal());
+		historicLlistatFactura.setDataModificacio(Calendar.getInstance().getTime());
+		historicLlistatFactura.setIdentificador(identificador);
+		
+		oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+		oliInfraestructuraEjb.creaHistoricLlistatFactura(historicLlistatFactura);
+    }
+
+    /**
+     * Genera el dataSource necessari per crear el pdf a partir de les dades de l'històric.
+     * @param prefactura
+     * @param identificador
+     * @return
+     * @throws Exception 
+     */
+    private Collection getDataSourceFacturaHistoric(String prefactura, String identificador) throws Exception {
+    	Collection col = new ArrayList();
+    	
+    	oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+    	Collection dades = oliInfraestructuraEjb.findDadesPerIdntificador(Long.parseLong(identificador));
+    	for (Object obj : dades) {
+    		HistoricLlistatFactura hlf = (HistoricLlistatFactura)obj;
+    		LlistatFactura llistatFactura = new LlistatFactura();
+    		llistatFactura.setDadesConsellRegulador(hlf.getDadesConsellRegulador());
+    		llistatFactura.setDadesOlivicultor(hlf.getDadesOlivicultor());
+    		llistatFactura.setIdOlivicultor(hlf.getIdOlivicultor());
+    		llistatFactura.setDetallProformaEtiqueta(hlf.getDetallProformaEtiqueta());
+    		llistatFactura.setFacturaEtiqueta(hlf.getFacturaEtiqueta());
+    		llistatFactura.setNumFactura(hlf.getFactura().toString());
+    		llistatFactura.setDataEtiqueta(hlf.getDataEtiqueta());
+    		llistatFactura.setData(hlf.getData());
+    		llistatFactura.setInscripcioEtiqueta(hlf.getInscripcioEtiqueta());
+    		llistatFactura.setInscripcio(hlf.getInscripcio());
+    		llistatFactura.setHectarees(hlf.getHectarees());
+    		llistatFactura.setConceptes(hlf.getConceptes());
+    		llistatFactura.setImportUnitat(hlf.getImportUnitat());
+    		llistatFactura.setSubtotal(hlf.getSubtotal());
+    		llistatFactura.setIva(hlf.getIva());
+    		llistatFactura.setTotal(hlf.getTotal());
+    		
+    		col.add(llistatFactura);
+    	}
+    	
+		return col;
+	}
+    
+    /**
+     * Inyección de la dependencia oliInfraestructuraEjb
+     * @param oliInfraestructuraEjb La clase a inyectar.
+     */
+    public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+        this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+    }
+
+	private String missatge(String clave) {
+    	String valor = getApplicationContext().getMessage(clave, null, new Locale("ca"));
+    	return valor;
+    }
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+	
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+}

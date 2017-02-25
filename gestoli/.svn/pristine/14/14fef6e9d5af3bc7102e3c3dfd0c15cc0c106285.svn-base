@@ -1,0 +1,614 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="/WEB-INF/c-rt.tld"%>
+<%@ taglib prefix="fmt" uri="/WEB-INF/fmt-rt.tld"%>
+<%@ page import="es.caib.gestoli.front.util.*"%>
+<%@ page import="java.util.ResourceBundle"%>
+<%@ page import="java.util.Locale"%>
+<%@ taglib prefix="display" uri="/WEB-INF/displaytag-el.tld"%>
+<%
+	String lang = Idioma.getLang(request);
+	request.setAttribute("lang", lang);
+%>
+
+<html>
+	<head>
+		<title>
+			<c:choose>
+				<c:when test="${not empty formData.id}"><fmt:message key="manteniment.modificacio" /></c:when>
+				<c:otherwise><fmt:message key="manteniment.alta" /></c:otherwise>
+			</c:choose>
+			<fmt:message key="olivicultor.tipusdemant" />
+		</title>
+		
+		<script type="text/javascript" src="js/displaytag.js"></script>
+	</head>
+	
+	<body>
+		<c:if test="${empty uidapp}">
+			<c:choose>
+				<c:when test="${not empty precondicion and precondicion == false}">
+					<c:set var="mostrar" value="false" scope="request" />
+				</c:when>
+				<c:when test="${not empty esDoGestor || not empty esDoControlador}">
+					<c:set var="mostrar" value="true" scope="request" />
+				</c:when>
+				<c:when test="${not empty esOlivicultor and not empty formData.id and usuari.id == formData.usuari.id and formData.altaDO == true}">
+					<c:set var="mostrar" value="true" scope="request" />
+				</c:when>
+				<c:otherwise><c:set var="mostrar" value="false" scope="request" /></c:otherwise>
+			</c:choose>
+
+			<c:if test="${mostrar == true}">
+				<div class="olivicultor">
+					<form id="formulario" name="formulario" action="OlivicultorForm.html" method="post" class="seguit">
+						<c:if test="${not empty formData.id}">
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.id" />
+								<c:param name="camp" value="id" />
+							</c:import>
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.contrasenyaEncriptada" />
+								<c:param name="camp" value="contrasenyaEncriptada" />
+							</c:import>
+						</c:if>
+						<c:if test="${not empty formData.idOriginal}">
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.idOriginal" />
+								<c:param name="camp" value="idOriginal" />
+							</c:import>
+						</c:if>
+						<c:if test="${not empty formData.campanya}">
+							<input type="hidden" id="campanya" name="campanyaId" value="<c:out value="${formData.campanya.id}"/>" />
+						</c:if> 
+						<c:if test="${empty formData.campanya}">
+							<input type="hidden" id="campanya" name="campanyaId" value="<c:out value="${campaniaId}"/>" />
+						</c:if> 
+						<c:if test="${not empty formData.usuariId}">
+							<input type="hidden" id="usuariId" name="usuariId" value="<c:out value="${formData.usuariId}"/>" />
+						</c:if>
+
+						<c:choose>
+							<c:when test="${not empty formData.id && usuari.id == formData.id}">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.nomUsuari" />
+									<c:param name="required" value="required" />
+									<c:param name="maxlength" value="16" />
+									<c:param name="title"><fmt:message key="usuari.camp.usuari" /></c:param>
+									<c:param name="camp" value="nomUsuari" />
+									<c:param name="clase" value="campoFormGrande readOnly conMargen" />
+									<c:param name="readonly" value="true" />
+								</c:import>
+							</c:when>
+							<c:otherwise>
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.nomUsuari" />
+									<c:param name="required" value="required" />
+									<c:param name="maxlength" value="16" />
+									<c:param name="title"><fmt:message key="usuari.camp.usuari" /></c:param>
+									<c:param name="camp" value="nomUsuari" />
+									<c:param name="clase" value="campoFormGrande conMargen" />
+								</c:import>
+							</c:otherwise>
+						</c:choose> 
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="contrasenya" />
+							<c:param name="path" value="formData.contrasenya" />
+							<c:param name="required" value="required" />
+							<c:param name="maxlength" value="16" />
+							<c:param name="title"><fmt:message key="usuari.camp.contrasenya" /></c:param>
+							<c:param name="camp" value="contrasenya" />
+							<c:param name="clase" value="campoFormGrande" />
+						</c:import>
+						<div class="separadorH"></div>
+
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="select" />
+							<c:param name="path" value="formData.idiomaId" />
+							<c:param name="title"><fmt:message key="usuari.camp.idioma" /></c:param>
+							<c:param name="camp" value="idiomaId" />
+							<c:param name="clase" value="campoFormGrande conMargen" />
+							<c:param name="required" value="required" />
+							<c:param name="selectItems" value="idiomas" />
+							<c:param name="selectItemsId" value="id" />
+							<c:param name="selectItemsValue" value="nom" />
+							<c:param name="selectSelectedValue" value="${formData.idiomaId}" />
+						</c:import> 
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="text" />
+							<c:param name="path" value="formData.email" />
+							<c:param name="maxlength" value="128" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.email" /></c:param>
+							<c:param name="camp" value="email" />
+							<c:param name="clase" value="campoFormGrande" />
+						</c:import>
+						<div class="separadorH"></div>
+
+						<c:choose>
+							<c:when
+								test="${not empty formData.usuari.id && usuari.id == formData.usuari.id}">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.nom" />
+									<c:param name="maxlength" value="128" />
+									<c:param name="required" value="required" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.nombre" /></c:param>
+									<c:param name="camp" value="nom" />
+									<c:param name="clase" value="campoFormTresCuartos readOnly conMargen" />
+									<c:param name="readonly" value="true" />
+								</c:import>
+							</c:when>
+							<c:otherwise>
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.nom" />
+									<c:param name="maxlength" value="128" />
+									<c:param name="required" value="required" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.nombre" /></c:param>
+									<c:param name="camp" value="nom" />
+									<c:param name="clase" value="campoFormTresCuartos conMargen" />
+								</c:import>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:choose>
+							<c:when test="${not empty formData.usuari.id && usuari.id == formData.usuari.id}">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.nif" />
+									<c:param name="maxlength" value="16" />
+									<c:param name="required" value="required" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.nif" /></c:param>
+									<c:param name="camp" value="nif" />
+									<c:param name="clase" value="campoFormPequeno readOnly " />
+									<c:param name="readonly" value="true" />
+								</c:import>
+							</c:when>
+							<c:otherwise>
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="text" />
+									<c:param name="path" value="formData.nif" />
+									<c:param name="maxlength" value="16" />
+									<c:param name="required" value="required" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.nif" /></c:param>
+									<c:param name="camp" value="nif" />
+									<c:param name="clase" value="campoFormPequeno" />
+								</c:import>
+							</c:otherwise>
+						</c:choose>
+						<div class="separadorH"></div>
+
+						<c:choose>
+							<c:when test="${not empty formData.usuari.id && usuari.id == formData.usuari.id}">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.teCodiDo" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.codiDO" /></c:param>
+									<c:param name="camp" value="teCodiDo" />
+									<c:param name="disabled" value="disabled" />
+								</c:import>
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.teCodiDoExperimental" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.codiDOExperimental" /></c:param>
+									<c:param name="camp" value="teCodiDoExperimental" />
+									<c:param name="disabled" value="disabled" />
+								</c:import>
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.teCodiDopOliva" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.codiDOPOliva" /></c:param>
+									<c:param name="camp" value="teCodiDopOliva" />
+									<c:param name="disabled" value="disabled" />
+								</c:import>
+							</c:when>
+							<c:otherwise>
+							<div class="etiqueta conMargen <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.teCodiDo" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.codiDO" /></c:param>
+									<c:param name="camp" value="teCodiDo" />
+								</c:import>
+							</div>
+							<div class="etiqueta conMargen <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.teCodiDoExperimental" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.codiDOExperimental" /></c:param>
+									<c:param name="camp" value="teCodiDoExperimental" />
+								</c:import>
+							</div>
+							<div class="etiqueta <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.teCodiDopOliva" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.codiDOPOliva" /></c:param>
+									<c:param name="camp" value="teCodiDopOliva" />
+								</c:import>
+							</div>
+							</c:otherwise>
+						</c:choose>
+						<div class="separadorH"></div>
+
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="text" />
+							<c:param name="path" value="formData.direccio" />
+							<c:param name="maxlength" value="256" />
+							<c:param name="required" value="required" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.direccio" /></c:param>
+							<c:param name="camp" value="direccio" />
+							<c:param name="clase" value="campoFormCompleto" />
+						</c:import>
+						<div class="separadorH"></div>
+
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="select" />
+							<c:param name="path" value="formData.municipiId" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.poblacio" /></c:param>
+							<c:param name="camp" value="municipiId" />
+							<c:param name="required" value="required" />
+							<c:param name="selectItems" value="municipis" />
+							<c:param name="selectItemsId" value="id" />
+							<c:param name="selectItemsValue" value="nom" />
+							<c:param name="selectSelectedValue" value="${formData.municipiId}" />
+							<c:param name="clase" value="campoFormTresCuartos conMargen" />
+						</c:import>
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="text" />
+							<c:param name="path" value="formData.codiPostal" />
+							<c:param name="maxlength" value="16" />
+							<c:param name="required" value="required" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.codiPostal" /></c:param>
+							<c:param name="camp" value="codiPostal" />
+							<c:param name="clase" value="campoFormPequeno" />
+						</c:import>
+						<div class="separadorH"></div>
+
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="text" />
+							<c:param name="path" value="formData.compteBancari" />
+							<c:param name="maxlength" value="64" />
+							<c:param name="required" value="required" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.compteBancari" /></c:param>
+							<c:param name="camp" value="compteBancari" />
+							<c:param name="clase" value="campoFormCompleto" />
+						</c:import>
+						<div class="separadorH"></div>
+
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="text" />
+							<c:param name="path" value="formData.telefon" />
+							<c:param name="maxlength" value="16" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.telefon" /></c:param>
+							<c:param name="camp" value="telefon" />
+							<c:param name="clase" value="campoFormMediano conMargen" />
+						</c:import>
+						<c:import url="comu/CampFormulari.jsp">
+							<c:param name="tipus" value="text" />
+							<c:param name="path" value="formData.fax" />
+							<c:param name="maxlength" value="16" />
+							<c:param name="title"><fmt:message key="olivicultor.camp.fax" /></c:param>
+							<c:param name="camp" value="fax" />
+							<c:param name="clase" value="campoFormMediano" />
+						</c:import>
+						
+						<c:if test="${not empty formData.id && not empty esDoGestor}">
+							<div class="separadorH"></div>
+
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="text" />
+								<c:param name="path" value="formData.uidRfid" />
+								<c:param name="maxlength" value="40" />
+								<c:param name="title"><fmt:message key="olivicultor.camp.uidRfid" /></c:param>
+								<c:param name="camp" value="uidRfid" />
+								<c:param name="clase" value="campoFormGrande readOnly" />
+								<c:param name="readonly" value="readonly" />
+							</c:import>
+							<div class="separadorH"></div>
+
+							<div class="etiqueta conMargen <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.altaDO" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.altaDO" /></c:param>
+									<c:param name="camp" value="altaDO" />
+								</c:import>
+							</div>
+
+							<c:if test="${formData.altaDO}">
+								<div class="etiqueta conMargen<c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+									<c:import url="comu/CampFormulari.jsp">
+										<c:param name="tipus" value="checkbox" />
+										<c:param name="path" value="formData.cartilla" />
+										<c:param name="title"><fmt:message key="olivicultor.camp.cartilla" /></c:param>
+										<c:param name="camp" value="cartilla" />
+									</c:import>
+								</div>
+							</c:if>
+
+							<div class="etiqueta conMargen <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.subvencionat" />
+									<c:param name="title"><fmt:message key="olivicultor.camp.subvencionat" /></c:param>
+									<c:param name="camp" value="subvencionat" />
+								</c:import>
+							</div>
+
+							<div class="etiqueta <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+								<c:import url="comu/CampFormulari.jsp">
+									<c:param name="tipus" value="checkbox" />
+									<c:param name="path" value="formData.actiu" />
+									<c:param name="title"><fmt:message key="usuari.camp.actiu" /></c:param>
+									<c:param name="camp" value="actiu" />
+								</c:import>
+							</div>
+						</c:if>
+
+						<c:if test="${not empty formData.id && empty esDoGestor}">
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.altaDO" />
+								<c:param name="title"><fmt:message key="olivicultor.camp.altaDO" /></c:param>
+								<c:param name="camp" value="altaDO" />
+							</c:import>
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.cartilla" />
+								<c:param name="title"><fmt:message key="olivicultor.camp.cartilla" /></c:param>
+								<c:param name="camp" value="cartilla" />
+							</c:import>
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.uidRfid" />
+								<c:param name="title"><fmt:message key="olivicultor.camp.uidRfid" /></c:param>
+								<c:param name="camp" value="uidRfid" />
+							</c:import>
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.subvencionat" />
+								<c:param name="title"><fmt:message key="olivicultor.camp.subvencionat" /></c:param>
+								<c:param name="camp" value="subvencionat" />
+							</c:import>
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="hidden" />
+								<c:param name="path" value="formData.actiu" />
+								<c:param name="title"><fmt:message key="usuari.camp.actiu" /></c:param>
+								<c:param name="camp" value="actiu" />
+							</c:import>
+						</c:if>
+						<div class="separadorH"></div>
+
+						<div id="observacionesForm" class="campoForm <c:out value="${param.required}"/><c:if test="${not empty status.errorMessage}"> error</c:if>">
+							<c:import url="comu/CampFormulari.jsp">
+								<c:param name="tipus" value="textarea" />
+								<c:param name="path" value="formData.observacions" />
+								<c:param name="maxlength" value="250" />
+								<c:param name="title"><fmt:message key="olivicultor.camp.observacions" /></c:param>
+								<c:param name="camp" value="observacions" />
+							</c:import>
+						</div>
+						
+						
+						<div class="separadorH"></div>
+
+						<c:if test="${formData.id != null && not empty formData.id && not empty esDoGestor}">
+							<c:if test="${not empty llistatDocuments}">
+						
+								<div class="campoForm">
+									<label for="documents">
+										<fmt:message key="documentInspeccio.camp.documentsInspeccio" />
+									</label>
+									<div class="separadorH"></div>
+									<div id="listadoEstrecho"><%-- Tabla de resultados --%>
+										<div class="layoutSombraTabla">
+											<div class="rellenoInf"></div>
+											<div class="rellenoIzq"></div>
+											<div class="rellenoDer"></div>
+											<div class="supDer"></div>
+											<div class="supIzq"></div>
+											<div class="infIzq"></div>
+											<div class="infDer"></div>
+						
+											<display:table name="llistatDocuments" requestURI="" id="documentInspeccio" pagesize="" sort="list" cellpadding="0" cellspacing="0"	class="listadoEstrecho selectable">
+												<display:column titleKey="documentInspeccio.camp.data" headerClass="" sortable="true" sortProperty="titol">
+													<a href="DocumentInspeccioForm.html?id=<c:out value="${documentInspeccio.id}"/>">
+														<c:out value="${documentInspeccio.data}" />
+													</a>
+												</display:column>
+												<display:column titleKey="documentInspeccio.camp.tipusInspeccio" headerClass="ancho100" sortable="true">
+													<fmt:message key="documentInspeccio.tipusInspeccio.${documentInspeccio.tipus}" />
+												</display:column>
+												<display:column titleKey="documentInspeccio.camp.tamany" headerClass="ancho100" sortable="true">
+													<c:out value="${documentInspeccio.arxiuObject.normalizeSize}" />
+												</display:column>
+												<display:column sortable="false" headerClass="ancho32 final">
+													<a href="ArxiuMostrar.html?id=<c:out value="${documentInspeccio.arxiu}"/>&download=true">
+														<div class="iconoVer" title="<fmt:message key="document.ver"/>"></div>
+													</a>
+												</display:column>
+											</display:table>
+										</div>
+									</div>
+								</div>
+						
+							</c:if>
+						
+							<div class="separadorH"></div>
+						
+						
+							<div class="btnLargo203" onmouseover="underline('enlaceCrearForm')"
+								onmouseout="underline('enlaceCrearForm')"
+								onclick="document.formularioDocumentInspeccio.submit();"><a
+								id="enlaceCrearForm" href="javascript:void(0);"><fmt:message
+								key="manteniment.creardocument" /></a></div>
+						</c:if>
+						
+						<div class="separadorH"></div>
+
+						<div class="botonesForm">
+							<c:if test="${not empty formData.id && empty formData.dataBaixa}">
+								<c:if test="${empty esDoControlador}">
+									<div id="guardarForm" class="btnCorto"
+											onclick="if(confirm('<fmt:message key="manteniment.modificar.confirm"/>')){submitForm('formulario')}"
+											onmouseover="underline('enlaceGuardarForm')"
+											onmouseout="underline('enlaceGuardarForm')">
+										<a id="enlaceGuardarForm" href="javascript:void(0);">
+											<fmt:message key="manteniment.guardar" />
+										</a>
+									</div>
+								</c:if>
+								<div id="botoFinquesForm" class="btnCorto"
+										onclick="submitForm('finquesForm')"
+										onmouseover="underline('enlaceFinquesForm')"
+										onmouseout="underline('enlaceFinquesForm')">
+									<a id="enlaceFinquesForm" href="javascript:void(0);">
+										<fmt:message key="manteniment.olivicultor.finques" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${not empty esOlivicultor}">
+								<div id="botoDadesForm" class="btnCorto"
+										onclick="submitForm('dadesForm')"
+										onmouseover="underline('enlaceDadesForm')"
+										onmouseout="underline('enlaceDadesForm')">
+									<a id="enlaceDadesForm" href="javascript:void(0);">
+										<fmt:message key="olivicultor.camp.dades" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${empty formData.id && empty esDoControlador}">
+								<div id="guardarForm" class="btnCorto"
+										onclick="submitForm('formulario')"
+										onmouseover="underline('enlaceGuardarForm')"
+										onmouseout="underline('enlaceGuardarForm')">
+									<a id="enlaceGuardarForm" href="javascript:void(0);">
+										<fmt:message key="manteniment.guardar" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${not empty esDoGestor}">
+								<div id="cancelarForm" class="btnCorto"
+										onmouseover="underline('enlaceCancelarForm')"
+										onmouseout="underline('enlaceCancelarForm')"
+										onclick="document.location ='Olivicultor.html';">
+									<a id="enlaceCancelarForm" href="javascript:void(0);">
+										<fmt:message key="manteniment.tornar" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${not empty esOlivicultor}">
+								<div id="cancelarForm" class="btnCorto"
+										onmouseover="underline('enlaceCancelarForm')"
+										onmouseout="underline('enlaceCancelarForm')"
+										onclick="document.location ='OlivicultorForm.html?id=<c:out value='${formData.id}'/>';">
+									<a id="enlaceCancelarForm" href="javascript:void(0);">
+										<fmt:message key="manteniment.cancelar" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${not empty formData.id && not empty esDoGestor && empty formData.dataBaixa}">
+								<input id="action" name="action" value="delete" type="hidden" />
+								<div id="eliminarForm" class="btnCorto"
+										onmouseover="underline('enlaceBorrarForm')"
+										onmouseout="underline('enlaceBorrarForm')"
+										onclick="submitFormConfirm('deleteForm','<fmt:message key="manteniment.esborrar.confirm"/>');">
+									<a id="enlaceBorrarForm" href="javascript:void(0);">
+										<fmt:message key="manteniment.esborrar" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${formData.altaDO && formData.cartilla && !formData.subvencionat && not empty esDoGestor && empty formData.dataBaixa}">
+								<div id="facturaFormDiv" class="btnLargo"
+										onmouseover="underline('enlaceFacturaForm')"
+										onmouseout="underline('enlaceFacturaForm')"
+										onclick="submitForm('facturaForm');">
+									<a id="enlaceFacturaForm" href="javascript:void(0);">
+										<fmt:message key="manteniment.generar_factura" />
+									</a>
+								</div>
+							</c:if>
+							<c:if test="${not empty formData.id && not empty esDoGestor && empty formData.dataBaixa}">
+								<div class="separadorH"></div>
+
+								<div id="guardaUid" class="btnLargo156"
+										onclick="document.location ='OlivicultorForm.html?uidapp=1&amp;id=<c:out value="${formData.id}"/>';"
+										onmouseover="underline('enlaceGuardaUid')"
+										onmouseout="underline('enlaceGuardaUid')">
+									<a id="enlaceGuardaUid" href="javascript:void(0);">
+										<fmt:message key="manteniment.cambiaUid" />
+									</a>
+								</div>
+								<div id="borraUid" class="btnLargo156"
+										onclick="if(confirm('<fmt:message key="manteniment.modificar.confirm"/>')){document.location ='OlivicultorForm.html?cleanuid=1&amp;id=<c:out value='${formData.id}'/>';}"
+										onmouseover="underline('enlaceBorraUid')"
+										onmouseout="underline('enlaceBorraUid')">
+									<a id="enlaceBorraUid" href="javascript:void(0);">
+										<fmt:message key="manteniment.borraUid" />
+									</a>
+								</div>
+							</c:if>
+						</div>
+					</form>
+
+					<form name="formularioDocumentInspeccio" action="DocumentInspeccioForm.html" class="seguit">
+						<input id="idOlivicultor" name="idOlivicultor" value="<c:out value="${formData.id}"/>" type="hidden" />
+					</form>
+					<form id="deleteForm" action="Olivicultor.html" method="post" class="seguit" onsubmit="return confirm('<fmt:message key="manteniment.estasegur"/>')">
+						<input id="id" name="id" value="<c:out value="${formData.id}"/>" type="hidden" />
+						<input id="action" name="action" value="delete" type="hidden" />
+					</form>
+					
+					<form id="finquesForm" action="Fincas.html" method="post" class="seguit">
+						<input id="idOlivicultor" name="idOlivicultor" value="<c:out value="${formData.id}"/>" type="hidden" />
+					</form>
+					
+					<form id="dadesForm" action="ConsultaDadesOlivicultorLlistat.html" method="post" class="seguit">
+						<input id="idOlivicultor" name="idOlivicultor" value="<c:out value="${formData.id}"/>" type="hidden" />
+					</form>
+					
+					<form id="facturaForm" action="GenerarPdf.html" method="post" class="seguit">
+						<input id="id" name="id" value="<c:out value="${formData.id}"/>" type="hidden" />
+						<input id="tipus" name="tipus" value="4" type="hidden" />
+						<input id="prefactura" name="prefactura" value="0" type="hidden" />
+					</form>
+				</div>
+			</c:if>
+		</c:if>
+
+		<c:if test="${not empty uidapp}">
+			<div id="apprfid">
+				<c:if test="${empty MSIE}">
+					<object type="application/x-java-applet" classid="java:es.caib.gestoli.front.applet.rfid.RfidGrabarUidBd" height="200" width="200">
+						<param name="codebase" value="./applet/" />
+						<param name="id" value="<c:out value="${idoliv}"/>" valuetype="data">
+						<param name="idioma" value="<c:out value="${lang}"/>" valuetype="data">
+						<param name="verbose" value="1" valuetype="data">
+					</object>
+				</c:if>
+				<c:if test="${not empty MSIE}">
+					<OBJECT classid="clsid:CAFEEFAC-0016-0000-FFFF-ABCDEFFEDCBA" width="200" height="200">
+						<PARAM name="code" value="es.caib.gestoli.front.applet.rfid.RfidGrabarUidBd" />
+						<PARAM name="codebase" value="./applet/" />
+						<PARAM name="id" value="<c:out value="${idoliv}"/>" valuetype="data">
+						<PARAM name="idioma" value="<c:out value="${lang}"/>" valuetype="data">
+						<PARAM name="verbose" value="1" valuetype="data">
+					</OBJECT>
+				</c:if>
+			</div>
+		</c:if>
+		
+		<!-- Colores en tablas -->
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				setEstilosTabla();
+			})
+		</script>
+		
+	</body>
+</html>

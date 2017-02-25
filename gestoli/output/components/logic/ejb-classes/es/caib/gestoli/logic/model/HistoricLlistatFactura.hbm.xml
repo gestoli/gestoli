@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.HistoricLlistatFactura" table="oli_histllistfact" schema="public">
+		<meta attribute="class-description" inherit="false">
+			Javadoc de les clases Model de Gest Oli @author Miquel Angel Amengual (miquelaa@limit.es)
+		</meta>
+		<meta attribute="class-code" inherit="false">
+			/** * Devuelve una fecha formateada */
+			public String getDataFormat() { SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss"); return sdf.format(this.getData()); }
+		</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Històric de llistats de factures</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="hlf_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="factura" type="java.lang.Long">
+			<column name="hlf_factura"><comment>Codi de la factura a la que pertany</comment></column>
+		</property>
+		<property name="campanya" type="java.lang.String">
+			<column name="hlf_campanya"><comment>Codi de la campanya</comment></column>
+		</property>
+		<property name="dadesConsellRegulador" type="java.lang.String">
+			<column name="hlf_consreg"><comment>Dades del consell regulador</comment></column>
+		</property>
+		<property name="dadesOlivicultor" type="java.lang.String">
+			<column name="hlf_olivic"><comment>Dades del olivicultor</comment></column>
+		</property>
+		<property name="idOlivicultor" type="java.lang.String">
+			<column name="hlf_idolivic"><comment>Id del olivicultor</comment></column>
+		</property>
+		<property name="detallProformaEtiqueta" type="java.lang.String">
+			<column name="hlf_profetiq"><comment>Detall de la proforma de la etiqueta</comment></column>
+		</property>
+		<property name="facturaEtiqueta" type="java.lang.String">
+			<column name="hlf_factetiq"><comment>Factura de la etiqueta</comment></column>
+		</property>
+		<property name="dataEtiqueta" type="java.lang.String">
+			<column name="hlf_datetiq"><comment>Data de la etiqueta</comment></column>
+		</property>
+		<property name="data" type="java.lang.String">
+			<column name="hlf_data"><comment>Data</comment></column>
+		</property>
+		<property name="inscripcioEtiqueta" type="java.lang.String">
+			<column name="hlf_inscretiq"><comment>Inscripció de la etiqueta</comment></column>
+		</property>
+		<property name="inscripcio" type="java.lang.String">
+			<column name="hlf_inscripcio"><comment>Inscripció</comment></column>
+		</property>
+		<property name="hectarees" type="java.lang.String">
+			<column name="hlf_hectarees"><comment>Hectarees</comment></column>
+		</property>
+		<property name="conceptes" type="java.lang.String">
+			<column name="hlf_conceptes"><comment>Conceptes</comment></column>
+		</property>
+		<property name="importUnitat" type="java.lang.String">
+			<column name="hlf_impunit"><comment>Import de la unitat</comment></column>
+		</property>
+		<property name="subtotal" type="java.lang.String">
+			<column name="hlf_subtotal"><comment>Subtotal</comment></column>
+		</property>
+		<property name="iva" type="java.lang.String">
+			<column name="hlf_iva"><comment>Iva</comment></column>
+		</property>
+		<property name="total" type="java.lang.String">
+			<column name="hlf_total"><comment>Total</comment></column>
+		</property>
+		<property name="dataModificacio" type="date">
+			<column name="hlf_datmodif" length="13"><comment>Data de modificació</comment></column>
+		</property>
+		<property name="identificador" type="java.lang.Long">
+			<column name="hlf_identific"><comment>Identificador de les dades de la factura</comment></column>
+		</property>
+	</class>
+</hibernate-mapping>

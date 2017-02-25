@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 30-nov-2009 17:09:51 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.VarietatOliva" table="oli_varietat_oliva" schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Varietats de olives</comment>
+		<id name="id" type="java.lang.Integer">
+			<column name="vov_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="vov_nom" length="128" not-null="true"><comment>Nom</comment></column>
+		</property>
+		<property name="autoritzada" type="java.lang.Boolean">
+			<column name="vov_autori" not-null="true"><comment>Autoritzada</comment></column>
+		</property>
+		<property name="icona" type="java.lang.Long">
+			<column name="vov_icona" not-null="true"><comment>Codi de icona</comment></column>
+		</property>
+		<property name="color" type="java.lang.String">
+			<column name="vov_color" length="6" not-null="true"><comment>Valor hexadecimal del color</comment></column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="vov_observ"><comment>Observacions</comment></column>
+		</property>
+		<set name="descomposicioPlantacios" inverse="true">
+			<key>
+				<column name="dpl_codvov" not-null="true"><comment>Codi de varietat de oliva</comment></column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.DescomposicioPlantacio" />
+		</set>
+		<set name="lots" inverse="true" table="oli_lotvov">
+			<key>
+				<column name="lvo_codvov" not-null="true"><comment>Codi de varietat de oliva</comment></column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Lot">
+				<column name="lvo_codlot" not-null="true"><comment>Codi de lot</comment></column>
+			</many-to-many>
+		</set>
+		<property name="nomVarietat" type="java.lang.String">
+			<column name="lvo_nomvar" length="128"><comment>Nom de la varietat experimental</comment></column>
+		</property>
+		<property name="experimental" type="java.lang.Boolean">
+			<column name="lvo_experimental"><comment>Experimental</comment></column>
+		</property>
+		<property name="olivaTaula" type="java.lang.Boolean">
+			<column name="lvo_oliva_taula" default="false"><comment>Per oliva de taula</comment></column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="lvo_actiu"><comment>Actiu</comment></column>
+		</property>
+	</class>
+</hibernate-mapping>

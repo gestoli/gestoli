@@ -1,0 +1,28 @@
+	<!-- Spring DispatcherServlet -->
+<servlet>
+	<servlet-name>app</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+
+	<!-- DWR DwrSpringServlet -->
+<servlet>
+	<servlet-name>dwr-invoker</servlet-name>
+	<servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+	<init-param>
+		<param-name>debug</param-name>
+		<param-value>true</param-value>
+	</init-param>
+	<init-param>
+		<param-name>logLevel</param-name>
+		<param-value>DEBUG</param-value>
+	</init-param>
+</servlet>
+
+	<!-- Web service Servlet -->
+<servlet>
+    <servlet-name>CXFServlet</servlet-name>
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+</servlet>
+

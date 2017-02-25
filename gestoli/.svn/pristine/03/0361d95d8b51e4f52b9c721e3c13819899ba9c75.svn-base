@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaOlivicultor" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty">
+	<property name="ireport.zoom" value="3.1384283767210035"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="704"/>
+	<subDataset name="dataset1"/>
+	<parameter name="pLogo" class="java.lang.String"/>
+	<parameter name="pHectarees" class="java.lang.String"/>
+	<parameter name="pConcepte" class="java.lang.String"/>
+	<parameter name="pImportUnitatHectarees" class="java.lang.String"/>
+	<parameter name="pSubtotal" class="java.lang.String"/>
+	<parameter name="pIva" class="java.lang.String"/>
+	<parameter name="pTotal" class="java.lang.String"/>
+	<parameter name="subvencionat" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="idOlivicultor" class="java.lang.String"/>
+	<field name="dadesConsellRegulador" class="java.lang.String"/>
+	<field name="dadesOlivicultor" class="java.lang.String"/>
+	<field name="numFactura" class="java.lang.String"/>
+	<field name="data" class="java.lang.String"/>
+	<field name="inscripcio" class="java.lang.String"/>
+	<field name="hectarees" class="java.lang.String"/>
+	<field name="conceptes" class="java.lang.String"/>
+	<field name="importUnitat" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.String"/>
+	<field name="iva" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="facturaEtiqueta" class="java.lang.String"/>
+	<field name="dataEtiqueta" class="java.lang.String"/>
+	<field name="inscripcioEtiqueta" class="java.lang.String"/>
+	<field name="detallProformaEtiqueta" class="java.lang.String"/>
+	<field name="subvencionat" class="java.lang.String"/>
+	<group name="idOlivicultor" isStartNewPage="true" isReprintHeaderOnEachPage="true" minHeightToStartNewPage="100">
+		<groupExpression><![CDATA[$F{idOlivicultor}]]></groupExpression>
+		<groupHeader>
+			<band height="93">
+				<image>
+					<reportElement isPrintRepeatedValues="false" x="251" y="0" width="57" height="50" printWhenGroupChanges="idOlivicultor"/>
+					<box leftPadding="2"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{pLogo}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="10" y="68" width="265" height="25" printWhenGroupChanges="idOlivicultor"/>
+					<box>
+						<pen lineWidth="0.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement>
+						<font fontName="Helvetica" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dadesConsellRegulador}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="280" y="68" width="265" height="25" printWhenGroupChanges="idOlivicultor"/>
+					<box>
+						<pen lineWidth="0.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement>
+						<font fontName="Helvetica" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dadesOlivicultor}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="61"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="131" splitType="Prevent">
+			<textField>
+				<reportElement x="86" y="57" width="100" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numFactura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="57" width="76" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="57" width="81" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{inscripcio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="10" y="106" width="75" height="20"/>
+				<box topPadding="5" bottomPadding="30" rightPadding="10">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Helvetica" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{hectarees}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement stretchType="RelativeToTallestObject" x="85" y="106" width="360" height="20"/>
+				<box topPadding="5" leftPadding="10" bottomPadding="30" rightPadding="10">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Helvetica" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{conceptes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="445" y="106" width="100" height="20"/>
+				<box topPadding="5" bottomPadding="30" rightPadding="10">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Helvetica" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{importUnitat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="57" width="57" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dataEtiqueta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="371" y="57" width="93" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{inscripcioEtiqueta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="57" width="66" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaEtiqueta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="57" width="167" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{detallProformaEtiqueta}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="49" width="535" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="10" y="86" width="75" height="20"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pHectarees}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="86" width="360" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pConcepte}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="445" y="86" width="100" height="20"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pImportUnitatHectarees}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="90">
+			<textField>
+				<reportElement x="85" y="15" width="70" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="15" width="57" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{iva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="15" width="87" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="15" width="75" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pSubtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="15" width="52" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pIva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="378" y="15" width="80" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pTotal}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="9" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement x="10" y="40" width="535" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="10" y="45" width="535" height="45"/>
+				<textElement textAlignment="Justified">
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[De acuerdo con lo dispuesto en el artículo 5 de la Ley Orgánica 15/1999 de Protección de Datos i con el art. 12 del RD 1720/2007 le informamos que los datos facilitados en el presente formulario de alta, así como los que puedan surgir en un futuro serán recogidos i tratados en un fichero titularidad del Consell Regulador de la Denominació d'Origen Oli de Mallorca, con domicilio, C/ Foners, 10 , Palma de Mallorca.
+La finalidad de éste tratamiento es la de gestionar la solicitud i tramitación de la Denominación de Origen de los aceites de Mallorca.
+Le informamos que, en cualquier momento, podrá ejercer los derechos reconocidos por la Ley, en particular, el acceso, rectificación, cancelación y oposición, dirigiéndose por escrito al Consell Regulador de la Denominació d'Origen Oli de Mallorca mediante un registro oficial o por correo al a dirección anteriormente indicada o bien mediante un correo electrónico a la dirección do_olidemallorca@hotmail.com identificándose convenientemente (Ref. Protecció de Dades).
+Si pasados 30 días desde el envío de esta notificación no nos manifiesta su oposición, se considerará que otorga a la Conselleria d’Agricultura i Pesca el consentimiento para proceder al tratamiento de sus datos con la finalidad indicada anteriormente. Para manifestar su oposición utilice el mismo procedimiento que el ofrecido para ejercitar los derechos de rectificación, cancelación y oposición.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="163" y="15" width="48" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{subvencionat}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

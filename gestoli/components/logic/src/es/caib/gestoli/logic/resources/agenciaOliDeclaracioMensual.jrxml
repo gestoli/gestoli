@@ -1,0 +1,1261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="agenciaoli" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty">
+	<property name="ireport.zoom" value="1.6500000000000066"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="649"/>
+	<parameter name="dmesdeclaracio" class="java.lang.String"/>
+	<parameter name="dcampana" class="java.lang.String"/>
+	<parameter name="dnif" class="java.lang.String"/>
+	<parameter name="dnom" class="java.lang.String"/>
+	<parameter name="dadreca" class="java.lang.String"/>
+	<parameter name="dlocalitat" class="java.lang.String"/>
+	<parameter name="dprovincia" class="java.lang.String"/>
+	<parameter name="dtelefon" class="java.lang.String"/>
+	<parameter name="dcorreu" class="java.lang.String"/>
+	<parameter name="dcp" class="java.lang.String"/>
+	<parameter name="dfax" class="java.lang.String"/>
+	<parameter name="dkginicicampanya" class="java.lang.String"/>
+	<parameter name="dkginicimes" class="java.lang.String"/>
+	<parameter name="dkgfinalmes" class="java.lang.String"/>
+	<parameter name="dkgoliproduit" class="java.lang.String"/>
+	<parameter name="dkgentradaoliva" class="java.lang.String"/>
+	<parameter name="dkgolivaelaboracio" class="java.lang.String"/>
+	<parameter name="dkgentradatrasllat" class="java.lang.String"/>
+	<parameter name="dkgenvasadorapropia" class="java.lang.String"/>
+	<parameter name="ddiasignatura" class="java.lang.String"/>
+	<parameter name="danysignatura" class="java.lang.String"/>
+	<parameter name="dmessignatura" class="java.lang.String"/>
+	<parameter name="dkgsortidaorujo" class="java.lang.String"/>
+	<parameter name="dkginicigranelve" class="java.lang.String"/>
+	<parameter name="dkginicigranelv" class="java.lang.String"/>
+	<parameter name="dkginicienvasatve" class="java.lang.String"/>
+	<parameter name="dkginicienvasatv" class="java.lang.String"/>
+	<parameter name="dkgfinalgranelve" class="java.lang.String"/>
+	<parameter name="dkgfinalgranelv" class="java.lang.String"/>
+	<parameter name="dkgfinalenvasatve" class="java.lang.String"/>
+	<parameter name="dkgfinalenvasatv" class="java.lang.String"/>
+	<parameter name="dkgtotalinicive" class="java.lang.String"/>
+	<parameter name="dkgtotaliniciv" class="java.lang.String"/>
+	<parameter name="dkgtotalfinalve" class="java.lang.String"/>
+	<parameter name="dkgtotalfinalv" class="java.lang.String"/>
+	<parameter name="dkgtotalentradesgranel" class="java.lang.String"/>
+	<parameter name="dkgenvasadorapropiave" class="java.lang.String"/>
+	<parameter name="dkgenvasadorapropiav" class="java.lang.String"/>
+	<parameter name="dkgsortidesventesgranel" class="java.lang.String"/>
+	<parameter name="dkgtotalsortidestafona" class="java.lang.String"/>
+	<parameter name="sortidesVentaGranelVE" class="java.lang.String"/>
+	<parameter name="sortidesEnvasatVE" class="java.lang.String"/>
+	<parameter name="sortidesEnvasatExportacioVE" class="java.lang.String"/>
+	<parameter name="sortidesVentaGranelV" class="java.lang.String"/>
+	<parameter name="sortidesEnvasatV" class="java.lang.String"/>
+	<parameter name="sortidesEnvasatExportacioV" class="java.lang.String"/>
+	<parameter name="totalSortidesEnvasadoraVE" class="java.lang.String"/>
+	<parameter name="totalSortidesEnvasadoraV" class="java.lang.String"/>
+	<parameter name="dkginicigranel" class="java.lang.String"/>
+	<parameter name="dkginicienvasat" class="java.lang.String"/>
+	<parameter name="dkgtotalinici" class="java.lang.String"/>
+	<parameter name="sortidesVentaGranel" class="java.lang.String"/>
+	<parameter name="sortidesEnvasat" class="java.lang.String"/>
+	<parameter name="sortidesEnvasatExportacio" class="java.lang.String"/>
+	<parameter name="totalSortidesEnvasadora" class="java.lang.String"/>
+	<parameter name="dkgfinalgranel" class="java.lang.String"/>
+	<parameter name="dkgfinalenvasat" class="java.lang.String"/>
+	<parameter name="dkgtotalfinal" class="java.lang.String"/>
+	<parameter name="dkgdevolucions" class="java.lang.String"/>
+	<parameter name="dkgdevolucionsv" class="java.lang.String"/>
+	<parameter name="dkgdevolucionsve" class="java.lang.String"/>
+	<parameter name="totalEntradesEnvasadora" class="java.lang.String"/>
+	<parameter name="totalEntradesEnvasadoraV" class="java.lang.String"/>
+	<parameter name="totalEntradesEnvasadoraVE" class="java.lang.String"/>
+	<parameter name="dkgsortidesperduesgranel" class="java.lang.String"/>
+	<parameter name="sortidesPerduaGranelVE" class="java.lang.String"/>
+	<parameter name="sortidesPerduaGranelV" class="java.lang.String"/>
+	<parameter name="sortidesPerduaGranel" class="java.lang.String"/>
+	<parameter name="sortidesPerduaEnvasatVE" class="java.lang.String"/>
+	<parameter name="sortidesPerduaEnvasatV" class="java.lang.String"/>
+	<parameter name="sortidesPerduaEnvasat" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="802">
+			<textField pattern="">
+				<reportElement x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ANEXO II"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ALMAZARAS: Declaración mensual"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="30" width="157" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Campaña " + $P{dcampana}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="50" width="555" height="106"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="50" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Número RIA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="65" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre o razón social"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="80" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Dirección"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="95" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Localidad"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="50" width="100" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["NIF/CIF"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="110" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Provincia"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="125" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Teléfono"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="140" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Correo electrónico"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="125" width="100" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Código Postal"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="140" width="100" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fax"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="157" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ALMAZARA ACEITE OLIVA VIRGEN"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="172" width="555" height="224"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="172" width="298" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["EXISTENCIAS INICIO DE CAMPAÑA, Kg*"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="187" width="555" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["* Cumplimentar solo el primer mes de campaña"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="207" width="298" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["EXISTENCIAS INICIO DE MES"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="221" width="100" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ENTRADAS (Kg)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="221" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["aceite producido"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="235" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["aceite adquirido y/o en depósito (1)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="249" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["total entradas mes:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="263" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["envasadora propia (2)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="277" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["otras entidades nacionales"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="291" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["exportación"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="318" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["total salidas mes:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="263" width="100" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SALIDAS (Kg)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="332" width="298" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["EXISTENCIAS FINALES DE MES"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="348" width="201" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ACEITUNA (Kg)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="362" width="91" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Entradas mes"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="362" width="110" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Molturada mes"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="348" width="201" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ORUJO (Kg)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="362" width="110" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Salido mes"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="362" width="91" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Producido mes"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="396" width="555" height="30"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["En el caso de las almazaras que realizan la actividad de envasado de aceites de oliva vírgenes en envasadora propia, rellenarán también el cuadro siguiente:"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="186" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="206" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="220" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="262" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="331" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="426" width="555" height="19"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ENVASADORA PROPIA SOLO DE ACEITES DE OLIVA VÍRGENES"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="126" y="234" width="429" height="1"/>
+			</line>
+			<line>
+				<reportElement x="126" y="248" width="429" height="1"/>
+			</line>
+			<line>
+				<reportElement x="126" y="221" width="1" height="109"/>
+			</line>
+			<line>
+				<reportElement x="127" y="277" width="429" height="1"/>
+			</line>
+			<line>
+				<reportElement x="127" y="291" width="429" height="1"/>
+			</line>
+			<line>
+				<reportElement x="127" y="318" width="429" height="1"/>
+			</line>
+			<line>
+				<reportElement x="474" y="207" width="1" height="138"/>
+			</line>
+			<line>
+				<reportElement x="473" y="172" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="27" y="361" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement x="27" y="376" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement x="27" y="392" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement x="327" y="362" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement x="327" y="375" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement x="327" y="391" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement x="27" y="362" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement x="227" y="362" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement x="327" y="363" width="1" height="28"/>
+			</line>
+			<line>
+				<reportElement x="527" y="362" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement x="117" y="361" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement x="418" y="362" width="1" height="29"/>
+			</line>
+			<textField>
+				<reportElement x="349" y="30" width="194" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Mes de " + $P{dmesdeclaracio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="50" width="114" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="65" width="436" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dnom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="80" width="436" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dadreca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="95" width="436" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dlocalitat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="110" width="236" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dprovincia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="125" width="236" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dtelefon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="140" width="236" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dcorreu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="50" width="100" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dnif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="125" width="100" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dcp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="140" width="100" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dfax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="172" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicicampanya}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="206" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicimes}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="346" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="475" y="331" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalmes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="220" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgoliproduit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="375" width="90" height="18"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgentradaoliva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="377" width="109" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgolivaelaboracio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="235" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgentradatrasllat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="248" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalentradesgranel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="263" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgenvasadorapropia}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="639" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="180" y="599" width="375" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="499" width="554" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="585" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["mercado interior"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="93" y="626" width="462" height="1"/>
+			</line>
+			<line>
+				<reportElement x="93" y="585" width="462" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="558" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["exportación"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="640" width="178" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["EXISTENCIAS FINALES DE MES (Kg)"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="396" y="457" width="1" height="221"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="500" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["almazara propia (2)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="183" y="599" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["exportación"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="183" y="544" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["otras entidades nacionales"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="543" width="554" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="530" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["total entradas mes:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="500" width="100" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ENTRADAS (Kg)"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="179" y="457" width="1" height="221"/>
+			</line>
+			<line>
+				<reportElement x="0" y="678" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="1" y="545" width="100" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SALIDAS (Kg)"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="180" y="530" width="375" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="2" y="457" width="186" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["EXISTENCIAS INICIALES MES (Kg)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="183" y="485" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["total existencias iniciales mes:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="471" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["envasado:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="457" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["graneles:"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="456" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="316" y="456" width="1" height="222"/>
+			</line>
+			<textField>
+				<reportElement x="334" y="442" width="36" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["AOVE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="443" width="36" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["AOV"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="180" y="471" width="375" height="1"/>
+			</line>
+			<line>
+				<reportElement x="180" y="485" width="375" height="1"/>
+			</line>
+			<line>
+				<reportElement x="555" y="456" width="1" height="222"/>
+			</line>
+			<line>
+				<reportElement x="0" y="457" width="1" height="221"/>
+			</line>
+			<line>
+				<reportElement x="180" y="558" width="376" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="94" y="550" width="85" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["graneles:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="593" width="85" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["envasado:"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="92" y="543" width="1" height="83"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="626" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["total salidas mes:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="639" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["graneles:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="652" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["envasado:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="665" width="132" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["total existencias finales mes:"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="180" y="652" width="376" height="1"/>
+			</line>
+			<line>
+				<reportElement x="180" y="665" width="376" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="685" width="278" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["En "+$P{dlocalitat}+" a "+$P{ddiasignatura}+" de "+$P{dmessignatura}+" "+$P{danysignatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="685" width="77" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Firma y sello"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="703" width="187" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["OBSERVACIONES"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="717" width="373" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Existencias de Aceite Propio Almacenado en Instalaciones a Terceros"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="731" width="98" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Iniciales Campaña:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="731" width="89" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Final mes Actual:"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="717" width="373" height="1"/>
+			</line>
+			<line>
+				<reportElement x="2" y="718" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="2" y="744" width="372" height="1"/>
+			</line>
+			<line>
+				<reportElement x="3" y="731" width="371" height="1"/>
+			</line>
+			<line>
+				<reportElement x="374" y="717" width="1" height="28"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="773" width="549" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["(1) La suma de las cantidades de aceite que hayan entrado de otras entidades como adquirido para envasar o en depósito"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="787" width="549" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["(2) La salida de almazara a envasadora propia debe coincidir con la cantidad total entrada en envasadora."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="3" y="753" width="547" height="1"/>
+			</line>
+			<line>
+				<reportElement x="3" y="761" width="547" height="1"/>
+			</line>
+			<line>
+				<reportElement x="3" y="769" width="547" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="327" y="375" width="91" height="18"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgsortidaorujo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="419" y="375" width="91" height="18"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgsortidaorujo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="457" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicigranelv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="457" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicigranelve}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="472" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicienvasatve}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="486" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalinicive}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="500" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgenvasadorapropiave}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="530" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalEntradesEnvasadoraVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="544" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesVentaGranelVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="559" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="586" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesEnvasatVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="600" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesEnvasatExportacioVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="627" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalSortidesEnvasadoraVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="639" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalgranelve}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="652" width="78" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalenvasatve}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="472" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicienvasatv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="486" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotaliniciv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="500" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgenvasadorapropiav}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="530" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalEntradesEnvasadoraV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="544" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesVentaGranelV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="559" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="586" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesEnvasatV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="600" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesEnvasatExportacioV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="627" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalSortidesEnvasadoraV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="639" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalgranelv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="652" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalenvasatv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="666" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalfinalv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="666" width="78" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalfinalve}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="277" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgsortidesventesgranel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="318" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalsortidestafona}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="474" y="457" width="1" height="221"/>
+			</line>
+			<textField>
+				<reportElement x="476" y="457" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicigranel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="600" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesEnvasatExportacio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="500" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgenvasadorapropia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="472" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkginicienvasat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="586" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesEnvasat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="544" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesVentaGranel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="639" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalgranel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="652" width="78" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgfinalenvasat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="666" width="78" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalfinal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="486" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgtotalinici}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="530" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalEntradesEnvasadora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="627" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalSortidesEnvasadora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="443" width="79" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["TOTAL"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="559" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="180" y="514" width="375" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="516" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["devoluciones botellas:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="515" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgdevolucionsve}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="515" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgdevolucionsv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="515" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgdevolucions}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="126" y="305" width="429" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="126" y="305" width="172" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["pérdidas"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="305" width="80" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dkgsortidesperduesgranel}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="180" y="572" width="376" height="1"/>
+			</line>
+			<line>
+				<reportElement x="180" y="613" width="376" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="183" y="572" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["pérdidas"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="613" width="133" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["pérdidas"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="613" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesPerduaEnvasat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="613" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesPerduaEnvasatVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="613" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesPerduaEnvasatV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="572" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesPerduaGranel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="572" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesPerduaGranelVE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="572" width="79" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sortidesPerduaGranelV}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

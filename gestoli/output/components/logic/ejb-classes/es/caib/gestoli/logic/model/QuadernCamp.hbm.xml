@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QuadernCamp" table="oli_quadern_camp" schema="public">
+  		<comment>Quadern de Camp</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="quc_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="data" type="java.util.Date">
+			<column name="quc_data" not-null="false"><comment>Data</comment></column>
+		</property>
+	    <many-to-one 
+			name="plantacio" 
+			class="es.caib.gestoli.logic.model.Plantacio"
+			column="quc_plantacio"
+			not-null="false"/>
+		<property name="tractament" type="java.lang.String">
+			<column name="quc_tractament" not-null="false"><comment>Tractament</comment></column>
+		</property>
+		<property name="materiaActiva" type="java.lang.String">
+			<column name="quc_materiaActiva" not-null="false"><comment>Materia Activa</comment></column>
+		</property>
+		<property name="marca" type="java.lang.String">
+			<column name="quc_marca" not-null="false"><comment>Marca/Lot</comment></column>
+		</property>
+		<property name="dosi" type="java.lang.String">
+			<column name="quc_dosi" not-null="false"><comment>Dosi</comment></column>
+		</property>
+		<property name="litresBrou" type="java.lang.String">
+			<column name="quc_litresBrou" not-null="false"><comment>Litres de Brou</comment></column>
+		</property>
+		<property name="terminiSeguretat" type="java.lang.String">
+			<column name="quc_terminiSeguretat" not-null="false"><comment>Termini de Seguretat</comment></column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="quc_observacions" length="5000" not-null="false"><comment>Observacions</comment></column>
+		</property>
+		<many-to-one 
+			name="olivicultor"
+			class="es.caib.gestoli.logic.model.Olivicultor"
+			column="quc_olivicultor"
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

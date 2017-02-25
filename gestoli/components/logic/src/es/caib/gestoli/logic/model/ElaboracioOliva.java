@@ -1,0 +1,377 @@
+package es.caib.gestoli.logic.model;
+
+// Generated 10-nov-2009 17:31:19 by Hibernate Tools 3.2.0.b9
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+/**
+ * Javadoc de les clases Model de Gest Oli
+ * 
+ * @author Oriol Barnes Cruz (obarnes@at4.net)
+ * 
+ */
+public class ElaboracioOliva implements Comparable {
+
+	private Long id;
+	private Traza traza;
+	private Date data;
+	private Integer numeroElaboracio;
+	private String observacions;
+	private Boolean valid;
+	private Boolean esEcologic;
+	private Establiment establiment;
+	private Bota bota;
+	private Set partidaElaboracions = new HashSet(0);	
+
+	public ElaboracioOliva() {
+	}
+
+	public ElaboracioOliva(Traza traza, 
+			Date data,
+			Integer numeroElaboracio, 
+			Boolean valid, Boolean esEcologic) {
+		this.traza = traza;
+		this.data = data;
+		this.numeroElaboracio = numeroElaboracio;
+		this.valid = valid;
+		this.esEcologic = esEcologic;
+	}
+
+	public ElaboracioOliva(Traza traza, 
+			Date data,
+			Integer numeroElaboracio, 
+			String observacions,
+			Boolean valid,
+			Boolean esEcologic,
+			Set partidaElaboracions) {
+		this.traza = traza;
+		this.data = data;
+		this.numeroElaboracio = numeroElaboracio;
+		this.observacions = observacions;
+		this.valid = valid;
+		this.partidaElaboracions = partidaElaboracions;
+		this.esEcologic = esEcologic;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public Traza getTraza() {
+		return this.traza;
+	}
+
+	public void setTraza(Traza traza) {
+		this.traza = traza;
+	}
+
+	public Date getData() {
+		return this.data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public Integer getNumeroElaboracio() {
+		return this.numeroElaboracio;
+	}
+
+	public void setNumeroElaboracio(Integer numeroElaboracio) {
+		this.numeroElaboracio = numeroElaboracio;
+	}
+
+	public String getObservacions() {
+		return this.observacions;
+	}
+
+	public void setObservacions(String observacions) {
+		this.observacions = observacions;
+	}
+
+	public Boolean getValid() {
+		return this.valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
+	
+	public Boolean getEsEcologic() {
+		return esEcologic;
+	}
+
+	public void setEsEcologic(Boolean esEcologic) {
+		this.esEcologic = esEcologic;
+	}
+
+	public Bota getBota() {
+		return bota;
+	}
+
+	public void setBota(Bota bota) {
+		this.bota = bota;
+	}
+
+	public Set getPartidaElaboracions() {
+		return partidaElaboracions;
+	}
+
+	public void setPartidaElaboracions(Set partidaElaboracions) {
+		this.partidaElaboracions = partidaElaboracions;
+	}
+
+	// The following is extra code specified in the hbm.xml files
+	public Establiment getEstabliment() {
+		return establiment;
+	}
+
+	public void setEstabliment(Establiment establiment) {
+		this.establiment = establiment;
+	}
+
+	/**
+	 * Devuelve una fecha formateada
+	 */
+	public String getDataFormat() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(this.data);
+	}
+
+	/**
+	 * Devuelve una descripcion de total kilos de oliva que intervienen en la
+	 * elaboracion
+	 */
+	public String getTotalQuilos() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		Set partidaElaboracions = this.partidaElaboracions;
+		for (Iterator it = partidaElaboracions.iterator(); it.hasNext();) {
+			PartidaElaboracio partida = (PartidaElaboracio)it.next();
+			total += partida.getQuantitat();
+//			if (partida.getDescomposicioPartidesOlives() != null) {
+//				Iterator desc = partida.getDescomposicioPartidesOlives()
+//						.iterator();
+//				while (desc.hasNext()) {
+//					DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+//							.next();
+//					total += dpo.getKilos().doubleValue();
+//				}
+//			}
+		}
+		return numberDecimalFormat.format(total);
+	}
+	
+	/**
+	 * Devuelve una descripcion de total kilos de oliva que intervienen en la
+	 * elaboracion
+	 */
+	public String getTotalQuilosCriba() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		Set partidaElaboracions = this.partidaElaboracions;
+		for (Iterator it = partidaElaboracions.iterator(); it.hasNext();) {
+			PartidaElaboracio partida = (PartidaElaboracio)it.next();
+			total += partida.getQuantitatCriba();
+//			if (partida.getDescomposicioPartidesOlives() != null) {
+//				Iterator desc = partida.getDescomposicioPartidesOlives()
+//						.iterator();
+//				while (desc.hasNext()) {
+//					DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+//							.next();
+//					total += dpo.getKilos().doubleValue();
+//				}
+//			}
+		}
+		return numberDecimalFormat.format(total);
+	}
+	
+	/**
+	 * Devuelve una descripcion de total kilos de oliva que intervienen en la
+	 * elaboracion
+	 */
+	@SuppressWarnings({ "unused", "rawtypes" })
+	public double getTotalKilos() {
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		double total = 0;
+		Set partidaElaboracions = this.partidaElaboracions;
+		for (Iterator it = partidaElaboracions.iterator(); it.hasNext();) {
+			PartidaElaboracio partida = (PartidaElaboracio)it.next();
+			total += partida.getQuantitat();
+//			if (partida.getDescomposicioPartidesOlives() != null) {
+//				Iterator desc = partida.getDescomposicioPartidesOlives()
+//						.iterator();
+//				while (desc.hasNext()) {
+//					DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+//							.next();
+//					total += dpo.getKilos().doubleValue();
+//				}
+//			}
+		}
+		return total;
+	}
+
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public String getNomVarietat() {
+		String nom = "";
+		Set partidaElaboracions = this.partidaElaboracions;
+		for (Iterator it = partidaElaboracions.iterator(); it.hasNext();) {
+			PartidaElaboracio partida = (PartidaElaboracio)it.next();
+			if (partida.getPartida().getDescomposicioPartidesOlives() != null) {
+				Iterator desc = partida.getPartida().getDescomposicioPartidesOlives()
+						.iterator();
+				while (desc.hasNext()) {
+					DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc
+							.next();
+					if (dpo.getDescomposicioPlantacio() != null) {
+						DescomposicioPlantacio descompPlanta = dpo
+								.getDescomposicioPlantacio();
+						VarietatOliva varietat = descompPlanta
+								.getVarietatOliva();
+						if (varietat != null && varietat.getNom() != null) {
+							if (nom != ""
+									&& !nom.equalsIgnoreCase(varietat.getNom())) {
+								nom = "mezcla";
+								break;
+							} else {
+								if (varietat.getExperimental() != null && varietat.getExperimental().booleanValue()){
+									nom = varietat.getNomVarietat();
+								} else {
+									nom = varietat.getNom();
+								}
+							}
+						}
+					}
+				}
+				if (nom.equalsIgnoreCase("mezcla")) {
+					break;
+				}
+			}
+		}
+		return nom;
+	}
+	
+	
+	/**
+	 * Devuelve una descripcion de total kilos
+	 */
+	public String getPorcentatjesVarietats() {
+		Map<String, Double> varietats = new HashMap<String, Double>();
+		
+		String nom = "";
+		Set partidaElaboracions = this.partidaElaboracions;
+		Double totalKilos = 0.0;
+		for (Iterator it = partidaElaboracions.iterator(); it.hasNext();) {
+			PartidaElaboracio partida = (PartidaElaboracio)it.next();
+			
+			if (partida.getPartida().getDescomposicioPartidesOlives() != null) {
+				Iterator desc = partida.getPartida().getDescomposicioPartidesOlives().iterator();
+				while (desc.hasNext()) {
+					
+					DescomposicioPartidaOliva dpo = (DescomposicioPartidaOliva) desc.next();
+					if (dpo.getDescomposicioPlantacio() != null) {
+						
+						DescomposicioPlantacio descompPlanta = dpo.getDescomposicioPlantacio();
+						VarietatOliva varietat = descompPlanta.getVarietatOliva();
+						if (varietat != null && varietat.getNom() != null) {
+							
+							// Recogemos el nombre de la variedad.
+							if (varietat.getExperimental() != null && varietat.getExperimental().booleanValue()){
+								nom = varietat.getNomVarietat();
+							} else {
+								nom = varietat.getNom();
+							}
+							
+							// Actualizamos el map.
+							if (varietats.containsKey(nom)){
+							    varietats.put(nom,varietats.get(nom)+dpo.getKilos());
+							} else {
+							    varietats.put(nom,dpo.getKilos());
+							}
+							totalKilos += dpo.getKilos();
+
+						}
+					}
+				}
+			}
+		}
+		
+		//Generamos el string final.
+		nom = "";
+		Iterator<Entry<String,Double>> it = varietats.entrySet().iterator();
+		
+		while (it.hasNext()) {
+			Entry<String,Double> e = it.next();
+			Double porc = (e.getValue()*100 / totalKilos);
+			int aux = (int)(porc*100);
+			porc = (double)aux / 100;
+			//DecimalFormat twoDForm = new DecimalFormat("#.##");
+			//porc = Double.valueOf(twoDForm.format(porc));
+			nom += porc.toString();
+			nom += "% ";
+			nom += e.getKey();
+			nom += " ";
+		}
+		
+		return nom;
+	}
+
+//	public Double getRendiment(){
+//		try{
+//			DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+//	
+//			Number totalQuilos = numberDecimalFormat.parse(this.getTotalQuilos());
+//			Double rendiment = (this.getLitres() * 100) / totalQuilos.doubleValue();
+//			
+//			return rendiment;
+//		
+//		} catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+	
+	/**
+	 * Comparator
+	 */
+	public int compareTo(Object e) {
+		ElaboracioOliva elaboracion = (ElaboracioOliva) e;
+		if (this.data.compareTo(elaboracion.getData()) == 0) {
+			return this.numeroElaboracio.compareTo(elaboracion
+					.getNumeroElaboracio());
+		} else {
+			return this.data.compareTo(elaboracion.getData());
+		}
+	}
+
+	/**
+	 * Devuelve el nombre del establecimiento donde se realiza la elaboracion
+	 */
+	public String getEstablimentName() {
+		String establimentName = "";
+		Set partidaElaboracions = this.partidaElaboracions;
+		for (Iterator it = partidaElaboracions.iterator(); it.hasNext();) {
+			PartidaElaboracio partida = (PartidaElaboracio)it.next();
+			establimentName = partida.getPartida().getZona().getEstabliment().getNom();
+			break;
+		}
+		return establimentName;
+	}
+
+	// end of extra code specified in the hbm.xml files
+
+}

@@ -1,0 +1,175 @@
+/**
+ * ProcesEntradaOlivaCommand.java
+ */
+package es.caib.gestoli.front.spring; 
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+
+
+
+/**
+ * Objecte que representa un formulari web d'entrada
+ * de oliva.
+ * 
+ * @author cperez <cperez@at4.net>
+ */
+public class ProcesEntradaOlivaCommand {
+
+	private Date dataExecucio;
+	private String hora;	
+	private String codi;
+	private Long trazaId;
+	private Long fincaId;
+	private Long plantacioId;
+	private VarietatOlivaCommand[] variedades;
+	private Long zonaId;
+	private Long olivicultorId;
+	private Long entrada;
+	private Integer estatOliva;
+	private Boolean mezcla;
+	private Float quantitat;
+	private Boolean mezclaValida;
+	private HashMap descomposicionPlantacioVariedadHash;
+	private HashMap kgsAcumulatsMap;
+	private Collection descomposiciones;
+	private String idsPlantacions;
+	private String idsPlantacionsIVarietats;
+	private Boolean esEcologic;
+	
+	public Long getZonaId() {
+		return zonaId;
+	}
+	public void setZonaId(Long zonaId) {
+		this.zonaId = zonaId;
+	}
+	
+	public Date getDataExecucio() {
+		return dataExecucio;
+	}
+	public void setDataExecucio(Date dataExecucio) {
+		this.dataExecucio = dataExecucio;
+	}
+	public String getCodi() {
+		return codi;
+	}
+	public void setCodi(String codi) {
+		this.codi = codi;
+	}
+	
+	
+	public Long getFincaId() {
+		return fincaId;
+	}
+	public void setFincaId(Long fincaId) {
+		this.fincaId = fincaId;
+	}
+	
+	public Float getQuantitat() {
+		return quantitat;
+	}
+	public void setQuantitat(Float quantitat) {
+		this.quantitat = quantitat;
+	}
+	
+	
+	public Long getPlantacioId() {
+		return plantacioId;
+	}
+	public void setPlantacioId(Long plantacioId) {
+		this.plantacioId = plantacioId;
+	}
+	
+	
+	
+	public VarietatOlivaCommand[] getVariedades() {
+		return variedades;
+	}
+	public void setVariedades(VarietatOlivaCommand[] variedades) {
+		this.variedades = variedades;
+	}
+	public Long getOlivicultorId() {
+		return olivicultorId;
+	}
+	public void setOlivicultorId(Long olivicultorId) {
+		this.olivicultorId = olivicultorId;
+	}
+	public Long getEntrada() {
+		return entrada;
+	}
+	public void setEntrada(Long entrada) {
+		this.entrada = entrada;
+	}
+	public Integer getEstatOliva() {
+		return estatOliva;
+	}
+	public void setEstatOliva(Integer estatOliva) {
+		this.estatOliva = estatOliva;
+	}
+	public String getHora() {
+		return hora;
+	}
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+	
+	public Boolean getMezcla() {
+		return mezcla;
+	}
+	public void setMezcla(Boolean mezcla) {
+		this.mezcla = mezcla;
+	}
+	public Boolean getMezclaValida() {
+		return mezclaValida;
+	}
+	public void setMezclaValida(Boolean mezclaValida) {
+		this.mezclaValida = mezclaValida;
+	}
+	
+	public Collection getDescomposiciones() {
+		return descomposiciones;
+	}
+	public void setDescomposiciones(Collection descomposiciones) {
+		this.descomposiciones = descomposiciones;
+	}
+	public HashMap getDescomposicionPlantacioVariedadHash() {
+		return descomposicionPlantacioVariedadHash;
+	}
+	public void setDescomposicionPlantacioVariedadHash(
+			HashMap descomposicionPlantacioVariedadHash) {
+		this.descomposicionPlantacioVariedadHash = descomposicionPlantacioVariedadHash;
+	}
+	public HashMap getKgsAcumulatsMap() {
+		return kgsAcumulatsMap;
+	}
+	public void setKgsAcumulatsMap(HashMap kgsAcumulatsMap) {
+		this.kgsAcumulatsMap = kgsAcumulatsMap;
+	}
+	public String getIdsPlantacions() {
+		return idsPlantacions;
+	}
+	public void setIdsPlantacions(String idsPlantacions) {
+		this.idsPlantacions = idsPlantacions;
+	}
+	public Long getTrazaId() {
+		return trazaId;
+	}
+	public void setTrazaId(Long trazaId) {
+		this.trazaId = trazaId;
+	}
+	public String getIdsPlantacionsIVarietats() {
+		return idsPlantacionsIVarietats;
+	}
+	public void setIdsPlantacionsIVarietats(String idsPlantacionsIVarietats) {
+		this.idsPlantacionsIVarietats = idsPlantacionsIVarietats;
+	}
+	public Boolean getEsEcologic() {
+		return esEcologic;
+	}
+	public void setEsEcologic(Boolean esEcologic) {
+		this.esEcologic = esEcologic;
+	}
+	
+	
+}

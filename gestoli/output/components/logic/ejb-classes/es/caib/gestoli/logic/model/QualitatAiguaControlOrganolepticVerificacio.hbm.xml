@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatAiguaControlOrganolepticVerificacio" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_control_aigua_organoleptic" schema="public">
+  		<comment>Qualitat - Control Aigua - Verificacio</comment>
+		<key column="aco_id"/>
+		<many-to-one 
+			name="puntMostreig" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaPuntSortida"
+			column="aco_puntMostreig" 
+			not-null="false"/>
+		<property name="resultat" type="java.lang.Double">
+			<column name="aco_resultat" not-null="false"></column>
+		</property>
+		<property name="olor" type="java.lang.Boolean">
+			<column name="aco_olor" not-null="false"></column>
+		</property>
+		<property name="color" type="java.lang.Boolean">
+			<column name="aco_color" not-null="false"></column>
+		</property>
+		<property name="sabor" type="java.lang.Boolean">
+			<column name="aco_sabor" not-null="false"></column>
+		</property>
+		<property name="terbolesa" type="java.lang.Boolean">
+			<column name="aco_terbolesa" not-null="false"></column>
+		</property>
+		<many-to-one 
+			name="controlOrganoleptic" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaControlOrganoleptic"
+			column="aco_codest" 
+			not-null="false"/>
+	</joined-subclass>
+</hibernate-mapping>

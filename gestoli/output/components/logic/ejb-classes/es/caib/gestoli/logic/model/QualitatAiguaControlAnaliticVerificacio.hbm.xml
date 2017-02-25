@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<joined-subclass name="es.caib.gestoli.logic.model.QualitatAiguaControlAnaliticVerificacio" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_control_aigua_analitic" schema="public">
+  		<comment>Qualitat - Control Plagues - Verificacio</comment>
+		<key column="aca_id"/>
+		<property name="dataAnalisi" type="java.util.Date">
+			<column name="aca_dataAnalisi" not-null="false"><comment>Data de naixement</comment></column>
+		</property>
+		<many-to-one 
+			name="puntMostreig" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaPuntSortida"
+			column="aca_puntMostreig" 
+			not-null="false"/>
+		<many-to-one 
+			name="controlAnalitic" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaControlAnalitic"
+			column="aca_codest" 
+			not-null="false"/>
+	</joined-subclass>
+</hibernate-mapping>

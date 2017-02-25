@@ -1,0 +1,923 @@
+package es.caib.gestoli.logic.dao;
+
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import es.caib.gestoli.logic.exception.InfrastructureException;
+import es.caib.gestoli.logic.model.SortidaDiposit;
+import es.caib.gestoli.logic.model.SortidaLot;
+import es.caib.gestoli.logic.util.Constants;
+
+/**
+ * Home object for domain model class SortidaDiposit
+ * @see es.caib.gestoli.logic.model.SortidaDiposit
+ * @author Juan Carlos García
+ */
+public class SortidaDipositDao {
+	private static Logger logger = Logger.getLogger(SortidaDipositDao.class);
+	private HibernateTemplate hibernateTemplate;
+
+
+	/**
+	 * Recupera todos los registros
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Collection findAll(Boolean valid) throws InfrastructureException {
+		Collection col;
+		try {
+			logger.debug("findAll ini");
+			// Ponemos where 1 = 1 para que no nos de error cuando se añada el and si se añade.
+			String q = "from SortidaDiposit as sdi where 1 = 1 ";
+			if (valid != null && valid.booleanValue()) q += " and sdi.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sdi.valid = false ";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("findAll failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAll fin");
+		return col;
+	}
+
+
+	/**
+	 * Devuelve el objeto que tiene el id
+	 * @param id
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public SortidaDiposit getById(Long id) throws InfrastructureException {
+		SortidaDiposit sortida;
+		try {
+			logger.debug("getById ini");
+			sortida = (SortidaDiposit)getHibernateTemplate().load(SortidaDiposit.class, id);	
+		} catch (HibernateException ex) {
+			logger.error("getById failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getById fin");
+		return sortida;
+	}
+
+	
+	/**
+	 * Recupera el SortidaDiposit por la traza 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public SortidaDiposit findByTraza(Long idTraza, Boolean valid) throws InfrastructureException {
+		List col;
+		SortidaDiposit sortidaDiposit = null;
+		try {
+			logger.debug("findByTraza ini");
+			String q = "from SortidaDiposit as sd where sd.traza.id = " + idTraza;
+			if (valid != null && valid.booleanValue()) q += " and sd.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sd.valid = false ";
+			col = getHibernateTemplate().find(q);
+			if(col!= null && col.size()>0){
+				sortidaDiposit = (SortidaDiposit)col.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("findByTraza failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findByTraza fin");
+		return sortidaDiposit;
+	}
+
+	/**
+	 * Devuelve la ultima SortidaDiposit de un deposito
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public SortidaDiposit findUltimaByDeposito(Long dipId, Boolean valid) throws InfrastructureException {
+		List entradas;
+		try {
+			logger.debug("findUltimaByDeposito ini");
+			String q = "from SortidaDiposit sdi where " +
+			"sdi.dipositBySdiCoddor.id = " + dipId + " ";
+			if (valid != null && valid.booleanValue()) q += " and sdi.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sdi.valid = false ";
+			q += "order by sdi.data desc, sdi.id desc";
+			entradas = getHibernateTemplate().find(q);
+			if (entradas.size() > 0) {
+				logger.debug("findUltimaByDeposito fin");
+				return (SortidaDiposit) entradas.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("findUltimaByDeposito failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findUltimaByDeposito fin");
+		return null;
+	}
+	
+	/**
+	 * Devuelve la següent SortidaDiposit de un deposito
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public SortidaDiposit findSeguentByTrazaDeposito(Long dipId, Long trazaId) throws InfrastructureException {
+		List entradas;
+		try {
+			logger.debug("findSeguentByTrazaDeposito ini");
+			String q = "from SortidaDiposit sdi where " +
+			" sdi.dipositBySdiCoddor.id = " + dipId +
+			" and sdi.valid = true" +
+			" and sdi.id = (select min(id) from SortidaDiposit where traza.id > " + trazaId + " and dipositBySdiCoddor.id = " + dipId + ")" +
+			" order by sdi.data desc, sdi.id desc";
+			entradas = getHibernateTemplate().find(q);
+			if (entradas.size() > 0) {
+				logger.debug("findSeguentByTrazaDeposito fin");
+				return (SortidaDiposit) entradas.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("findSeguentByTrazaDeposito failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findSeguentByTrazaDeposito fin");
+		return null;
+	}
+	
+	/**
+	 * Devuelve la anterior SortidaDiposit de un deposito
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public SortidaDiposit findAnteriorByTrazaDeposito(Long dipId, Long trazaId) throws InfrastructureException {
+		List entradas;
+		try {
+			logger.debug("findAnteriorByTrazaDeposito ini");
+			String q = "from SortidaDiposit sdi where " +
+			" sdi.dipositBySdiCoddor.id = " + dipId +
+			" and sdi.valid = true" +
+			" and sdi.id = (select max(id) from SortidaDiposit where traza.id < " + trazaId + " and dipositBySdiCoddor.id = " + dipId + ")" +
+			" order by sdi.data asc, sdi.id asc";
+			entradas = getHibernateTemplate().find(q);
+			if (entradas.size() > 0) {
+				logger.debug("findAnteriorByTrazaDeposito fin");
+				return (SortidaDiposit) entradas.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("findAnteriorByTrazaDeposito failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findAnteriorByTrazaDeposito fin");
+		return null;
+	}
+	
+	/**
+	 * Actualiza un registro
+	 * @param sortida
+	 * @throws InfrastructureException
+	 */
+	public void makePersistent(SortidaDiposit sortida) throws InfrastructureException {
+		try {
+			logger.debug("makePersistent ini");
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			getHibernateTemplate().saveOrUpdate(sortida);
+			getHibernateTemplate().flush();
+			logger.debug("makePersistent fin");
+		} catch (HibernateException ex) {
+			logger.error("makePersistent failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+	/**
+	 * Retorna true si existen salidas de deposito asociadas a depositos
+	 * 
+	 * 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public boolean existenSalidasDepositoAsociadasDeposito(Long idDiposit, Boolean valid) throws InfrastructureException {
+		List salida;
+		try {
+			logger.debug("existenSalidasDepositoAsociadasDeposito ini");
+			String q = "select count(sd.id) from SortidaDiposit sd " +
+			"where sd.dipositBySdiCoddde.id = " + idDiposit + " or sd.dipositBySdiCoddor.id = " + idDiposit + " ";
+			if (valid != null && valid.booleanValue()) q += " and sd.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sd.valid = false ";
+			salida = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("existenSalidasDepositoAsociadasDeposito failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		if (salida != null && salida.size()> 0 && ((Long)salida.get(0)).intValue() > 0) {
+			logger.debug("existenSalidasDepositoAsociadasDeposito fin");
+			return true;
+		}
+		logger.debug("existenSalidasDepositoAsociadasDeposito fin");
+		return false;
+	}
+
+	/**
+	 * Actualiza un registro
+	 * @param sortida
+	 * @throws InfrastructureException
+	 */
+	public void makePersistent(SortidaDiposit sortida, Session session) throws InfrastructureException {
+		try {
+			logger.debug("makePersistent ini");
+			session.setFlushMode(FlushMode.ALWAYS);
+			session.saveOrUpdate(sortida);
+			session.flush();
+			logger.debug("makePersistent fin");
+		} catch (HibernateException ex) {
+			logger.error("makePersistent failed", ex);
+			throw new InfrastructureException(ex);
+		}
+	}
+
+
+	/**
+	 * Borra un registro
+	 * @param sortida
+	 * @throws InfrastructureException
+	 */
+	public void makeTransient(SortidaDiposit sortida)
+	throws InfrastructureException {
+		try {
+			logger.debug("makeTransient ini");
+			getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_ALWAYS);
+			getHibernateTemplate().delete(sortida);
+			getHibernateTemplate().flush();
+		} catch (HibernateException ex) {
+			logger.error("makeTransient failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("makeTransient fin");
+	}
+
+
+	/**
+	 * Devuelve los depositos que han salido de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection getSortidesDipositEntreFechasAndEstablecimiento(Date finicio, Date ffin, Long idEst, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+
+		try {
+			logger.debug("getSortidesDipositEntreFechasAndEstablecimiento inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.data >= '"+fi+"' and sordip.data <= '"+ff+"' and sordip.establiment.id = "+ idEst + " " +
+			"and sordip.litres > 0";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data, sordip.id";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasAndEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasAndEstablecimiento fin");
+		return col;
+		
+	}
+	
+	public Collection getSortidesDipositEnvasadoraEntreFechasAndEstablecimiento(Date finicio, Date ffin, Long idEst, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+
+		try {
+			logger.debug("getSortidesDipositEntreFechasAndEstablecimiento inicio");
+			String q = 	" from SortidaDiposit sordip " +
+						"where sordip.data >= '"+fi+"' " +
+						"  and sordip.data <= '"+ff+"' " +
+						"  and sordip.establiment.id = "+ idEst + " " +
+						"  and sordip.litres > 0 " +
+						"  and sordip.dipositBySdiCoddde.deEnvasadora = true " +
+						"  and (sordip.dipositBySdiCoddde.zonaOrigenTrasllat is null " +
+						"		or sordip.dipositBySdiCoddde.zonaOrigenTrasllat.establiment.id = " + idEst + ") " +
+						"  and (sordip.dipositBySdiCoddor.deEnvasadora is null " +
+						"		or sordip.dipositBySdiCoddor.deEnvasadora = false " +
+						"		or (sordip.dipositBySdiCoddor.zonaOrigenTrasllat is not null " +
+						"			and sordip.dipositBySdiCoddor.zonaOrigenTrasllat.establiment.id != " + idEst + ")) ";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data, sordip.id";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasAndEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasAndEstablecimiento fin");
+		return col;
+		
+	}
+	
+	/**
+	 * Devuelve los depositos que han salido de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection getSortidesDipositEntreFechasPartidaAndEstabliment(Date data, Long idPartida, Long idEst, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String di = df.format(data);
+
+		try {
+			logger.debug("getSortidesDipositEntreFechasPartidaAndEstabliment inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.data >= '" + di + "' and sordip.partidaOli.id = " + idPartida + " and sordip.establiment.id = "+ idEst + " " +
+			"and sordip.litres > 0";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data, sordip.id";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasPartidaAndEstabliment failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasPartidaAndEstabliment fin");
+		return col;
+		
+	}
+	
+	/**
+	 * Devuelve los depositos que han salido de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection getSortidesDipositEntreFechasDipositAndEstablecimiento(Date finicio, Date ffin, Long idEst, Long idDip, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+
+		try {
+			logger.debug("getSortidesDipositEntreFechasAndEstablecimiento inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.data >= '"+fi+"' and sordip.data <= '"+ff+"' and sordip.establiment.id = "+ idEst + " " +
+			" and sordip.dipositBySdiCoddor.id = "+ idDip +
+			" and sordip.litres > 0";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data, sordip.id";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasAndEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasAndEstablecimiento fin");
+		return col;
+		
+	}
+	
+	/**
+	 * Devuelve los depositos que han salido de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection getSortidesDipositEntreFechasAndDiposit(Date finicio, Date ffin, Long idDip, Boolean valid){
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+	
+		try {
+			logger.debug("getSortidesDipositEntreFechasAndDiposit inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.data >= '"+fi+"' and sordip.data <= '"+ff+"' " +
+			" and sordip.dipositBySdiCoddor.id = "+ idDip +
+			" and sordip.litres > 0";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data, sordip.id";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasAndDiposit failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasAndDiposit fin");
+		return col;
+	}
+	
+	
+	/**
+	 * Devuelve la salida de aceite a granel de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection getSortidaDipositVendaEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long idEst, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+
+		try {
+			logger.debug("getSortidesDipositEntreFechasAndEstablecimiento inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.data >= '"+fi+"' and sordip.data <= '"+ff+"' and sordip.establiment.id = "+ idEst;
+			q += " and sordip.traza.tipus = "+Constants.CODI_TRAZA_TIPUS_VENDA_OLI;
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data desc";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasAndEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasAndEstablecimiento fin");
+		return col;
+		
+	}
+	
+	public Collection getSortidaDipositVendaEnvasadoraEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long idEst, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+
+		try {
+			logger.debug("getSortidesDipositEntreFechasAndEstablecimiento inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.data >= '"+fi+"' and sordip.data <= '"+ff+"' and sordip.establiment.id = "+ idEst;
+			q += " and sordip.traza.tipus = "+Constants.CODI_TRAZA_TIPUS_VENDA_OLI;
+			q += " and sordip.dipositBySdiCoddor.deEnvasadora = true and (sordip.dipositBySdiCoddde.deEnvasadora is null or sordip.dipositBySdiCoddde.deEnvasadora = false) ";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data desc";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidesDipositEntreFechasAndEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidesDipositEntreFechasAndEstablecimiento fin");
+		return col;
+		
+	}
+	
+	public Collection getSortidaDipositVendaNoEnvasadoraEntreDiasEnEstablecimiento(Date finicio, Date ffin, Long idEst, Boolean valid){
+		
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+
+		try {
+			logger.debug("getSortidaDipositVendaNoEnvasadoraEntreDiasEnEstablecimiento inicio");
+			String q = 	"select sordip " +
+						"  from SortidaDiposit sordip " +
+						"  left join sordip.dipositBySdiCoddor dor " +
+						"  left join dor.zonaOrigenTrasllat zor " +
+						" where sordip.data >= '"+fi+"' " +
+						"   and sordip.data <= '"+ff+"' " +
+						"   and sordip.establiment.id = "+ idEst + " " +
+						"   and sordip.traza.tipus = " + Constants.CODI_TRAZA_TIPUS_VENDA_OLI + " " +
+						"   and (dor.deEnvasadora is null " +
+						"    or dor.deEnvasadora = false " +
+						"    or (dor.deEnvasadora = true " +
+						"	 	and zor is not null " +
+						"    	and zor.establiment.id != " + idEst + ")) ";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data desc";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSortidaDipositVendaNoEnvasadoraEntreDiasEnEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidaDipositVendaNoEnvasadoraEntreDiasEnEstablecimiento fin");
+		return col;
+		
+	}
+	
+	/**
+	 * Retorna les entrades d'oli efectuades en dipòsits de tafona provinents d'oli de envasadora dins a una data donada
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection findEntradesDipositDeEnvasadoraByEstablimentAndDates(Date dataInici, Date dataFi, Long establimentId) {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		try {
+			logger.debug("findEntradesDipositDeEnvasadoraByEstablimentAndDates inicio");
+			String fi = df.format(dataInici);
+			String ff = df.format(dataFi);
+			String q = 	"select sdi " +
+						"  from SortidaDiposit sdi " +
+						"  left join sdi.dipositBySdiCoddor dor " +
+						"  left join sdi.dipositBySdiCoddde dde " +
+						"  left join dde.zonaOrigenTrasllat zde " +
+						" where sdi.data >= '"+fi+"' " +
+						"   and sdi.data <= '"+ff+"' " +
+						"   and sdi.valid = true " +
+						"   and dor.deEnvasadora = true " +
+						"   and (dde.deEnvasadora is null " +
+						"		or dde.deEnvasadora = false " +
+						"		or (dde.deEnvasadora = true " +
+						"			and zde is not null" +
+						"			and zde.establiment.id != " + establimentId + 
+						"		   )" +
+						"		)" +
+						"   and sdi.litres > 0 " +
+						"   and sdi.establiment.id =" + establimentId;
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("findEntradesDipositDeEnvasadoraByEstablimentAndDates failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findEntradesDipositDeEnvasadoraByEstablimentAndDates fin");
+		return col;
+	}
+
+	/**
+	 * Devuelve TotalOliGranelComercialitzatByCategorias y entre 2 fechas o por temporada 
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Double getTotalOliGranelComercialitzatByCategorias(Long temporadaId, Date dataInici, Date dataFin, Object[] categorias,Long temporadaActual, Boolean valid) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Double numero = new Double(0);
+		try {
+			logger.debug("getTotalOliGranelComercialitzatByCategorias ini");
+			
+			String q = "select sordip from SortidaDiposit sordip where sordip.traza.tipus = "+Constants.CODI_TRAZA_TIPUS_VENDA_OLI;
+
+			if(dataInici != null || dataFin != null){
+				if(dataInici != null){
+					String fi = df.format(dataInici);
+					q += " and  sordip.data >= :dataInici ";
+				}
+				if(dataFin != null){
+					String ff = df.format(dataFin);
+					q += " and  sordip.data <= :dataFin ";
+				}
+
+				q += " and sordip.establiment.campanya.id="+temporadaActual;
+
+			}else{
+				q += " and sordip.establiment.campanya.id = :temporadaId ";
+			}
+
+			if(categorias != null && categorias.length > 0){
+				q += " and sordip.categoriaOli.id in(:categorias) ";
+			}
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			
+			int numParams = 0;
+			if(dataInici != null || dataFin != null){
+				if (dataInici != null) numParams++;
+				if (dataFin != null) numParams++;
+			} else {
+				numParams++;
+			}
+			if (categorias != null && categorias.length > 0) numParams++;
+			String[] paramNames = new String[numParams];
+			Object[] values = new Object[numParams];
+			
+			int numParam = -1;
+			if (dataInici != null) {
+				numParam++;
+				paramNames[numParam] = "dataInici";
+				values[numParam] = dataInici;
+			}
+			if (dataFin != null) {
+				numParam++;
+				paramNames[numParam] = "dataFin";
+				values[numParam] = dataFin;
+			}
+			if(dataInici == null && dataFin == null) {
+				numParam++;
+				paramNames[numParam] = "temporadaId";
+				values[numParam] = temporadaId;
+			}
+			if (categorias != null && categorias.length > 0) {
+				numParam++;
+				paramNames[numParam] = "categorias";
+				values[numParam] = categorias;
+			}
+
+			col = getHibernateTemplate().findByNamedParam(q, paramNames, values);
+			
+						
+			SortidaDiposit sortidaDiposit = null;
+			Iterator ite = col.iterator();
+			while (ite.hasNext()){
+				sortidaDiposit = (SortidaDiposit) ite.next();
+				if(sortidaDiposit.getLitres() != null ){
+					numero = new Double (numero.doubleValue() + sortidaDiposit.getLitres().doubleValue());
+				}
+			}
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("getTotalOliGranelComercialitzatByCategorias failed", ex);
+			throw new InfrastructureException(ex);
+		}catch (Exception ex) {
+			logger.error("getTotalOliGranelComercialitzatByCategorias failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getTotalOliGranelComercialitzatByCategorias fin");
+		return numero;
+	}
+	
+	/**
+	 * Devuelve TotalOliGranelComercialitzatByCategorias y entre 2 fechas o por temporada 
+	 * @param 
+	 * @return
+	 * @throws InfrastructureException
+	 */
+	public Double getTotalOliGranelComercialitzatByCategoriasEntreDates(Date dataInici, Date dataFin, Object[] categorias) throws InfrastructureException {
+		Collection col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Double numero = new Double(0);
+		try {
+			logger.debug("getTotalOliGranelComercialitzatByCategoriasEntreDates ini");
+			
+			String q = "select sordip from SortidaDiposit sordip where sordip.traza.tipus = "+Constants.CODI_TRAZA_TIPUS_VENDA_OLI;
+			if(dataInici != null){
+				String fi = df.format(dataInici);
+				q += " and  sordip.data >= '"+ fi +"'" ;
+			}
+			if(dataFin != null){
+				String ff = df.format(dataFin);
+				q += " and  sordip.data <= '"+ ff +"'" ;
+			}
+			q += " and sordip.valid = true ";
+			if(categorias != null && categorias.length > 0){
+				q += " and sordip.categoriaOli.id in(:categorias) ";
+				col = getHibernateTemplate().findByNamedParam(q, "categorias", categorias);
+			} else {
+				col = getHibernateTemplate().find(q);
+			}
+			
+			SortidaDiposit sortidaDiposit = null;
+			Iterator ite = col.iterator();
+			while (ite.hasNext()){
+				sortidaDiposit = (SortidaDiposit) ite.next();
+				if(sortidaDiposit.getLitres() != null ){
+					numero = new Double (numero.doubleValue() + sortidaDiposit.getLitres().doubleValue());
+				}
+			}
+			
+			
+		} catch (HibernateException ex) {
+			logger.error("getTotalOliGranelComercialitzatByCategoriasEntreDates failed", ex);
+			throw new InfrastructureException(ex);
+		}catch (Exception ex) {
+			logger.error("getTotalOliGranelComercialitzatByCategoriasEntreDates failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getTotalOliGranelComercialitzatByCategoriasEntreDates fin");
+		return numero;
+	}
+	
+	/**
+	 * Devuelve los depositos que han salido de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection findByEstablecimiento(Long idEst, Boolean valid){
+		
+		Collection col;
+		
+		try {
+			logger.debug("findByEstablecimiento inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.establiment.id = "+ idEst;
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += "order by sordip.id";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("findByEstablecimiento failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findByEstablecimiento fin");
+		return col;
+		
+	}
+	
+	/**
+	 * Devuelve las salidas de un deposito
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Collection findSortidaDiposiOliByDiposit(Long dipositId, Boolean valid){
+		
+		Collection col;
+		
+		try {
+			logger.debug("findSortidaDiposiOliByDiposit inicio");
+			String q = "from SortidaDiposit sordip where " +
+			"sordip.dipositBySdiCoddor.id = "+ dipositId;
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			q += " order by sordip.data asc";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("findSortidaDiposiOliByDiposit failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("findSortidaDiposiOliByDiposit fin");
+		return col;
+		
+	}
+	
+	/**
+	 * Comprova si la partida d'oli té sortides de dipòsit associats
+	 * @param lid
+	 * @return
+	 */
+	public Boolean existeixenSortidesDipositsAssociatsPartidesOli(Long idPartidaOli, Boolean valid) {
+		List sortides;
+		try {
+			logger.debug("existeixenSortidesDipositsAssociatsPartidesOli ini");
+			String q = "select count(sdi.id) from SortidaDiposit sdi " +
+			"where sdi.partidaOli.id = " + idPartidaOli + " ";
+			if (valid != null && valid.booleanValue()) q += "and sdi.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += "and sdi.valid = false ";
+			sortides = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("existeixenSortidesDipositsAssociatsPartidesOli failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		if (sortides != null && sortides.size()> 0 && ((Long)sortides.get(0)).intValue() > 0) {
+			logger.debug("existeixenSortidesDipositsAssociatsPartidesOli fin");
+			return true;
+		}
+		logger.debug("existeixenSortidesDipositsAssociatsPartidesOli fin");
+		return false;
+	}
+
+	/**
+	 * Retorna les sortides d'oli efectuades en un dipòsit dins a una data donada
+	 * @param data
+	 * @param idDiposit
+	 * @param valid
+	 * @return
+	 */
+	public Double getSumaSortidesDipositPerDipositFinsData(Long idDiposit, Date data, Boolean valid){
+		
+		Collection col;
+		Double suma = 0.0;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(data);
+
+		try {
+			logger.debug("getSumaSortidesDipositPerDipositFinsData inicio");
+			String q = "select sum(sordip.litres) from SortidaDiposit sordip where " +
+			"sordip.data <= '"+fi+"' and sordip.dipositBySdiCoddor.id = "+ idDiposit;
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			col = getHibernateTemplate().find(q);
+		} catch (HibernateException ex) {
+			logger.error("getSumaSortidesDipositPerDipositFinsData failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSumaSortidesDipositPerDipositFinsData fin");
+		if (col != null && col.size() > 0){
+			suma = (Double)col.iterator().next();
+			if (suma == null) suma = 0.0;
+		}
+		return suma;
+		
+	}
+	
+	
+	/**
+	 * Retorna les sortides d'oli efectuades en un dipòsit dins a una data donada
+	 * @param data
+	 * @param idDiposit
+	 * @param valid
+	 * @return
+	 */
+	public Double getSumaSortidesDipositsFinsData(Long[] idDiposits, Date data, Boolean valid){
+		
+		Collection col;
+		Double suma = 0.0;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(data);
+
+		try {
+			logger.debug("getSumaSortidesDipositsFinsData inicio");
+			String q = "select sum(sordip.litres) from SortidaDiposit sordip where " +
+			"sordip.data <= '"+fi+"' and sordip.dipositBySdiCoddor.id in (:idDiposits)";
+			if (valid != null && valid.booleanValue()) q += " and sordip.valid = true ";
+			if (valid != null && !valid.booleanValue()) q += " and sordip.valid = false ";
+			col = getHibernateTemplate().findByNamedParam(q, "idDiposits", idDiposits);
+		} catch (HibernateException ex) {
+			logger.error("getSumaSortidesDipositsFinsData failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSumaSortidesDipositsFinsData fin");
+		if (col != null && col.size() > 0){
+			suma = (Double)col.iterator().next();
+			if (suma == null) suma = 0.0;
+		}
+		return suma;
+		
+	}
+	
+	/**
+	 * Devuelve la salida de aceite a granel de un establecimiento entre 2 fechas dadas
+	 * @param fi
+	 * @param ff
+	 * @param idEst
+	 * @return
+	 */
+	public Double getSortidaDipositEntreDiasEnEstablecimientoAndCategoria(Date finicio, Date ffin, Long idEst, Long idCategoria){
+		
+		List col;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String fi = df.format(finicio);
+		String ff = df.format(ffin);
+		Double quant = 0.0;
+		try {
+			logger.debug("getSortidaDipositEntreDiasEnEstablecimientoAndCategoria inicio");
+			String q = 	"select sum(sdi.litres) " +
+						"  from SortidaDiposit sdi " +
+						" where sdi.data >= '"+fi+"' " +
+						" and sdi.data <= '"+ff+"' " +
+						" and sdi.dipositBySdiCoddde is null " +
+						" and sdi.lot is null " +
+						" and sdi.valid = true ";
+			if (idCategoria != null) q += " and sdi.categoriaOli.id = " + idCategoria;
+			if (idEst != null){
+				q += 	" and sdi.establiment.id = "+ idEst;
+						
+			} else {
+				q += 	" and (sdi.desti is null or sdi.desti not like 'TRASLLAT%') " +
+						" and (sdi.desti is null or sdi.desti not like 'TORNAR%') ";
+			}
+			col = getHibernateTemplate().find(q);
+			if (col != null && col.size() > 0 && col.get(0) != null){
+				quant = (Double)col.get(0);
+			}
+		} catch (HibernateException ex) {
+			logger.error("getSortidaDipositEntreDiasEnEstablecimientoAndCategoria failed", ex);
+			throw new InfrastructureException(ex);
+		}
+		logger.debug("getSortidaDipositEntreDiasEnEstablecimientoAndCategoria fin");
+		return quant;
+		
+	}
+	
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 *
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+}

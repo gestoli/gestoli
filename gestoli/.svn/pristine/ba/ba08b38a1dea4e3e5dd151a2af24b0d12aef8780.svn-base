@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: mail-service.xml,v 1.4.2.2 2003/10/13 12:31:03 starksm Exp $ -->
+
+<server>
+
+  <!-- ==================================================================== -->
+  <!-- Mail Connection Factory                                              -->
+  <!-- ==================================================================== -->
+
+  <mbean code="org.jboss.mail.MailService" name="jboss:service=MailGestoli">
+    <attribute name="JNDIName">java:/es.caib.gestoli.Mail</attribute>
+    <attribute name="User">gestoli@limit.es</attribute>
+    <attribute name="Password">gest2009</attribute>
+    <attribute name="Configuration">
+       <!-- Test -->
+       <configuration>
+          <!-- Change to your mail server prototocol -->
+          <property name="mail.store.protocol" value="pop3"/>
+          <property name="mail.transport.protocol" value="smtp"/>
+
+          <!-- Change to the user who will receive mail  -->
+          <property name="mail.user" value="nobody"/>
+
+          <!-- Change to the mail server  -->
+          <property name="mail.pop3.host" value="mail.limit.es"/>
+
+          <!-- Change to the SMTP gateway server -->
+          <property name="mail.smtp.host" value="mail.limit.es"/>
+          <property name="mail.smtp.auth" value="true"/>
+
+          <!-- Change to the address mail will be from  -->
+          <property name="mail.from" value="gestoli@limit.es"/>"/>
+
+          <!-- Enable debugging output from the javamail classes -->
+          <property name="mail.debug" value="true"/>
+       </configuration>
+    </attribute>
+  </mbean>
+
+</server>

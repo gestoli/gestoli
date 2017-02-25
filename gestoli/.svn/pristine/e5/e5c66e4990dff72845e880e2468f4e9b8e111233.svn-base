@@ -1,0 +1,197 @@
+package es.caib.gestoli.front.spring;
+
+import java.text.DecimalFormat;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import org.apache.log4j.Logger;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
+import es.caib.gestoli.front.util.Util;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.interfaces.OliProcessosEjb;
+import es.caib.gestoli.logic.model.DescomposicioPartidaOliva;
+import es.caib.gestoli.logic.model.DescomposicioPlantacio;
+import es.caib.gestoli.logic.model.VarietatOliva;
+
+/**
+* Validador para los campos asociados con el formulario de entrada d'oliva.
+*/
+public class ProcesEntradaOlivaTaulaValidator implements Validator {
+
+	private static Logger logger = Logger.getLogger(ProcesEntradaOlivaTaulaValidator.class);
+
+	private OliProcessosEjb oliProcessosEjb;
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+
+	private HibernateTemplate hibernateTemplate;
+
+
+	/**
+	 * Indica las clases que soporta este validador.
+	 * @see Validator#supports(java.lang.Class)
+	 */
+	public boolean supports(Class clazz) {
+		return clazz.equals(ProcesEntradaOlivaTaulaCommand.class);
+	}
+
+	/**
+	 * Valida el objeto.
+	 * @see Validator#validate(java.lang.Object, org.springframework.validation.Errors)
+	 */
+	public void validate(Object obj, Errors errors) {
+		ProcesEntradaOlivaTaulaCommand procesEntradaOlivaTaulaCommand = (ProcesEntradaOlivaTaulaCommand)obj;
+
+		ValidationUtils.rejectIfEmpty(
+				errors,
+				"dataExecucio",
+				"error.dataExecucio.buit",
+				"El camp Data entrada no pot estar buit");
+
+		ValidationUtils.rejectIfEmpty(
+				errors,
+				"hora",
+				"error.hora.buit",
+				"El camp Hora entrada no pot estar buit");
+
+		ValidationUtils.rejectIfEmpty(
+				errors,
+				"quantitat",
+				"error.quantitat.buit",
+				"El camp Quantitat total d'oliva no pot estar buit");
+
+		ValidationUtils.rejectIfEmpty(
+				errors,
+				"tipusOlivaTaula",
+				"error.tipusOlivaTaula.buit",
+				"El tipus d'oliva de taula no pot estar buit");
+
+		ValidationUtils.rejectIfEmpty(
+				errors,
+				"zonaId",
+				"error.zona.buit",
+				"El camp zona no pot estar buit");
+
+		ValidationUtils.rejectIfEmpty(
+				errors,
+				"idsPlantacions",
+				"error.plantacio.buit",
+				"El camp Plantacio no pot estar buit");
+
+		if ((procesEntradaOlivaTaulaCommand.getQuantitat() != null) && (procesEntradaOlivaTaulaCommand.getQuantitat().doubleValue() < 0)) {
+			errors.rejectValue("quantitat", "error.quantitat.buit" ,"El camp Quantitat total d'oliva ha de ser major que zero");
+		}
+
+		boolean esHora = true;
+		if ((procesEntradaOlivaTaulaCommand.getHora() != null) && (!procesEntradaOlivaTaulaCommand.getHora().equalsIgnoreCase(""))) {
+			esHora = Util.isHora(procesEntradaOlivaTaulaCommand.getHora());
+		}
+		if (!esHora) {
+			errors.rejectValue("hora", "error.hora.incorrecto" ,"El format del camp no és el correcte");
+		}
+
+		if ((procesEntradaOlivaTaulaCommand.getQuantitat() != null) && (procesEntradaOlivaTaulaCommand.getQuantitat().doubleValue() > 0)) {
+			try {
+				HashMap descomposicionPlantacioVariedadHash = new HashMap();
+				HashMap descomposicionPlantacioHash = new HashMap();
+				
+				if (!procesEntradaOlivaTaulaCommand.getIdsPlantacions().equals("")) {
+					Double sumaTotal = 0.0;
+					Integer x = 0;
+					String[] plants = procesEntradaOlivaTaulaCommand.getIdsPlantacions().split(",");
+					
+					VarietatOlivaCommand[] variedades = procesEntradaOlivaTaulaCommand.getVariedades();
+					
+					if (variedades != null) {
+						
+						for (int n = 0; n < plants.length; n++) {
+							Long idPlant = Long.parseLong(plants[n]);
+							for (int i = 0; i < variedades.length; i++) {
+								VarietatOlivaCommand varietatOlivaCommand = (VarietatOlivaCommand)variedades[i];
+								if ((varietatOlivaCommand.getIdPlantacio() != null) && 
+									(varietatOlivaCommand.getIdPlantacio().intValue() == idPlant.intValue()) &&
+									(varietatOlivaCommand.getProduccion() != null)) {
+									oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+									DescomposicioPlantacio descomposicionPlantacio = oliInfraestructuraEjb.descomposicioPlantacioByPlantacioIdVariedadId(idPlant, varietatOlivaCommand.getId());
+									
+									sumaTotal += varietatOlivaCommand.getProduccion().doubleValue();
+									if (varietatOlivaCommand.getProduccion().doubleValue() < 0) {
+										errors.rejectValue("quantitat", "error.quantitat.descNegativa", "El valor dels Kg. de les varietats no pot ser negatiu");
+									} else if (varietatOlivaCommand.getProduccion().doubleValue() > descomposicionPlantacio.getProduccioRestant().doubleValue()) {
+										Object[] valor = new Object[1];
+										valor[0] = descomposicionPlantacio.getProduccioRestant();
+										errors.rejectValue("variedades[" + x + "].produccion", "error.kilosVariedad.incorrecto", valor, "La cantidad sobrepasa el limite de producion (La cantidad maxima para alcanzar este limite son {0})");
+									}
+									
+									descomposicionPlantacioVariedadHash.put(descomposicionPlantacio.getId(), varietatOlivaCommand);
+									descomposicionPlantacioHash.put(descomposicionPlantacio.getId(), descomposicionPlantacio);
+								}
+								x++;
+							}
+//							x++;
+						}
+					}
+					
+					DecimalFormat df = new DecimalFormat("0.00");
+					sumaTotal = Double.parseDouble(df.format(sumaTotal).replaceAll(",", "."));
+					if ((procesEntradaOlivaTaulaCommand.getQuantitat().doubleValue() - sumaTotal.doubleValue())< 0.0000) {
+						if (procesEntradaOlivaTaulaCommand.getQuantitat().doubleValue() < 0) {
+							errors.rejectValue("quantitat", "error.quantitat.descNegativa" ,"El valor dels Kg. de les varietats no pot ser negatiu ");
+						} else {
+							errors.rejectValue("quantitat", "error.quantitat.incorrecto", "quantitat total no coincide con la suma de los kilos de las variedades ");
+						}
+					}
+				}
+				
+				//COMPROVEM DATA EXECUCIO
+				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+				
+				boolean correcte = true;
+				
+				//Comprovació campanya
+				oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate()); 
+				if(!oliInfraestructuraEjb.esDataCampanyaCorrecte(procesEntradaOlivaTaulaCommand.getDataExecucio())){
+					correcte = false;
+				}
+				
+				if(!correcte){
+					errors.rejectValue(
+							"dataExecucio",
+							"error.dataExecucio.posterior",
+							"Hi ha processos posteriors a la data introduida");
+				}
+			} catch (Exception e) {
+				logger.error("Error validant l'entrada d'oli. ProcesEntradaOlivaTaulaValidator", e);
+			}
+		}
+	}
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+	
+	public void setOliProcessosEjb(OliProcessosEjb oliProcessosEjb) {
+		this.oliProcessosEjb = oliProcessosEjb;
+	}
+	
+	public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+		this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+	}
+}

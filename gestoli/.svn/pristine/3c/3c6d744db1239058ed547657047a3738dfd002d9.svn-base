@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.HistoricPlantacio" table="oli_histplant"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Plantacions</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="hop_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="finca" class="es.caib.gestoli.logic.model.HistoricFinca"
+			fetch="select">
+			<column name="hop_codfin" not-null="true">
+				<comment>Codi de finca</comment>
+			</column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="hop_codori">
+				<comment>Codi de plantacio original</comment>
+			</column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="hop_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<many-to-one name="municipi" class="es.caib.gestoli.logic.model.Municipi" fetch="select">
+			<column name="hop_munici" not-null="true">
+				<comment>Municipi</comment>
+			</column>
+		</many-to-one>
+		<property name="poligon" type="java.lang.String">
+			<column name="hop_poligo" length="128" not-null="true">
+				<comment>Poligon</comment>
+			</column>
+		</property>
+		<property name="parcela" type="java.lang.String">
+			<column name="hop_parcel" length="128" not-null="true">
+				<comment>Parcel-la</comment>
+			</column>
+		</property>
+		<property name="coordX" type="java.lang.String">
+			<column name="hop_coordx" length="32">
+				<comment>Parcel-la</comment>
+			</column>
+		</property>
+		<property name="coordY" type="java.lang.String">
+			<column name="hop_coordy" length="32">
+				<comment>Parcel-la</comment>
+			</column>
+		</property>
+		<property name="catastre" type="java.lang.String">
+			<column name="hop_catast" length="32">
+				<comment>Catastre</comment>
+			</column>
+		</property>
+		<property name="regadiu" type="java.lang.Boolean">
+			<column name="hop_regadi" not-null="true">
+				<comment>Regadiu</comment>
+			</column>
+		</property>
+		<property name="anyPlantacio" type="java.lang.Integer">
+			<column name="hop_anypl" not-null="true">
+				<comment>Any de plantacio (format aaaa)</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="hop_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="deBaixa" type="java.lang.Boolean">
+			<column name="hop_baixa">
+				<comment>De baixa</comment>
+			</column>
+		</property>
+		<property name="nomComplet" type="java.lang.String">
+			<column name="hop_nomcomplet" length="512" not-null="true">
+				<comment>Nom complet</comment>
+			</column>
+		</property>
+		<set name="descomposicioPlantacios" inverse="true">
+			<key>
+				<column name="hdp_codpla" not-null="true">
+					<comment>Codi de plantacio</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.HistoricDescomposicioPlantacio" />
+		</set>
+	</class>
+</hibernate-mapping>

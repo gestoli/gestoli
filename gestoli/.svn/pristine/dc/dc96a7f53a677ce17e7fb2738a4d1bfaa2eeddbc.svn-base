@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Arxiu" table="oli_arxiu"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Method
+			'getNormalizeSize' * @return */ public String getNormalizeSize() {
+			double miles = 1024.0; double pes =
+			tamany.doubleValue(); String normalizeSize = ""; if (pes != 0) { DecimalFormat df = new
+			DecimalFormat(); df.setMaximumFractionDigits(2); if (pes &lt; miles) {
+        normalizeSize = df.format(pes) + " Bytes"; } else { pes = tamany.doubleValue() / miles; normalizeSize = df.format(pes) + " Kb"; if (pes &gt; miles) { pes = pes /miles;
+        normalizeSize = df.format(pes) + " Mb"; } } } return normalizeSize; }</meta>
+        <comment>Arxius binaris</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="arx_codi" />
+            <generator class="identity"></generator>
+        </id>
+        <property name="nom" type="java.lang.String">
+            <column name="arx_nom" length="256" not-null="true">
+                <comment>Nom</comment>
+            </column>
+        </property>
+        <property name="mime" type="java.lang.String">
+            <column name="arx_mime" not-null="true">
+                <comment>Mime</comment>
+            </column>
+        </property>
+        <property name="tamany" type="java.lang.Integer">
+            <column name="arx_tamany" not-null="true">
+                <comment>Tamany</comment>
+            </column>
+        </property>
+        <property name="width" type="java.lang.Integer">
+            <column name="arx_width">
+                <comment>Width</comment>
+            </column>
+        </property>
+        <property name="height" type="java.lang.Integer">
+            <column name="arx_height">
+                <comment>Height</comment>
+            </column>
+        </property>
+        <property name="binari" type="binary">
+            <column name="arx_binari" not-null="true">
+                <comment>Contingut binari</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,64 @@
+#adhesionMicroweb {
+	background: url(../../../img/web/general/microweb/fondoAdhesion.jpg) top left
+		no-repeat;
+	min-height: 362px;
+	height: auto !important;
+	height: 362px;
+	padding: 0px 20px 59px 20px;
+}
+
+#adhesionMicroweb .contenidoProceso {
+	
+}
+
+#adhesionMicroweb .contenidoProceso .imagenContenido {
+	float: left;
+	width: 98px;
+	height: 300px;
+	text-align: left;
+	background: url(../../../img/web/banners/adhesionbanner.png) top left no-repeat
+		!important;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/web/banners/adhesionbanner.png', sizingMethod = 'crop' );
+}
+
+#adhesionMicroweb .contenidoProceso .textoContenido {
+	float: left;
+	width: 700px;
+}
+
+#adhesionMicroweb .contenidoProceso .textoContenido p {
+	text-align: justify;
+	font-size: 15px;
+	margin-bottom: 30px;
+	line-height: 20px;
+}
+
+#adhesionMicroweb .contenidoProceso .textoContenido strong {
+	font-size: 12px;
+}
+
+#adhesionMicroweb .contenidoProceso .textoContenido address {
+	font-size: 12px;
+	color: #616161;
+	font-style: normal;
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+#adhesionMicroweb .contenidoProceso .textoContenido address a {
+	background: url(../../../img/web/general/microweb/mail.png) top left no-repeat
+		!important;
+	padding-left: 26px;
+	color: #616161;
+	text-decoration: underline;
+	display: block;
+	width: 75px;
+	margin-top: 8px;
+	height: 25px;
+	font-weight: normal;
+	background-image: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'/img/web/general/microweb/mail.png', sizingMethod = 'crop' );
+}

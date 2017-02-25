@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Analitica" table="oli_analitica"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les clases Model de Gest Oli </meta>
+		<meta attribute="class-code" inherit="false"></meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Analitiques</comment>
+		
+		<id name="id" type="java.lang.Long">
+			<column name="ana_codi" />
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="data" type="date">
+			<column name="ana_data" length="13" not-null="true">
+				<comment>Data</comment>
+			</column>
+		</property>
+		<property name="litresAnalitzats" type="java.lang.Double">
+			<column name="ana_litresanalitzats" precision="17" scale="17" not-null="false">
+				<comment>Litres analitzats</comment>
+			</column>
+		</property>
+		<property name="usuari" type="java.lang.String">
+			<column name="ana_usuari" length="64" not-null="true">
+				<comment>Usuari introductor de lanalitica</comment>
+			</column>
+		</property>
+		<many-to-one name="varietatOli" class="es.caib.gestoli.logic.model.VarietatOli" fetch="select">
+			<column name="ana_sencvo" not-null="true">
+				<comment>Analisi sensorial: codi de varietat de oli (categoria comercial)</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="partidaOli" class="es.caib.gestoli.logic.model.PartidaOli" fetch="select">
+			<column name="ana_partida" not-null="true">
+				<comment>Partida Oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza" fetch="select">
+			<column name="ana_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="diposit" class="es.caib.gestoli.logic.model.Diposit" fetch="select">
+			<column name="ana_coddip" not-null="true">
+				<comment>Codi del diposit</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="establiment" class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="ana_codest" not-null="true">
+				<comment>Codi destabliment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="varietatOli1" class="es.caib.gestoli.logic.model.VarietatOli" fetch="select">
+			<column name="ana_var1" not-null="true">
+				<comment>Varietat Oli sensorial</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="varietatOli2" class="es.caib.gestoli.logic.model.VarietatOli" fetch="select">
+			<column name="ana_var2" not-null="true">
+				<comment>Varietat Oli fisicoquimic</comment>
+			</column>
+		</many-to-one>
+		
+		
+		
+		<property name="analisiSensorialNomLaboratori" type="java.lang.String">
+			<column name="ana_sennom" length="128" not-null="true">
+				<comment>Analisi sensorial: nom del laboratori</comment>
+			</column>
+		</property>
+		<property name="analisiSensorialDataRecepcio" type="date">
+			<column name="ana_sendre" length="13" not-null="true">
+				<comment>Analisi sensorial: data de recepcio</comment>
+			</column>
+		</property>
+		<property name="analisiSensorialDataTast" type="date">
+			<column name="ana_sendta" length="13" not-null="true">
+				<comment>Analisi sensorial: data de tast</comment>
+			</column>
+		</property>
+		<property name="analisiSensorialObservacions" type="java.lang.String">
+			<column name="ana_senobs">
+				<comment>Analisi sensorial: observacions</comment>
+			</column>
+		</property>
+		
+		
+		
+		<property name="analisiFisicoQuimicNomLaboratori" type="java.lang.String">
+			<column name="ana_fisnom" length="128" not-null="true">
+				<comment>Analisi fisico-quimic: nom del laboratori</comment>
+			</column>
+		</property>
+		<property name="analisiFisicoQuimicDataRecepcio" type="date">
+			<column name="ana_fisdre" length="13" not-null="true">
+				<comment>Analisi fisico-quimic: data de recepcio</comment>
+			</column>
+		</property>
+		<property name="analisiFisicoQuimicDataInici" type="date">
+			<column name="ana_fisdin" length="13" not-null="true">
+				<comment>Analisi fisico-quimic: data inici</comment>
+			</column>
+		</property>
+		<property name="analisiFisicoQuimicDataFi" type="date">
+			<column name="ana_fisdfi" length="13" not-null="true">
+				<comment>Analisi fisico-quimic: data fi</comment>
+			</column>
+		</property>
+		<property name="analisiFisicoQuimicValid" type="java.lang.Boolean">
+			<column name="ana_valid" not-null="true">
+				<comment>Resultats del analisi valids o no</comment>
+			</column>
+		</property>
+		<property name="analisiFisicoQuimicObservacions" type="java.lang.String">
+			<column name="ana_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="analisiFisicoQuimicAcidesa" type="java.lang.Double">
+			<column name="ana_acidesa" precision="17" scale="17" not-null="false">
+				<comment>Acidesa</comment>
+			</column>
+		</property>
+		
+		<set name="analiticaValor" inverse="true">
+			<key>
+				<column name="anav_codana" not-null="true">
+					<comment>Analitica</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.AnaliticaValor" />
+		</set>
+
+	</class>
+</hibernate-mapping>

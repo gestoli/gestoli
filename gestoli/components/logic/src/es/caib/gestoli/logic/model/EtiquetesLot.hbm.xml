@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.EtiquetesLot" table="oli_etiquetes_lot" schema="public">
+		<meta attribute="class-description" inherit="false">
+			Javadoc de les clases Model de Gest Oli @author Miquel Angel Amengual (miquelaa@limit.es)
+		</meta>
+		<comment>Etiquetes dels lots</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="elo_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="lot" class="es.caib.gestoli.logic.model.Lot" fetch="select">
+			<column name="elo_codlot" not-null="false"><comment>Codi del lot</comment></column>
+		</many-to-one>
+		<many-to-one name="establiment" class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="elo_codest" not-null="true"><comment>Codi de lestabliment</comment></column>
+		</many-to-one>
+		<property name="etiquetaLletra" type="java.lang.String">
+			<column name="elo_etiqlletra" length="128"><comment>Lletra de la etiqueta</comment></column>
+		</property>
+		<property name="etiquetaInici" type="java.lang.Integer">
+			<column name="elo_etiqini" not-null="true"><comment>Numero de la etiqueta de inici del lot</comment></column>
+		</property>
+		<property name="etiquetaFi" type="java.lang.Integer">
+			<column name="elo_etiqfi" not-null="true"><comment>Numero de la etiqueta de fi del lot</comment></column>
+		</property>
+		<property name="capacitat" type="java.lang.Double">
+			<column name="elo_capacitat" precision="17" scale="17" not-null="true">
+			<comment>Capacitat</comment></column>
+		</property>
+		<property name="utilitzat" type="java.lang.Boolean">
+			<column name="elo_util" not-null="true">
+				<comment>Utilitzat</comment>
+			</column>
+		</property>
+		<property name="retirat" type="java.lang.Boolean">
+			<column name="elo_retirat" not-null="true">
+				<comment>Retirat</comment>
+			</column>
+		</property>
+		<property name="olivaTaula" type="java.lang.Boolean">
+			<column name="elo_olitau" not-null="false">
+				<comment>Oliva de taula</comment>
+			</column>
+		</property>
+		<property name="esEcologic" type="java.lang.Boolean">
+			<column name="elo_eco" not-null="false">
+				<comment>Oli ecologic</comment>
+			</column>
+		</property>
+		<many-to-one name="rangOriginal" class="es.caib.gestoli.logic.model.EtiquetesLot" fetch="select">
+			<column name="elo_codetiorigen" not-null="false">
+				<comment>Codi del rang original</comment>
+			</column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

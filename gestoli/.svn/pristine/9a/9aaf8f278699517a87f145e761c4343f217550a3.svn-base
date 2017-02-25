@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAPPCC" table="qua_appcc" schema="public">
+  		<comment>Qualitat - APPCC</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="app_id" />
+			<generator class="identity"></generator>
+		</id>
+		<set name="carrecs" inverse="false" table="qua_apppue"> 
+			<key>
+				<column name="apu_codapp" not-null="true">
+					<comment>Codi de appcc</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.QualitatPuestoTreball">
+				<column name="apu_codpue" not-null="true">
+					<comment>Codi del carrec</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="productes" inverse="true">
+			<key>
+				<column name="apr_appcc" not-null="false">
+					<comment>Codi de l'appcc del producte</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatAPPCCProducte" />
+		</set>
+		<property name="nom" type="java.lang.String">
+			<column name="apu_nom" not-null="false"><comment>Nom diagrama</comment></column>
+		</property>
+		<property name="dataComprobacio" type="java.util.Date">
+			<column name="apu_dataComprobacio" not-null="false"><comment>Data de verificacio diagrama</comment></column>
+		</property>
+		<property name="correcte" type="java.lang.Boolean">
+			<column name="apu_correcte" not-null="false"><comment>Es correcte el diagrama?</comment></column>
+		</property>
+ 	    <many-to-one 
+			name="responsable"
+			class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal"
+			column="apu_responsable" 
+			not-null="false"/>
+		<many-to-one 
+			name="establiment" 
+			class="es.caib.gestoli.logic.model.Establiment"
+			column="app_codest" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping>

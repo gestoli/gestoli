@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.MaterialDiposit" table="oli_material_diposit"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<comment>Materials de diposits</comment>
+		<id name="id" type="java.lang.Integer">
+			<column name="mdi_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="nom" type="java.lang.String">
+			<column name="mdi_nom" length="64" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="icona" type="java.lang.Long">
+			<column name="mdi_icona" not-null="true">
+				<comment>Codi de icona</comment>
+			</column>
+		</property>
+		<property name="iconaTraslladant" type="java.lang.Long">
+			<column name="mdi_iconaTraslladant" not-null="true">
+				<comment>Codi de icona traslladant</comment>
+			</column>
+		</property>
+		<property name="iconaPrecintat" type="java.lang.Long">
+			<column name="mdi_iconaPrecintat" not-null="true">
+				<comment>Codi de icona precintat</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="mdi_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<set name="diposits" inverse="true">
+			<key>
+				<column name="dip_codmdi">
+					<comment>Codi de material de diposit</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Diposit" />
+		</set>
+	</class>
+</hibernate-mapping>

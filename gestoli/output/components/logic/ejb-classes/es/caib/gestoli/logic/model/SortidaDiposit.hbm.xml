@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-dic-2009 16:00:09 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.SortidaDiposit" table="oli_sortida_diposit"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf =
+			new
+			SimpleDateFormat("dd/MM/yyyy"); String fechaFormateada = ""; if (this.data != null) {
+			fechaFormateada = sdf.format(this.data); } return fechaFormateada; }</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Sortides de diposits</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="sdi_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="establiment"
+			class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="sdi_codest" not-null="true">
+				<comment>Codi de establiment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="dipositBySdiCoddor" class="es.caib.gestoli.logic.model.Diposit"
+			fetch="select">
+			<column name="sdi_coddor" not-null="true">
+				<comment>Codi de diposit origen</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza"
+			fetch="select">
+			<column name="sdi_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="lot" class="es.caib.gestoli.logic.model.Lot"
+			fetch="select">
+			<column name="sdi_codlot">
+				<comment>Codi de lot</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="categoriaOli"
+			class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+			<column name="sdi_codcao" not-null="true">
+				<comment>Codi de categoria de oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="partidaOli"
+			class="es.caib.gestoli.logic.model.PartidaOli" fetch="select">
+			<column name="sdi_codpar" not-null="true">
+				<comment>Codi de partida de oli</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="dipositBySdiCoddde" class="es.caib.gestoli.logic.model.Diposit"
+			fetch="select">
+			<column name="sdi_coddde">
+				<comment>Codi de diposit desti</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="olivicultor"
+			class="es.caib.gestoli.logic.model.Olivicultor" fetch="select">
+			<column name="sdi_codoli">
+				<comment>Codi de olivicultor</comment>
+			</column>
+		</many-to-one>
+		<property name="data" type="timestamp">
+			<column name="sdi_data" length="29">
+				<comment>Data</comment>
+			</column>
+		</property>
+		<property name="litres" type="java.lang.Double">
+			<column name="sdi_litres" precision="17" scale="17" not-null="true">
+				<comment>Litres</comment>
+			</column>
+		</property>
+		<property name="acidesa" type="java.lang.Double">
+			<column name="sdi_acides" precision="17" scale="17">
+				<comment>Acidesa</comment>
+			</column>
+		</property>
+		<property name="desti" type="java.lang.String">
+			<column name="sdi_desti" length="128">
+				<comment>Desti</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="sdi_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="valid" type="java.lang.Boolean" insert="false">
+			<column name="sdi_valid" not-null="true">
+				<comment>Proces valid</comment>
+			</column>
+		</property>
+		<property name="vendaTipusDocument" type="java.lang.String">
+			<column name="sdi_ventdo" length="64">
+				<comment>Venda: tipus de document</comment>
+			</column>
+		</property>
+		<property name="vendaNumeroDocument" type="java.lang.String">
+			<column name="sdi_venndo" length="64">
+				<comment>Venda: numero de documento</comment>
+			</column>
+		</property>
+		<many-to-one name="pais" class="es.caib.gestoli.logic.model.Pais" fetch="select">
+			<column name="sdi_codpais"><comment>Codi del pais cap on es fa la sortida</comment></column>
+		</many-to-one>
+		<many-to-one name="provincia" class="es.caib.gestoli.logic.model.Provincia" fetch="select">
+			<column name="sdi_codprov"><comment>Codi de la provincia cap on es fa la sortida</comment></column>
+		</many-to-one>
+		<many-to-one name="municipi" class="es.caib.gestoli.logic.model.Municipi" fetch="select">
+			<column name="sdi_codmun"><comment>Codi del municipi cap on es fa la sortida</comment></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

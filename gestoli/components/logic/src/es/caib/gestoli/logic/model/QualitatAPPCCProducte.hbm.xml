@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  	<class name="es.caib.gestoli.logic.model.QualitatAPPCCProducte" table="qua_appcc_producte" schema="public">
+  		<comment>Qualitat - APPCC - Producte</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="apr_id" />
+			<generator class="identity"></generator>
+		</id>
+		<property name="descripcio" type="java.lang.String">
+			<column name="apr_descripcio" length="500" not-null="false"><comment>Descripcio</comment></column>
+		</property>
+		<property name="us" type="java.lang.String">
+			<column name="apr_us" length="500" not-null="false"><comment>Us Previst</comment></column>
+		</property>
+		<many-to-one 
+			name="appcc" 
+			class="es.caib.gestoli.logic.model.QualitatAPPCC"
+			column="apr_appcc" 
+			not-null="true"/>
+	</class>
+</hibernate-mapping> 

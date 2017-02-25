@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass name="es.caib.gestoli.logic.model.QualitatPlaNetejaVerificacio" extends="es.caib.gestoli.logic.model.QualitatControl" 
+  	table="qua_planet_verificacio" schema="public">
+  		<comment>Qualitat - Control Plagues - Verificacio</comment>
+		<key column="pnv_id"/>
+		<property name="dataAnterior" type="java.util.Date">
+			<column name="pnv_dataAnterior" not-null="false"><comment>Data anterior</comment></column>
+		</property>
+		<many-to-one 
+			name="neteja" 
+			class="es.caib.gestoli.logic.model.QualitatPlaNeteja"
+			column="pnv_neteja" 
+			not-null="true"/>
+	</joined-subclass>
+</hibernate-mapping>

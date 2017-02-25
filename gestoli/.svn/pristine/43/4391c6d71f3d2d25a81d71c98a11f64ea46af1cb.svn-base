@@ -1,0 +1,44 @@
+#legalMicroweb {
+	padding: 0 20px 30px 20px;
+	background: url(../../img/general/microweb/fondoLegal.jpg) 0 20px
+		no-repeat;
+	min-height: 1062px;
+	height: auto !important;
+	height: 1062px;
+	font-size: 15px;
+}
+
+#legalMicroweb h3.microweb {
+	margin-bottom: 16px !important;
+	margin: 0;
+}
+
+#legalMicroweb strong {
+	font-size: 18px;
+	margin-bottom: 11px;
+	font-weight: normal;
+	float: left;
+	clear: left;
+}
+
+#legalMicroweb .contenidoLegal {
+	clear: left;
+}
+
+#legalMicroweb ul {
+	float: left;
+	clear: left;
+	width: 805px;
+	text-align: justify;
+	margin-bottom: 38px;
+}
+
+#legalMicroweb ul.legal_ca {
+	margin-bottom: 58px;
+}
+
+#legalMicroweb ul li {
+	background: url(../../img/general/microweb/puntoRojo.gif) 0 5px
+		no-repeat;
+	padding: 0 0 17px 11px;
+}

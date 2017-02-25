@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Establiment" table="oli_establiment"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Comparator */
+			public int compareTo(Object e) { Establiment establecimiento =
+			(Establiment)e; return
+			this.nom.compareTo(establecimiento.getNom()); }
+			/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf = new
+			SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.getData()); }</meta>
+		<comment>Establiment</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="est_codi" />
+			<generator class="identity"></generator>
+		</id>
+		<many-to-one name="campanya" class="es.caib.gestoli.logic.model.Campanya"
+			fetch="select">
+			<column name="est_codcam" not-null="true">
+				<comment>Codi de campanya</comment>
+			</column>
+		</many-to-one>
+        <set name="usuaris" inverse="false" table="oli_usuest" cascade="all-delete-orphan"> 
+			<key>
+				<column name="ues_codest" not-null="true">
+					<comment>Codi de establiment</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Usuari">
+				<column name="ues_codusu" not-null="true">
+					<comment>Codi de usuari</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<!--<many-to-one name="usuari" class="es.caib.gestoli.logic.model.Usuari"
+			fetch="select">
+			<column name="est_codusu" not-null="true">
+				<comment>Codi de usuari</comment>
+			</column>
+		</many-to-one>-->
+		<many-to-one name="tipusEstabliment"
+			class="es.caib.gestoli.logic.model.TipusEstabliment" fetch="select">
+			<column name="est_codtes" not-null="true">
+				<comment>Codi de tipus de establiment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="solicitant" class="es.caib.gestoli.logic.model.Solicitant"
+			fetch="select">
+			<column name="est_codsol" not-null="true">
+				<comment>Codi de solicitant de alta</comment>
+			</column>
+		</many-to-one>
+		<property name="idOriginal" type="java.lang.Long">
+			<column name="est_codori">
+				<comment>Codi de establiment original</comment>
+			</column>
+		</property>
+		<property name="codiRB" type="java.lang.String">
+			<column name="est_codirb" length="128">
+				<comment>Codi RB de tafona</comment>
+			</column>
+		</property>
+		<property name="codiRC" type="java.lang.String">
+			<column name="est_codirc" length="128">
+				<comment>Codi RC de envassadora</comment>
+			</column>
+		</property>
+		<property name="codiRT" type="java.lang.String">
+			<column name="est_codirt" length="128">
+				<comment>Codi RT de la productora oliva taula</comment>
+			</column>
+		</property>
+		<property name="actiu" type="java.lang.Boolean">
+			<column name="est_actiu" not-null="true">
+				<comment>Actiu</comment>
+			</column>
+		</property>
+		<property name="nom" type="java.lang.String">
+			<column name="est_nom" length="128" not-null="true">
+				<comment>Nom</comment>
+			</column>
+		</property>
+		<property name="cif" type="java.lang.String">
+			<column name="est_cif" length="16" not-null="true">
+				<comment>CIF</comment>
+			</column>
+		</property>
+		<property name="nomResponsable" type="java.lang.String">
+			<column name="est_nomResponsable" length="128" not-null="true">
+				<comment>Nom Responsable</comment>
+			</column>
+		</property>
+		<property name="cifResponsable" type="java.lang.String">
+			<column name="est_cifResponsable" length="16" not-null="true">
+				<comment>CIF</comment>
+			</column>
+		</property>
+		<property name="direccio" type="java.lang.String">
+			<column name="est_direcc" length="256">
+				<comment>Direccio</comment>
+			</column>
+		</property>
+		<many-to-one name="poblacio" class="es.caib.gestoli.logic.model.Municipi" fetch="select" lazy="false">
+			<column name="est_poblac" not-null="true">
+				<comment>Poblacio</comment>
+			</column>
+		</many-to-one>
+		<property name="codiPostal" type="java.lang.String">
+			<column name="est_cp" length="16">
+				<comment>Codi postal</comment>
+			</column>
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="est_email" length="128" not-null="true">
+				<comment>Email</comment>
+			</column>
+		</property>
+		<property name="telefon" type="java.lang.String">
+			<column name="est_telefo" length="16">
+				<comment>Telefon</comment>
+			</column>
+		</property>
+		<property name="fax" type="java.lang.String">
+			<column name="est_fax" length="16">
+				<comment>Fax</comment>
+			</column>
+		</property>
+		<property name="numeroTreballadors" type="java.lang.Integer">
+			<column name="est_numtre">
+				<comment>Numero de treballadors</comment>
+			</column>
+		</property>
+		<property name="superficie" type="java.lang.Double">
+			<column name="est_superf" precision="17" scale="17">
+				<comment>Superficie</comment>
+			</column>
+		</property>
+		<property name="unitatMesura" type="java.lang.String">
+			<column name="est_unimes" length="1" not-null="true">
+				<comment>Unitat de mesura (Kilos o Litros)</comment>
+			</column>
+		</property>
+		<property name="temperaturaMaximaPasta" type="java.lang.Integer">
+			<column name="est_tempas">
+				<comment>Temperatura maxima pasta (envasadora)</comment>
+			</column>
+		</property>
+		<property name="capacitatProduccio" type="java.lang.Double">
+			<column name="est_cappro" precision="17" scale="17">
+				<comment>Capacitat de produccio (tafona Kg oli/h i
+					envasadora L/h)</comment>
+			</column>
+		</property>
+		<property name="envassamentManual" type="java.lang.Boolean">
+			<column name="est_envman">
+				<comment>Envassament manual (envasadora)</comment>
+			</column>
+		</property>
+		<property name="etiquetatManual" type="java.lang.Boolean">
+			<column name="est_etiman">
+				<comment>Etiquetat manual (envasadora)</comment>
+			</column>
+		</property>
+		<property name="olivaTaula" type="java.lang.Boolean">
+			<column name="est_olivataula">
+				<comment>Oliva de taula</comment>
+			</column>
+		</property>
+		<property name="observacions" type="java.lang.String">
+			<column name="est_observ">
+				<comment>Observacions</comment>
+			</column>
+		</property>
+		<property name="dataBaixa" type="date">
+			<column name="est_datbaixa" length="13">
+				<comment>Data de baixa</comment>
+			</column>
+		</property>
+		<set name="marcas" inverse="true" table="oli_estmar">
+			<key>
+				<column name="ema_codest" not-null="true">
+					<comment>Codi de establiment</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Marca">
+				<column name="ema_codmar" not-null="true">
+					<comment>Codi de marca</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="informacios" inverse="true" table="oli_estinf">
+			<key>
+				<column name="ein_codest" not-null="true">
+					<comment>Codi de establiment</comment>
+				</column>
+			</key>
+			<many-to-many entity-name="es.caib.gestoli.logic.model.Informacio">
+				<column name="ein_codinf" not-null="true">
+					<comment>Codi de informacio</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="diposits" inverse="true">
+			<key>
+				<column name="dip_codest" not-null="true">
+					<comment>Codi de establiment de creacio inicial</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Diposit" />
+		</set>
+		<set name="zonas" inverse="true">
+			<key>
+				<column name="zon_codest" not-null="true">
+					<comment>Codi de establiment</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Zona" />
+		</set>
+		<set name="partidesOli" inverse="true">
+			<key>
+				<column name="par_codest" not-null="true">
+					<comment>Codi de establiment</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.PartidaOli" />
+		</set>
+		<one-to-one name="descripcio" 
+			class="es.caib.gestoli.logic.model.QualitatDescripcioInstalacio"
+			property-ref="establiment">
+		</one-to-one>
+		<set name="equips" inverse="true">
+			<key>
+				<column name="deq_codest" not-null="true">
+					<comment>Codi de establiment de l'equip</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatDescripcioEquip" />
+		</set>
+		<set name="personal" inverse="true">
+			<key>
+				<column name="dpe_codest" not-null="true">
+					<comment>Codi de establiment del treballador</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatDescripcioPersonal" />
+		</set>
+		<set name="puestos" inverse="true">
+			<key>
+				<column name="pue_codest" not-null="true">
+					<comment>Codi de establiment del puesto de treball</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatPuestoTreball" />
+		</set>
+		<set name="plansNeteja" inverse="true">
+			<key>
+				<column name="pne_codest" not-null="true">
+					<comment>Codi de establiment del pla de neteja</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.QualitatPlaNeteja" />
+		</set>
+		<one-to-one name="descripcioSubministreAigua" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaSubministre"
+			property-ref="establiment">
+		</one-to-one>
+		<one-to-one name="aiguaControlOrganoleptic" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaControlOrganoleptic"
+			property-ref="establiment">
+		</one-to-one>
+		<one-to-one name="aiguaControlAnalitic" 
+			class="es.caib.gestoli.logic.model.QualitatAiguaControlAnalitic"
+			property-ref="establiment">
+		</one-to-one>
+		<set name="productes" inverse="true">
+			<key>
+				<column name="pro_codest">
+					<comment>Codi de establiment</comment>
+				</column>
+			</key>
+			<one-to-many class="es.caib.gestoli.logic.model.Producte" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,172 @@
+.btnCorto {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/btnCorto.png', sizingMethod='crop')");
+}
+
+.btnLargo {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/btnLargo.png', sizingMethod='crop')");
+}
+
+.btnLargo156 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/btnLargo156.png', sizingMethod='crop')");
+}
+
+.btnLargo203 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/btnLargo203.png', sizingMethod='crop')");
+}
+
+#layoutPrincipal #layoutPagina #cabeceraGeneral h1 a {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/gestoli.png', sizingMethod='crop')");
+}
+
+.navegadorMultipagina .pagelinks a.anterior {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/anterior.png', sizingMethod='crop')");
+}
+
+.navegadorMultipagina .pagelinks a.siguiente {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/siguiente.png', sizingMethod='crop')");
+}
+
+p.error .capa1 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/microweb/error_esq_sup_izq.png', sizingMethod='crop')");
+}
+
+p.error .capa2 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/microweb/error_esq_sup_der.png', sizingMethod='crop')");
+}
+
+p.error .capa3 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/microweb/error_esq_inf_der.png', sizingMethod='crop')");
+}
+
+p.error .capa4 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/microweb/error_esq_inf_izq.png', sizingMethod='crop')");
+}
+
+.mensajeOk .capa1 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/OK_izq_sup.png', sizingMethod='crop')");
+}
+
+.mensajeOk .capa2 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/OK_der_sup.png', sizingMethod='crop')");
+}
+
+.mensajeOk .capa3 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/OK_der_inf.png', sizingMethod='crop')");
+}
+
+.mensajeOk .capa4 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/OK_izq_inf.png', sizingMethod='crop')");
+}
+
+.mensajeAvis .capa1 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/Avis_izq_sup.png', sizingMethod='crop')");
+}
+
+.mensajeAvis .capa2 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/Avis_der_sup.png', sizingMethod='crop')");
+}
+
+.mensajeAvis .capa3 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/Avis_der_inf.png', sizingMethod='crop')");
+}
+
+.mensajeAvis .capa4 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/Avis_izq_inf.png', sizingMethod='crop')");
+}
+.mensajeKo .capa1 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/KO_izq_sup.png', sizingMethod='crop')");
+}
+
+.mensajeKo .capa2 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/KO_der_sup.png', sizingMethod='crop')");
+}
+
+.mensajeKo .capa3 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/KO_der_inf.png', sizingMethod='crop')");
+}
+
+.mensajeKo .capa4 {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/general/ok-ko/KO_izq_inf.png', sizingMethod='crop')");
+}
+
+.iconoSituar {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/icons/situar.png', sizingMethod='crop')");
+}
+
+.iconoVer {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +   "/img/icons/lupa.png', sizingMethod='crop')")
+		;
+}
+
+.iconoBorrar {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +   "/img/icons/eliminar.png', sizingMethod='crop')")
+		;
+}
+
+div.menu .contenidoDesplegable .infIzq {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/menu/inf_izq_ie.png', sizingMethod='crop')");
+}
+
+div.menu .contenidoDesplegable .infDer {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/menu/inf_der_ie.png', sizingMethod='crop')");
+}
+
+div.menu .contenidoDesplegable .supDer {
+	filter: expression("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+		  window.contextPath +  
+		"/img/menu/sup_der_ie.png', sizingMethod='crop')");
+}

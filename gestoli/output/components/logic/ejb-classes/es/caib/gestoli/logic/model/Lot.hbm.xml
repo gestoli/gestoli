@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 30-nov-2009 17:09:51 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.Lot" table="oli_lot"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="class-code" inherit="false">/** * Devuelve una fecha
+			formateada */ public String getDataFormat() { SimpleDateFormat sdf =
+			new
+			SimpleDateFormat("dd/MM/yyyy"); return sdf.format(this.data); } /** * Devuelve el tipo del icono de
+			lote */ public Long getTipo() { Long tipo = Long.valueOf("5"); // por
+			defecto botella cristal transparente if (this.etiquetatge != null &amp;&amp; this.etiquetatge.getTipusEnvas() != null &amp;&amp;
+        this.etiquetatge.getTipusEnvas().getMaterialTipusEnvas() != null &amp;&amp; this.etiquetatge.getTipusEnvas().getMaterialTipusEnvas().getIcona() != null) { tipo =
+        this.etiquetatge.getTipusEnvas().getMaterialTipusEnvas().getIcona(); } return tipo; } /** * Devuelve el aceite disponible en kilos */ public Double
+        getDisponibleOliQuilos() { Double cantidad = null; if (this.getLitresEnvassats() != null) { //PASAMOS A KG cantidad =
+        Double.valueOf(String.valueOf((Double.valueOf("0.916").doubleValue() * this.getLitresEnvassats().doubleValue()))); } return cantidad; } /** * Comparator */ public int
+        compareTo(Object l) { Lot lote = (Lot)l; return this.data.compareTo(lote.getData()); }</meta>
+        <meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+        <comment>Lots</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="lot_codi" />
+            <generator class="native"></generator>
+        </id>
+        <many-to-one name="zona" class="es.caib.gestoli.logic.model.Zona" fetch="select">
+            <column name="lot_codzon" not-null="true">
+                <comment>Codi de zona</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="etiquetatge" class="es.caib.gestoli.logic.model.Etiquetatge" fetch="select">
+            <column name="lot_codeti" not-null="true">
+                <comment>Codi de etiquetatge</comment>
+            </column>
+        </many-to-one>
+        <!--many-to-one name="categoriaOli" class="es.caib.gestoli.logic.model.CategoriaOli" fetch="select">
+            <column name="lot_codcao" not-null="true">
+                <comment>Codi de categoria de oli</comment>
+            </column>
+        </many-to-one-->
+        <many-to-one name="partidaOli" class="es.caib.gestoli.logic.model.PartidaOli" fetch="select">
+            <column name="lot_codpar" not-null="false">
+                <comment>Codi de partida de oli</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="diposit" class="es.caib.gestoli.logic.model.Diposit" fetch="select">
+            <column name="lot_coddip">
+                <comment>Codi de diposit</comment>
+            </column>
+        </many-to-one>
+        <property name="data" type="date">
+            <column name="lot_data" length="13" not-null="true">
+                <comment>Data</comment>
+            </column>
+        </property>
+        <property name="codiAssignat" type="java.lang.String">
+            <column name="lot_codlot" length="128" not-null="true">
+                <comment>Codi de lot assignat</comment>
+            </column>
+        </property>
+        <property name="acidesa" type="java.lang.Double">
+            <column name="lot_acides" precision="17" scale="17" not-null="true">
+                <comment>Acidesa</comment>
+            </column>
+        </property>
+        <property name="litresPerduts" type="java.lang.Double">
+            <column name="lot_litper" precision="17" scale="17">
+                <comment>Litres perduts</comment>
+            </column>
+        </property>
+        <property name="motiuPerdua" type="java.lang.String">
+            <column name="lot_motper">
+                <comment>Motiu de perdua</comment>
+            </column>
+        </property>
+        <property name="numeroBotellesInicials" type="java.lang.Integer">
+            <column name="lot_numbotini" not-null="true">
+                <comment>Numero de botelles inicials</comment>
+            </column>
+        </property>
+        <property name="litresEnvassats" type="java.lang.Double">
+            <column name="lot_litenv" precision="17" scale="17" not-null="true">
+                <comment>Litres envassats</comment>
+            </column>
+        </property>
+        <property name="posicioX" type="java.lang.Integer">
+            <column name="lot_posx" not-null="true">
+                <comment>Posicio X</comment>
+            </column>
+        </property>
+        <property name="posicioY" type="java.lang.Integer">
+            <column name="lot_posy" not-null="true">
+                <comment>Posicio Y</comment>
+            </column>
+        </property>
+        <property name="observacions" type="java.lang.String">
+            <column name="lot_observ">
+                <comment>Observacions</comment>
+            </column>
+        </property>
+        <property name="valid" type="java.lang.Boolean" insert="false">
+            <column name="lot_valid" not-null="true">
+                <comment>Proces valid</comment>
+            </column>
+        </property>
+        <property name="numeroBotellesActuals" type="java.lang.Integer">
+            <column name="lot_numbotact" not-null="true">
+                <comment>Numero de botelles actuals</comment>
+            </column>
+        </property>
+        <property name="creatTancament" type="java.lang.Boolean">
+            <column name="lot_tancam" not-null="true">
+                <comment>Lot creat en el tancament de llibres</comment>
+            </column>
+        </property>
+        <property name="numeroLot" type="java.lang.String">
+            <column name="lot_numlot">
+                <comment>Número de lot</comment>
+            </column>
+        </property>
+        <!--property name="nomPartida" type="java.lang.String">
+            <column name="lot_nompar" length="128" not-null="true">
+                <comment>Nom de la partida</comment>
+            </column>
+        </property-->
+        <property name="dataConsum" type="date">
+            <column name="lot_datcon" length="13" not-null="false">
+                <comment>Data de consum preferent</comment>
+            </column>
+        </property>
+        <set name="sortidaDiposits" inverse="true">
+            <key>
+                <column name="sdi_codlot">
+                    <comment>Codi de lot</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.SortidaDiposit" />
+        </set>
+        <set name="varietatOlivas" inverse="false" table="oli_lotvov">
+            <key>
+                <column name="lvo_codlot" not-null="true">
+                    <comment>Codi de lot</comment>
+                </column>
+            </key>
+            <many-to-many entity-name="es.caib.gestoli.logic.model.VarietatOliva">
+                <column name="lvo_codvov" not-null="true">
+                    <comment>Codi de varietat de oliva</comment>
+                </column>
+            </many-to-many>
+        </set>
+        <set name="sortidaLots" inverse="true">
+            <key>
+                <column name="slo_codlot" not-null="true">
+                    <comment>Codi de lot</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.SortidaLot" />
+        </set>
+        <set name="entradaLots" inverse="true">
+            <key>
+                <column name="elo_codlot" not-null="true">
+                    <comment>Codi de lot</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.EntradaLot" />
+        </set>
+        <set name="etiquetesLots" inverse="true">
+            <key>
+                <column name="elo_codlot" not-null="true">
+                    <comment>Codi de lot</comment>
+                </column>
+            </key>
+            <one-to-many class="es.caib.gestoli.logic.model.EtiquetesLot" />
+        </set>
+        <many-to-one name="producte" class="es.caib.gestoli.logic.model.Producte" fetch="select">
+            <column name="lot_codpro">
+                <comment>Codi de producte</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="bota" class="es.caib.gestoli.logic.model.Bota" fetch="select">
+            <column name="lot_codbot">
+                <comment>Codi de bota</comment>
+            </column>
+        </many-to-one>
+        <property name="olivaTaula" type="java.lang.Boolean">
+            <column name="lot_oliTau" not-null="false">
+                <comment>Lot oliva de taula</comment>
+            </column>
+        </property>
+        <property name="kgOlivaTaula" type="java.lang.Double">
+            <column name="lot_kgoli" precision="17" scale="17">
+                <comment>kg oliva de taula</comment>
+            </column>
+        </property>
+        <property name="totalOliAfegit" type="java.lang.Double">
+            <column name="lot_oliadd" precision="17" scale="17">
+                <comment>Oli afegit a oliva negra</comment>
+            </column>
+        </property>
+        <property name="lotOliAfegit" type="java.lang.String">
+            <column name="lot_lotoli" length="128">
+                <comment>Lot de oli afegit si no se ha seleccionat diposit</comment>
+            </column>
+        </property>
+        <property name="tipusOlivaTaula" type="java.lang.Integer">
+            <column name="lot_tipot">
+                <comment>Tipus oliva taula</comment>
+            </column>
+        </property>
+        <property name="olivaDO" type="java.lang.Boolean">
+            <column name="lot_olivdo" not-null="false">
+                <comment>Lot oliva de taula de DO</comment>
+            </column>
+        </property>
+         <property name="datafi" type="date">
+            <column name="lot_datafi" length="13" not-null="false">
+                <comment>Data fi lot</comment>
+            </column>
+        </property>
+        <property name="lotTap" type="java.lang.String">
+            <column name="lot_lotTap">
+                <comment>Lot del tap a envasat</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

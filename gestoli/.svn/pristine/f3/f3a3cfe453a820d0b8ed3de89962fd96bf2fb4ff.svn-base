@@ -1,0 +1,175 @@
+<project name="gestoli.front" default="common" basedir=".">
+
+	<property name="component" value="${component.front}"/>
+
+	<import file="../../properties.common.xml"/>
+	<import file="../../build.common.xml"/>
+
+	<path id="component.front.class.path">
+		<pathelement location="${lib}/specs/${ejb_spec}.jar"/>
+		<pathelement location="${lib}/specs/${servlet_spec}.jar"/>
+		<pathelement location="${lib}/${log4j}.jar"/>
+		<pathelement location="${lib}/spring/spring.jar"/>
+		<pathelement location="${lib}/spring/spring-webmvc.jar"/>
+		<pathelement location="${lib}/spring/spring-orm.jar"/>
+		<pathelement location="${lib}/spring/spring-modules-validation.jar"/>
+		<pathelement location="${lib}/spring/common-annotations.jar"/>
+		<pathelement location="${lib}/commons/${commons-collections}.jar"/>
+		<pathelement location="${lib}/commons/${commons-logging}.jar"/>
+		<pathelement location="${lib}/commons/${commons-lang}.jar"/>
+		<pathelement location="${output}/components/${component.logic}/ejb-client/${component.logic}-client.jar"/>
+		<pathelement location="${lib}/jboss.jar"/>
+		<pathelement location="${lib}/${itext}.jar"/>
+		<pathelement location="${lib}/${jasperreports}.jar"/>
+		<pathelement location="${lib}/${jfreechart}.jar"/>
+		<pathelement location="${lib}/${jdt-compiler}.jar"/>
+		<pathelement location="${lib}/RXTXcomm.jar"/>
+		<pathelement location="${lib}/mail.jar"/>
+		<pathelement location="${lib}/activation.jar"/>
+		<pathelement location="${lib}/${quartz}.jar"/>
+		<pathelement location="${lib}/${cxf}.jar"/>
+		<pathelement location="${lib}/${jaxb-api}.jar"/>
+		<pathelement location="${lib}/${jaxb-impl}.jar"/>
+		<pathelement location="${lib}/${geronimo-annotation}.jar"/>
+		<pathelement location="${lib}/${geronimo-stax-api}.jar"/>
+		<pathelement location="${lib}/${geronimo-jaxws}.jar"/>
+		<pathelement location="${lib}/${geronimo-ws-metadata}.jar"/>
+		<pathelement location="${lib}/${wsdl4j}.jar"/>
+		<pathelement location="${lib}/${wss4j}.jar"/>
+		<pathelement location="${lib}/${XmlSchema}.jar"/>
+		<pathelement location="${lib}/${stax}.jar"/>
+		<pathelement location="${lib}/${poi}.jar"/>
+		<pathelement location="${lib}/${poi-ooxml}.jar"/>
+		<pathelement location="${lib}/${poi-ooxml-schemas}.jar"/>
+		<pathelement location="${lib}/${poi-scratchpad}.jar"/>
+		<pathelement location="${lib}/jsp-api.jar"/>
+		<pathelement location="${lib}/${displaytag}.jar"/>
+		<pathelement location="${lib}/${displaytag-export-poi}.jar"/>
+		<pathelement location="${lib}/${xmlbeans}.jar"/>
+	</path>
+
+
+    <target name="front.prepare">
+        <front.prepare />
+    </target>
+    
+    <target name="front.generate" unless="webdoclet.uptodate">
+        <front.generate session.timeout="${session.timeout}" welcome.file="index.jsp">
+        </front.generate>
+    </target>
+
+    <target name="front.compile">
+        <front.compile />
+        <front.client />
+    </target>
+    
+    <macrodef name="front.client">
+        <sequential>
+            <mkdir dir="${common}/front-client"/>
+            <jar jarfile="${common}/front-client/front-client.jar">
+                <fileset dir="${front.classes}" includes="**/dwr/*.class"/>
+			    <fileset dir="${front.classes}" includes="**/servlet/*.class"/>
+			    <fileset dir="${front.classes}" includes="**/spring/*.class"/>
+                <fileset dir="${front.classes}" includes="**/util/*.class"/>
+            </jar>
+        </sequential>
+   </macrodef>
+
+	<target name="front.customized.war" unless="war.uptodate">
+		<!-- Copiam clases del applet -->
+		<delete dir="${front.home}/httpdocs/applet/es" />
+		<mkdir dir="${front.httpdocs.applet}" />
+	    <copy todir="${front.httpdocs.applet}/" overwrite="yes">
+	       <fileset dir="${front.classes.applet}" />
+	    </copy>
+
+		<front.war>
+			<extra.webinf>
+				<!-- Arxius necessaris -->
+				<webinf dir="${front.home}/etc">
+					<include name="app.properties"/>
+					<include name="applicationContext.xml"/>
+					<include name="applicationContextWs.xml"/>
+					<include name="app-servlet.xml"/>
+					<include name="dwr.xml"/>
+					<include name="decorators.xml"/>
+					<include name="sitemesh.xml"/>
+				</webinf>
+			</extra.webinf>
+			<extra.lib>
+		        <lib dir="${lib}/commons" includes="${commons-collections}.jar"/>
+				<lib dir="${lib}/commons" includes="${commons-beanutils}.jar"/>
+		        <lib dir="${lib}/commons" includes="${commons-digester}.jar"/>
+				<lib dir="${lib}/commons" includes="${commons-fileupload}.jar"/>
+				<lib dir="${lib}/commons" includes="${commons-lang}.jar"/>
+				<lib dir="${lib}/commons" includes="${commons-io}.jar"/>
+				<lib dir="${lib}/hibernate" includes="antlr-2.7.6.jar"/>
+				<lib dir="${lib}/hibernate" includes="asm.jar"/>
+				<lib dir="${lib}/hibernate" includes="cglib-2.1.3.jar"/>
+				<lib dir="${lib}/hibernate" includes="${hibernate}.jar"/>
+				<lib dir="${lib}/spring" includes="spring.jar"/>
+				<lib dir="${lib}/spring" includes="spring-webmvc.jar"/>
+				<lib dir="${lib}/spring" includes="spring-orm-1.1.jar"/>
+				<lib dir="${lib}/spring" includes="spring-modules-validation.jar"/>
+				<lib dir="${lib}" includes="dwr.jar"/>
+				<lib dir="${lib}" includes="jstl.jar"/>
+				<lib dir="${lib}" includes="standard.jar"/>
+				<lib dir="${lib}" includes="${displaytag}.jar"/>
+				<lib dir="${lib}" includes="${displaytag-export-poi}.jar"/>
+				<lib dir="${lib}" includes="${sitemesh}.jar"/>
+				<lib dir="${lib}" includes="${itext}.jar"/>
+				<lib dir="${lib}" includes="${jasperreports}.jar"/>
+				<lib dir="${lib}" includes="${jfreechart}.jar"/>
+				<lib dir="${lib}" includes="${groovy}.jar"/>
+				<lib dir="${lib}" includes="${jcommon}.jar"/>
+				<lib dir="${lib}" includes="${jdt-compiler}.jar"/>
+				<lib dir="${lib}" includes="${quartz}.jar"/>
+				<lib dir="${lib}" includes="${cxf}.jar"/>
+				<lib dir="${lib}" includes="${jaxb-api}.jar"/>
+				<lib dir="${lib}" includes="${jaxb-impl}.jar"/>
+				<lib dir="${lib}" includes="${geronimo-stax-api}.jar"/>
+				<lib dir="${lib}" includes="${geronimo-annotation}.jar"/>
+				<lib dir="${lib}" includes="${geronimo-jaxws}.jar"/>
+				<lib dir="${lib}" includes="${geronimo-ws-metadata}.jar"/>
+				<lib dir="${lib}" includes="${wsdl4j}.jar"/>
+				<lib dir="${lib}" includes="${wss4j}.jar"/>
+				<lib dir="${lib}" includes="${XmlSchema}.jar"/>
+				<lib dir="${lib}" includes="${stax}.jar"/>
+				<lib dir="${lib}" includes="${poi}.jar"/>
+				<lib dir="${lib}" includes="${poi-ooxml}.jar"/>
+				<lib dir="${lib}" includes="${poi-ooxml-schemas}.jar"/>
+				<lib dir="${lib}" includes="${poi-scratchpad}.jar"/>
+				<lib dir="${lib}" includes="${xmlbeans}.jar"/>
+			</extra.lib>
+		</front.war>
+	</target>
+
+   <target name="common">
+      <echo>
+      ====================================
+      FRONT
+      ====================================
+      </echo>
+      <antcall target="prepare" />
+      <antcall target="compile" />
+      <antcall target="generate" />
+      <def.front.war.uptodate>
+      </def.front.war.uptodate>
+      <antcall target="front.customized.war"/>
+   </target>
+
+   <target name="prepare">
+      <antcall target="front.prepare" />
+   </target>
+
+   <target name="generate">
+      <def.front.webdoclet.uptodate />
+      <antcall target="front.generate" />
+   </target>
+
+   <target name="compile">
+      <antcall target="front.compile" />
+   </target>
+
+</project>
+

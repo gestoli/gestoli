@@ -1,0 +1,89 @@
+body {
+	background: none;
+}
+
+#layoutPrincipal {
+	width: 779px;
+	margin-left: 0px;
+	text-align: left;
+	/*background-image: none;*/
+	background: none;
+}
+
+#layoutPrincipal #layoutPagina.extranet {
+	background: none;
+}
+
+#cabeceraGeneral {
+	background-image: none;
+	display: none;
+}
+
+#menuSuperior {
+	display: none;
+}
+
+#contenidoPrincipal {
+	float: left;
+	width: 555px;
+}
+
+#fichaEstablecimiento .cajaBotones {
+	display: none;
+}
+
+#pieGeneral {
+	display: none;
+}
+
+#layoutPrincipal #layoutPagina #pathCabecera {
+	color: #DD0000;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	position: relative;
+	text-align: left;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	position: relative;
+}
+
+#layoutPrincipal #layoutPagina #pathCabecera strong {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 28px;
+	font-weight: normal;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento a,strong,h4 {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-bottom: 10px;
+	padding: 10px;
+}
+
+a {
+	color: #616161;
+	text-decoration: none;
+}
+
+#layoutPrincipal #layoutPagina .fondoBottom {
+	display: none;
+}
+
+#fichaEstablecimiento .menufichaEstablecimiento span a {
+	background: none;
+}
+
+div#fons {
+	border: 1px solid #000000;
+}
+
+.llistatPrint{
+	display:block;
+}
+
+td{
+	background: none;
+}
+
+.odd{
+	background: url("../img/tabla/sep_blanco.gif") repeat-y scroll right top #F0F0F0;
+}

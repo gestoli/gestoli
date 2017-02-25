@@ -1,0 +1,522 @@
+package es.caib.gestoli.front.spring.views;
+
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.apache.log4j.Logger;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.web.servlet.view.document.AbstractPdfView;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.pdf.PdfWriter;
+
+import es.caib.gestoli.front.util.Idioma;
+import es.caib.gestoli.logic.interfaces.OliInfraestructuraEjb;
+import es.caib.gestoli.logic.model.Diposit;
+import es.caib.gestoli.logic.model.Establiment;
+import es.caib.gestoli.logic.model.Solicitant;
+import es.caib.gestoli.logic.model.SortidaDiposit;
+import es.caib.gestoli.logic.model.Trasllat;
+import es.caib.gestoli.logic.model.Traza;
+import es.caib.gestoli.logic.util.Constants;
+
+public class GenerarPdfVolant extends AbstractPdfView {
+	private static Logger logger = Logger.getLogger(GenerarPdfVolant.class);
+
+	private OliInfraestructuraEjb oliInfraestructuraEjb;
+	private HibernateTemplate hibernateTemplate;
+	
+	private Integer tipusEstablimentTafona;
+	private Integer tipusEstablimentEnvasadora;
+	private Integer tipusEstablimentTafonaEnvasadora;
+	
+	private String retorn;
+	
+	protected void buildPdfDocument(
+        Map model,
+        Document document,
+        PdfWriter writer,
+        HttpServletRequest request,
+        HttpServletResponse response)
+        throws Exception {
+
+		document = null;
+		writer = null;
+		
+		String idTrasllat = request.getParameter("trasllat");
+		Boolean retorn = null;
+		
+		String sentit = (String)model.get("sentit");
+		if (sentit != null) {
+			retorn = (sentit.equals("0") ? false : true);
+		}
+			
+		oliInfraestructuraEjb.setHibernateTemplate(getHibernateTemplate());
+		Trasllat trasllat = oliInfraestructuraEjb.findTrasllatById(Long.parseLong(idTrasllat));
+
+		Collection diposits = trasllat.getDiposits();
+		double quantitatTotalDesti = 0.0;
+		
+		if(trasllat.getEsDiposit()){
+			if (retorn == null) {
+				for(Iterator it = trasllat.getTraza().getTrazasForTtrCodtrapare().iterator(); it.hasNext();){
+					Traza traza = (Traza)it.next();
+					if (traza.getTipus().intValue() == Constants.CODI_TRAZA_TIPUS_SORTIDA_DIPOSIT){
+						SortidaDiposit sd = oliInfraestructuraEjb.getSortidaDipositByTraza(traza.getId());
+						if (sd != null){	
+	//						quantitatTotalDesti = sd.getLitres();
+							if (sd.getDesti() != null && sd.getDesti().startsWith("TRASLLAT")){
+								retorn = false;
+							} else {
+								retorn = true;
+							}
+						}
+						break;
+					}
+				}
+				if (retorn == null){
+					if (trasllat.getDataAcceptarEnviament() != null){
+						retorn = true;
+					} else {
+						retorn = false;
+					}
+				}
+			}
+		} else {
+			for(Iterator it = trasllat.getTraza().getTrazasForTtrCodtrafill().iterator(); it.hasNext();){
+				Traza traza = (Traza)it.next();
+				if (traza.getTipus().intValue() == Constants.CODI_TRAZA_TIPUS_SORTIDA_DIPOSIT){
+					SortidaDiposit sd = oliInfraestructuraEjb.getSortidaDipositByTraza(traza.getId());
+					if (sd != null){	
+						quantitatTotalDesti += sd.getLitres();
+					}
+				}
+			}
+		}
+		
+		Establiment estEmisor = null;
+		Establiment estDest = null;
+		if (retorn == null || !retorn){
+			quantitatTotalDesti = trasllat.getQuantitatEnviament();
+			estEmisor = trasllat.getEstablimentByTdiCodeor();
+			estDest = trasllat.getEstablimentByTdiCodede();
+		} else {
+			quantitatTotalDesti = trasllat.getQuantitatRetorn();
+			estDest = trasllat.getEstablimentByTdiCodeor();
+			estEmisor = trasllat.getEstablimentByTdiCodede();
+		}
+		
+		Solicitant solEmisor = estEmisor.getSolicitant();
+		String solENif = solEmisor.getNif();
+		String solE = solEmisor.getNom();
+
+		Solicitant solDesti = estDest.getSolicitant();
+		String solDNif = solDesti.getNif();
+		String solD = solDesti.getNom();
+		
+		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+
+		
+		logger.debug("1.- Iniciando proceso");
+
+		// Compilar archivo
+		logger.debug("2.- Leyendo el stream del jrxml");
+	    InputStream is = this.getClass().getClassLoader().getResourceAsStream("es/caib/gestoli/logic/resources/volantCirculacioOli.jrxml");
+		logger.debug("3.- Compilando el report");
+	    JasperReport report = JasperCompileManager.compileReport(is);
+	    
+
+		// Data Source
+		logger.debug("4.- Asociando los datos");
+		Collection col = getDataSourceVolant(trasllat);
+		JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(col);
+		
+		//Parametros
+		logger.debug("5.- Cargando parametros");
+		HashMap params = new HashMap();
+		
+		params.put("resPeu",missatge("pdf.volantCirculacio.peu"));
+		params.put("resImg","es/caib/gestoli/logic/resources/do.jpg");
+		
+		params.put("resHeVolantCirculacio",missatge("pdf.volantCirculacio.resHeVolantCirculacio"));
+		
+		params.put("resReferencia",missatge("pdf.volantCirculacio.resReferencia"));
+		params.put("referencia",trasllat.getId().toString() + "/" +(retorn? "R": "T"));
+		
+		params.put("resHeDadesEmisor",missatge("pdf.volantCirculacio.resHeDadesEmisor"));
+		params.put("resHeDadesDest",missatge("pdf.volantCirculacio.resHeDadesDest"));
+		params.put("resHeNomEntitat",missatge("pdf.volantCirculacio.resHeNomEntitat"));
+		params.put("resHeRepresentant",missatge("pdf.volantCirculacio.resHeRepresentant"));
+		params.put("resHeCIF",missatge("pdf.volantCirculacio.resHeCIF"));
+		params.put("resHeDni",missatge("pdf.volantCirculacio.resHeNif"));
+		params.put("resHeNumeroIns",missatge("pdf.volantCirculacio.resHeNumeroIns"));
+		params.put("resHeDirecc",missatge("pdf.volantCirculacio.resHeDirecc"));
+		params.put("resHeLocalitat",missatge("pdf.volantCirculacio.resHeLocalitat"));
+		// importante: no eliminar las cadenas en blanco
+		params.put("resHeInscrit",missatge("pdf.volantCirculacio.resHeInscrit")+
+				"                                         "+missatge("pdf.volantCirculacio.resTafona")+"            "+missatge("pdf.volantCirculacio.resEnvasadora"));
+		
+//		Establiment estEmisor = trasllat.getEstablimentByTdiCodeor();
+				
+		String inscritEmisor="";
+		String numeroInsEmisor="";
+		if (estEmisor.getTipusEstabliment().getId().equals(tipusEstablimentTafona)){
+			numeroInsEmisor="RB-"+estEmisor.getCodiRB();
+			params.put("tafonaE","X");
+			params.put("envasadoraE","");
+		}else if (estEmisor.getTipusEstabliment().getId().equals(tipusEstablimentEnvasadora)){
+			numeroInsEmisor="RC-"+estEmisor.getCodiRC();
+			params.put("tafonaE","");
+			params.put("envasadoraE","X");
+		}else if (estEmisor.getTipusEstabliment().getId().equals(tipusEstablimentTafonaEnvasadora)){
+			numeroInsEmisor="RB-"+estEmisor.getCodiRB() + " / RC-"+ estEmisor.getCodiRC();
+			params.put("tafonaE","X");
+			params.put("envasadoraE","X");
+		}
+		
+		
+		params.put("nomEntitatEmisor",estEmisor.getNom());
+		params.put("representantEmisor",solE);
+		params.put("cifEmisor",estEmisor.getCif());
+		if (solENif != null) {
+			params.put("dniEmisor", solENif);
+		} else {
+			params.put("dniEmisor", "");
+		}
+		params.put("numeroInsEmisor",numeroInsEmisor);
+		if (estEmisor.getDireccio() != null) {
+			params.put("direccEmisor", estEmisor.getDireccio());
+		} else {
+			params.put("direccEmisor", "");
+		}
+		
+		String localitatE = "";
+		if (estEmisor.getPoblacio() != null && !estEmisor.getPoblacio().equals("")) {
+			localitatE = estEmisor.getPoblacio().getNom();
+		}
+		if (estEmisor.getCodiPostal() != null && !estEmisor.getCodiPostal().equals("")) {
+			localitatE = estEmisor.getCodiPostal() + " " + localitatE;
+		}
+		params.put("localitatEmisor",localitatE);
+			
+		String numeroInsDest="";
+		if (estDest.getTipusEstabliment().getId().equals(tipusEstablimentTafona)){
+			numeroInsDest="RB-"+estDest.getCodiRB();
+			params.put("tafonaD","X");
+			params.put("envasadoraD","");
+		}else if (estDest.getTipusEstabliment().getId().equals(tipusEstablimentEnvasadora)){
+			numeroInsDest="RC-"+estDest.getCodiRC();
+			params.put("tafonaD","");
+			params.put("envasadoraD","X");
+		}else if (estDest.getTipusEstabliment().getId().equals(tipusEstablimentTafonaEnvasadora)){
+			numeroInsDest="RB-"+estDest.getCodiRB() + " / RC-"+estDest.getCodiRC();
+			params.put("tafonaD","X");
+			params.put("envasadoraD","X");
+		}
+		
+		params.put("nomEntitatDest",estDest.getNom());
+		params.put("cifDest",estDest.getCif());
+		params.put("representantDest",solD);
+		if (solDNif != null) {
+			params.put("dniDest", solDNif);
+		} else {
+			params.put("dniDest", "");
+		}
+		params.put("numeroInsDest",numeroInsDest);
+		if (estDest.getDireccio() != null) {
+			params.put("direccDest", estDest.getDireccio());
+		} else {
+			params.put("direccDest", "");
+		}
+		
+		String localitatD = "";
+		if (estDest.getPoblacio() != null && !estDest.getPoblacio().equals(""))  {
+			localitatD = estDest.getPoblacio().getNom();
+		}
+		if (estDest.getCodiPostal() != null && !estDest.getCodiPostal().equals("")) {
+			localitatD = estDest.getCodiPostal() + " " + localitatD;
+		}
+		params.put("localitatDest",localitatD);
+		
+		params.put("resHeQuantitat",missatge("pdf.volantCirculacio.resHeQuantitat"));
+		params.put("quantitat",numberDecimalFormat.format(quantitatTotalDesti));
+		
+		params.put("resHeDiposit",missatge("pdf.volantCirculacio.resHeDiposit"));
+		params.put("resHeCapacitat",missatge("pdf.volantCirculacio.resHeCapacitat"));
+		params.put("resHeAcidesa",missatge("pdf.volantCirculacio.resHeAcidesa"));
+		params.put("resHeCategoria",missatge("pdf.volantCirculacio.resHeCategoria"));
+		params.put("resHeCarrega",missatge("pdf.volantCirculacio.resHeCarrega"));		
+		params.put("resHeDescarrega",missatge("pdf.volantCirculacio.resHeDescarrega"));
+		
+		
+		params.put("resHeDataPrevista",missatge("pdf.volantCirculacio.resHeDataPrevista"));
+		params.put("dataPrevista",dateF.format(trasllat.getData()));
+		
+		params.put("resHeFirmaResEmisor",missatge("pdf.volantCirculacio.resHeFirmaResEmisor"));
+		params.put("dataResEmisor",missatge("pdf.volantCirculacio.dataResEmisor"));
+		params.put("resHeFirmaResReceptor",missatge("pdf.volantCirculacio.resHeFirmaResReceptor"));
+		params.put("dataResReceptor",missatge("pdf.volantCirculacio.dataResReceptor"));
+		params.put("resHeFirmaEmisor",missatge("pdf.volantCirculacio.resHeFirmaEmisor"));
+		params.put("resHeFirmaReceptor",missatge("pdf.volantCirculacio.resHeFirmaReceptor"));
+		params.put("observacions",missatge("pdf.volantCirculacio.observacions"));	
+
+		logger.debug("6.- Cargando los datos al report");
+		JasperPrint jasperPrint = JasperFillManager.fillReport( report, params, ds );
+
+		// Configure exporter and set parameters
+		ServletOutputStream out = response.getOutputStream();
+		response.setContentType("application/pdf");
+		response.setHeader("Cache-Control", "store");
+		response.setHeader("Pragma", "cache");            
+		response.setHeader("Content-Disposition","attachment; filename=Volant.pdf");
+		
+		logger.debug("7.- Exportando el report a pdf");
+	    byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+	    for (int i = 0; i < bytes.length; i ++) {
+	    	out.write(bytes[i]);
+	    }
+	    out.close();
+	    out.flush();
+
+	    
+    }
+
+	
+	private String missatge(String clave, HttpServletRequest request) {
+		String valor = getApplicationContext().getMessage(clave, null,
+				Idioma.getLocale(request));
+		return valor;
+	}
+	
+
+	public class FilaReport implements java.io.Serializable {
+		
+		public FilaReport(String diposit, String capacitat, String acidesa,
+				String categoria) {
+			super();
+			this.diposit = diposit;
+			this.capacitat = capacitat;
+			this.acidesa = acidesa;
+			this.categoria = categoria;
+		}
+		
+		private String diposit;
+		private String capacitat;
+		private String acidesa;
+		private String categoria;
+		
+
+		public String getCapacitat() {
+			return capacitat;
+		}
+		public void setCapacitat(String capacitat) {
+			this.capacitat = capacitat;
+		}
+		public String getAcidesa() {
+			return acidesa;
+		}
+		public void setAcidesa(String acidesa) {
+			this.acidesa = acidesa;
+		}
+		public String getCategoria() {
+			return categoria;
+		}
+		public void setCategoria(String categoria) {
+			this.categoria = categoria;
+		}
+		public String getDiposit() {
+			return diposit;
+		}
+		public void setDiposit(String diposit) {
+			this.diposit = diposit;
+		}
+
+	}
+	
+	
+	
+	/**
+	 * @param idT
+	 * @return
+	 * @throws Exception
+	 */
+	private Collection getDataSourceVolant(Trasllat trasllat) throws Exception{
+		Collection col=new ArrayList();
+		FilaReport filaReport = null;
+		
+		DecimalFormat numberDecimalFormat = new DecimalFormat("###,###,##0.00");
+		
+		Iterator ite = trasllat.getDiposits().iterator();
+		
+		if(trasllat.getEsDiposit()){
+			for(Iterator it = trasllat.getTraza().getTrazasForTtrCodtrapare().iterator(); it.hasNext();){
+				Traza traza = (Traza)it.next();
+				if (traza.getTipus().intValue() == Constants.CODI_TRAZA_TIPUS_SORTIDA_DIPOSIT){
+					SortidaDiposit sd = oliInfraestructuraEjb.getSortidaDipositByTraza(traza.getId());
+					if (sd != null){
+						filaReport = new FilaReport(
+								sd.getDipositBySdiCoddor().getCodiAssignat(),
+								numberDecimalFormat.format(sd.getLitres()),
+								(sd.getAcidesa() != null ? numberDecimalFormat.format(sd.getAcidesa()) : null),
+								(sd.getCategoriaOli() != null ? sd.getCategoriaOli().getNom() : null));
+					}
+					break;
+				}
+			}
+			
+			if (filaReport == null){
+				Diposit dip = null;
+				if (trasllat.getDiposits().iterator().hasNext()){
+					dip = (Diposit)trasllat.getDiposits().iterator().next();
+				}
+				String codDip = "";
+				String capacitat = "";
+				String acidesa = "";
+				String categoria = "";
+				if (dip != null) {
+					codDip = dip.getCodiAssignat();
+					//if (dip.getCapacitat() != null) capacitat = numberDecimalFormat.format(dip.getCapacitat());
+					capacitat = (trasllat.getRetornatEstablimentOrigen()? numberDecimalFormat.format(trasllat.getQuantitatRetorn()) : numberDecimalFormat.format(trasllat.getQuantitatEnviament()));
+					if (dip.getAcidesa() != null) acidesa = numberDecimalFormat.format(dip.getAcidesa());
+					if (dip.getPartidaOli() != null) categoria = dip.getPartidaOli().getCategoriaOli().getNom();
+				}
+				filaReport = new FilaReport(codDip, capacitat, acidesa, categoria); 
+			}
+					
+			col.add(filaReport);
+		} else {
+			for(Iterator it = trasllat.getTraza().getTrazasForTtrCodtrafill().iterator(); it.hasNext();){
+				Traza traza = (Traza)it.next();
+				if (traza.getTipus().intValue() == Constants.CODI_TRAZA_TIPUS_SORTIDA_DIPOSIT){
+					SortidaDiposit sd = oliInfraestructuraEjb.getSortidaDipositByTraza(traza.getId());
+					if (sd != null){
+						filaReport = new FilaReport(
+								sd.getDipositBySdiCoddor().getCodiAssignat(),
+								numberDecimalFormat.format(sd.getLitres()),
+								(sd.getAcidesa() != null ? numberDecimalFormat.format(sd.getAcidesa()) : null),
+								(sd.getCategoriaOli() != null ? sd.getCategoriaOli().getNom() : null));
+						
+//						if (filaReport == null){
+//							Diposit dip = null;
+//							if (trasllat.getDiposits().iterator().hasNext()){
+//								dip = (Diposit)trasllat.getDiposits().iterator().next();
+//							}
+//							String codDip = "";
+//							if (dip != null) codDip = dip.getCodiAssignat();
+//							filaReport = new FilaReport(codDip, "0", "", ""); 
+//						}
+								
+						col.add(filaReport);
+					}
+				}
+			}
+		}
+
+		
+//		while (ite.hasNext()){
+//			Diposit di = (Diposit)ite.next();
+//			
+//			filaReport = new FilaReport(
+//								di.getCodiAssignat(),
+//								(di.getVolumActual() != null)?numberDecimalFormat.format(di.getVolumActual().doubleValue()):null,
+//								(di.getAcidesa() != null)?numberDecimalFormat.format(di.getAcidesa().doubleValue()):null,
+//								(di.getPartidaOli() != null)?di.getPartidaOli().getCategoriaOli().getNom():null);
+//			
+//			col.add(filaReport);
+//			
+//		}
+
+		return col;
+	}
+
+	
+
+	public OliInfraestructuraEjb getOliInfraestructuraEjb() {
+		return oliInfraestructuraEjb;
+	}
+
+	public void setOliInfraestructuraEjb(OliInfraestructuraEjb oliInfraestructuraEjb) {
+		this.oliInfraestructuraEjb = oliInfraestructuraEjb;
+	}
+
+
+	/**
+	 * set the hibernate template.
+	 * @param hibernateTemplate the hibernate spring template.
+	 * @spring.property ref="hibernateTemplate"
+	 */
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	
+	/**
+	 * get the hibernate template.
+	 * @return the hibernate spring template.
+	 */
+	public HibernateTemplate getHibernateTemplate(){
+		return this.hibernateTemplate;
+	}
+
+	private String missatge(String clave) {
+		String valor = getMessageSourceAccessor().getMessage(clave, new Locale("ca"));
+		return valor;
+	}
+
+
+	public Integer getTipusEstablimentTafona() {
+		return tipusEstablimentTafona;
+	}
+
+
+	public void setTipusEstablimentTafona(Integer tipusEstablimentTafona) {
+		this.tipusEstablimentTafona = tipusEstablimentTafona;
+	}
+
+
+	public Integer getTipusEstablimentEnvasadora() {
+		return tipusEstablimentEnvasadora;
+	}
+
+
+	public void setTipusEstablimentEnvasadora(Integer tipusEstablimentEnvasadora) {
+		this.tipusEstablimentEnvasadora = tipusEstablimentEnvasadora;
+	}
+
+
+	public Integer getTipusEstablimentTafonaEnvasadora() {
+		return tipusEstablimentTafonaEnvasadora;
+	}
+
+
+	public void setTipusEstablimentTafonaEnvasadora(
+			Integer tipusEstablimentTafonaEnvasadora) {
+		this.tipusEstablimentTafonaEnvasadora = tipusEstablimentTafonaEnvasadora;
+	}
+
+
+	public void setRetorn(String retorn) {
+		this.retorn = retorn;
+	}
+	
+	
+}

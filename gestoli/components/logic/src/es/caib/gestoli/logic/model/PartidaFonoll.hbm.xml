@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated 10-nov-2009 17:31:20 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+	<class name="es.caib.gestoli.logic.model.PartidaFonoll" table="oli_partida_fonoll"
+		schema="public">
+		<meta attribute="class-description" inherit="false">Javadoc de les
+			clases Model de Gest Oli @author Oriol Barnes Cruz (obarnes@at4.net)</meta>
+		<meta attribute="extra-import" inherit="false">java.text.DecimalFormat</meta>
+		<meta attribute="extra-import" inherit="false">java.util.Iterator</meta>
+		<meta attribute="extra-import" inherit="false">java.text.SimpleDateFormat</meta>
+		<comment>Partides de fonoll</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="pao_codi" />
+			<generator class="native"></generator>
+		</id>
+		<many-to-one name="establiment"
+			class="es.caib.gestoli.logic.model.Establiment" fetch="select">
+			<column name="paf_codest" not-null="true">
+				<comment>Codi de establiment</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="traza" class="es.caib.gestoli.logic.model.Traza"
+			fetch="select">
+			<column name="paf_codtra" not-null="true">
+				<comment>Codi de traza</comment>
+			</column>
+		</many-to-one>
+        <many-to-one name="elaboracioOlivaTaula" class="es.caib.gestoli.logic.model.ElaboracioOliva"
+			fetch="select">
+			<column name="paf_codeot">
+				<comment>Codi de la elaboraci&#243;, si la partida se ha elaborat</comment>
+            </column>
+        </many-to-one>
+        <property name="data" type="date">
+            <column name="paf_data" length="13" not-null="true">
+                <comment>Data</comment>
+            </column>
+        </property>
+        <property name="hora" type="java.lang.String">
+            <column name="paf_hora" length="5" not-null="true">
+                <comment>Hora (format hh:mm)</comment>
+            </column>
+        </property>
+        <property name="numeroEntrada" type="java.lang.Integer">
+            <column name="paf_nument" not-null="true">
+                <comment>Numero de entrada diaria</comment>
+            </column>
+        </property>
+        <property name="codi" type="java.lang.String">
+			<column name="paf_codi" length="128" not-null="true">
+				<comment>Codi</comment>
+			</column>
+		</property>
+        <property name="titular" type="java.lang.String">
+			<column name="paf_titula" length="128" not-null="true">
+				<comment>Titular</comment>
+			</column>
+		</property>
+		<property name="kgInici" type="java.lang.Double">
+			<column name="paf_kginic" precision="17" scale="17" not-null="true">
+				<comment>Kilos</comment>
+			</column>
+		</property>
+		<property name="kgRestants" type="java.lang.Double">
+			<column name="paf_kgrest" precision="17" scale="17" not-null="true">
+				<comment>Kilos</comment>
+			</column>
+		</property>
+        <many-to-one name="municipi" class="es.caib.gestoli.logic.model.Municipi" fetch="select">
+			<column name="paf_munici" not-null="true">
+				<comment>Municipi</comment>
+			</column>
+		</many-to-one>
+		<property name="poligon" type="java.lang.String">
+			<column name="paf_poligo" length="128" not-null="true">
+				<comment>Poligon</comment>
+			</column>
+		</property>
+		<property name="parcela" type="java.lang.String">
+			<column name="paf_parcel" length="128" not-null="true">
+				<comment>Parcel-la</comment>
+			</column>
+		</property>
+        <property name="valid" type="java.lang.Boolean" insert="true">
+            <column name="paf_valid" not-null="true">
+                <comment>Proces valid</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>
